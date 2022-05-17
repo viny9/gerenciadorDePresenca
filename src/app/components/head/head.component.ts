@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-head',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeadComponent implements OnInit {
 
+  @Output() sidebar = new EventEmitter
+  @Input() sidebarStatus:any
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+  
+  sidebarToggle() {
+    this.sidebar.emit(!this.sidebarStatus)
   }
 
 }

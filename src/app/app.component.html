@@ -1,2 +1,11 @@
-<app-head></app-head>
-<app-sidebar></app-sidebar>
+<app-head (sidebar)="recive($event)" [sidebarStatus]="sidebar"></app-head>
+<mat-drawer-container class="h-75">
+    <!-- Sidebar -->
+  <mat-drawer mode="side" opened="{{sidebar}}" class="p-4">
+    <app-sidebar></app-sidebar>
+  </mat-drawer>
+  <!-- O componente do meio -->
+  <mat-drawer-content class="p-4    ">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

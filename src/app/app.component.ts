@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'GerenciadorDePresenca';
+  sidebar = true
+
+  recive(status:boolean) {
+    this.sidebar = status
+  }
 }
