@@ -8,12 +8,14 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeadComponent } from './components/head/head.component'
 import { HomeComponent } from './components/home/home.component';
 import { TurmaComponent } from './components/turma/turma.component';
+import { AlunoComponent } from './components/aluno/aluno.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion'
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { MatTableModule } from '@angular/material/table';
     SidebarComponent,
     HeadComponent,
     HomeComponent,
-    TurmaComponent
+    TurmaComponent,
+    AlunoComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { MatTableModule } from '@angular/material/table';
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
