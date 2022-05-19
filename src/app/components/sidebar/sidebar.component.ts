@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AddTurmaComponent } from '../add-turma/add-turma.component';
+import { AddTurmaComponent } from '../../views/add-turma/add-turma.component';
 
 @Component({
   selector: 'app-sidebar',

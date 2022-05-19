@@ -1,4 +1,6 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
+import { JustificarFaltasComponent } from 'src/app/views/justificar-faltas/justificar-faltas.component';
 
 @Component({
   selector: 'app-aluno',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlunoComponent implements OnInit {
 
-  constructor() { }
+  alunoInfos = [
+    { dia: '22/2/2222',
+      materia: 'Portugues',
+      horario: 1
+  },
+]
+
+  displayedColumns = ['dia', 'materia', 'horario', 'acoes']
+
+  constructor(private ref: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  openJustificarFaltas() {
+    this.ref.open(JustificarFaltasComponent, {
+      width: '500px'
+    })
   }
 
 }

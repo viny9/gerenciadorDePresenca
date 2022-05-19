@@ -10,7 +10,7 @@ import { HeadComponent } from './components/head/head.component'
 import { HomeComponent } from './components/home/home.component';
 import { TurmaComponent } from './components/turma/turma.component';
 import { AlunoComponent } from './components/aluno/aluno.component';
-import { AddTurmaComponent } from './components/add-turma/add-turma.component';
+import { AddTurmaComponent } from './views/add-turma/add-turma.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
+import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
     AlunoComponent,
     AddTurmaComponent,
     ListaDeFrequenciaComponent,
+    JustificarFaltasComponent,
   ],
   imports: [
     BrowserModule,

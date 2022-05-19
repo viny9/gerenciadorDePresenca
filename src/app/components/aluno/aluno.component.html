@@ -4,14 +4,39 @@
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Presença
+          Faltas
         </mat-panel-title>
-
-        <mat-panel-description>
-          Teste
-        </mat-panel-description>
-
       </mat-expansion-panel-header>
+      <div>
+        <mat-table [dataSource]="alunoInfos">
+          <ng-container matColumnDef="dia">
+            <th mat-header-cell *matHeaderCellDef class="ps-0 w-25">Dia</th>
+            <td mat-cell *matCellDef="let teste" class="ps-0">{{teste.dia}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="materia">
+            <th mat-header-cell *matHeaderCellDef class="w-50">Materia</th>
+            <td mat-cell *matCellDef="let teste">{{teste.materia}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="horario">
+            <th mat-header-cell *matHeaderCellDef class="w-25">horario</th>
+            <td mat-cell *matCellDef="let teste">{{teste.horario}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Jusificar</th>
+            <td mat-cell *matCellDef="let teste">
+              <div>
+                <button class="btn btn-primary" (click)="openJustificarFaltas()">Jusificar</button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-50 w-100"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle" routerLink="aluno"></tr>
+        </mat-table>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>
