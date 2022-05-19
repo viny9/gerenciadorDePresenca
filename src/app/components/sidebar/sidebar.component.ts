@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddTurmaComponent } from '../add-turma/add-turma.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() {
+  constructor( public dialog: MatDialog) {
    }
 
   ngOnInit(): void {
+  }
+
+  openAddTurma() {
+    const ref = this.dialog.open(AddTurmaComponent, {
+      width: '500px'
+    })
   }
 
 }
