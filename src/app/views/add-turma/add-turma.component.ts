@@ -1,5 +1,6 @@
 import { MatDialogRef } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-add-turma',
@@ -8,13 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddTurmaComponent implements OnInit {
 
-  constructor( private ref:MatDialogRef<AddTurmaComponent>) { }
+  teste:any
+
+  constructor( private ref:MatDialogRef<AddTurmaComponent>, private db: FirebaseService) { }
 
   ngOnInit(): void {
   }
 
   addTurma() { 
-    this.ref.close()
+    const turmaInfos = {
+      nome: this.teste
+    }
+
+    this.db.addTurma(turmaInfos).then(() => {
+      window.location.reload()
+    })
+
   }
 
   close () {

@@ -12,6 +12,8 @@ import { TurmaComponent } from './components/turma/turma.component';
 import { AlunoComponent } from './components/aluno/aluno.component';
 import { AddTurmaComponent } from './views/add-turma/add-turma.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
+import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
+import { environment } from '../environments/environment';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,7 +25,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
+
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat'
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
+import { AngularFireStorageModule } from '@angular/fire/compat/storage'
+
 
 @NgModule({
   declarations: [
@@ -51,7 +60,13 @@ import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRadioModule
+    MatRadioModule,
+
+    // Firebase
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddTurmaComponent } from '../../views/add-turma/add-turma.component';
 
 @Component({
@@ -9,10 +10,38 @@ import { AddTurmaComponent } from '../../views/add-turma/add-turma.component';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor( public dialog: MatDialog) {
+  turmas:any [] = []
+  newTurmas:any [] = []
+  search:any
+
+  constructor( public dialog: MatDialog, private db: FirebaseService) {
    }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
+    this.db.getTurma().subscribe((infos:any) => {
+      infos.docs.forEach((element:any) => {
+        this.turmas.push(element.data())
+        this.newTurmas = this.turmas
+      });
+
+      this.turmas = this.turmas.sort((a:any, b:any) => {
+        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
+      })
+    })
+}
+
+  searchs() {
+      const filtrado = this.turmas.filter((turma:any) =>{
+        if(turma.nome.includes(this.search)) {
+          return turma
+        } else {}
+      })
+
+      if(filtrado.length === 0) {
+        this.newTurmas = this.turmas
+      } else {
+        this.newTurmas = filtrado
+      }
   }
 
   openAddTurma() {
@@ -20,5 +49,4 @@ export class SidebarComponent implements OnInit {
       width: '500px'
     })
   }
-
 }

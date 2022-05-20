@@ -1,8 +1,8 @@
 <div class="container m-0">
-    <div class="row gy-4">
-        <div class="col-3 px-0">
+    <div class="row gx-4">
+        <div class="col-3 px-2 pb-3" *ngFor="let turma of turmas">
             <mat-card routerLink="turma">
-                <h1 class="mb-2">Nome da turma</h1>
+                <h1 class="mb-2">{{turma.nome}}</h1>
                 <p>Quantidade de alunos</p>
             </mat-card>
         </div>
