@@ -1,3 +1,4 @@
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -14,10 +15,11 @@ export class SidebarComponent implements OnInit {
   newTurmas:any [] = []
   search:any
 
-  constructor( public dialog: MatDialog, private db: FirebaseService) {
-   }
+  constructor( public dialog: MatDialog, private db: FirebaseService) { }
 
    ngOnInit(): void {
+    this.createForm()
+
     this.db.getTurma().subscribe((infos:any) => {
       infos.docs.forEach((element:any) => {
         this.turmas.push(element.data())
@@ -30,9 +32,15 @@ export class SidebarComponent implements OnInit {
     })
 }
 
+createForm() {
+  this.search = new FormGroup({
+    search: new FormControl()
+  })
+}
+
   searchs() {
       const filtrado = this.turmas.filter((turma:any) =>{
-        if(turma.nome.includes(this.search)) {
+        if(turma.nome.includes(this.search.value.search)) {
           return turma
         } else {}
       })

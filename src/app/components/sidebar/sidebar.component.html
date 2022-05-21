@@ -1,8 +1,8 @@
 <h2 class="mb-1 fs-5" routerLink="">Turmas</h2>
   <div class="d-flex justify-content-between">
-    <mat-form-field>
+    <mat-form-field [formGroup]="search">
       <mat-label>Pesquisar turma</mat-label>
-      <input type="text" matInput [(ngModel)]="search" name="search" (keyup)="searchs()">
+      <input type="text" matInput formControlName="search" (keyup)="searchs()">
     </mat-form-field>
   </div>
 <ul class="navbar-nav mb-3 ps-3">

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -26,8 +26,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
@@ -57,7 +55,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage'
     MatTableModule,
     MatExpansionModule,
     MatDialogModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
