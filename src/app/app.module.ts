@@ -15,6 +15,7 @@ import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lis
 import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 import { environment } from '../environments/environment';
 import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
+import { LoginLogoutComponent } from './components/login-logout/login-logout.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,12 +28,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     ListaDeFrequenciaComponent,
     JustificarFaltasComponent,
     AddAlunoComponent,
+    LoginLogoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     MatInputModule,
     MatRadioModule,
     MatMenuModule,
+    MatSnackBarModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

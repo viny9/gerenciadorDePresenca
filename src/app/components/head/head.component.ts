@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
@@ -10,7 +11,7 @@ export class HeadComponent implements OnInit {
   @Output() sidebar = new EventEmitter
   @Input() sidebarStatus:any
 
-  constructor() { }
+  constructor(private route:ActivatedRoute) { }
 
   ngOnInit(): void {
   }

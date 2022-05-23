@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddAlunoComponent } from 'src/app/views/add-aluno/add-aluno.component';
 import { ActivatedRoute } from '@angular/router';

@@ -1,0 +1,44 @@
+<div *ngIf="login == 'login'" class="d-flex align-items-center justify-content-center h-100">
+    <form class="border rounded d-flex flex-column w-25 p-3" [formGroup]="formSignin">
+        <h1 class="text-center">Login</h1>
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input formControlName="email" type="text" matInput>
+            <mat-error *ngIf="formSignin.controls['email']">{{formError()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input formControlName="password" type="text" matInput>
+        </mat-form-field>
+        <button [disabled]="formSignin.invalid" class="btn btn-primary mt-3" (click)="onSignin()">Entrar</button>
+        <a (click)="formReset()" (click)="login = 'signin'" class="mt-3">Não possui conta ?</a>
+    </form>
+</div>
+
+<div *ngIf="login == 'signin'" class="d-flex align-items-center justify-content-center h-100">
+    <form class="border rounded d-flex flex-column w-25 p-3" [formGroup]="formSignup">
+        <h1 class="text-center">Cadastro</h1>
+        <!-- <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input formControlName="nome" type="text" matInput>
+        </mat-form-field> -->
+
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input formControlName="email" type="text" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input formControlName="password" type="text" matInput>
+        </mat-form-field>
+
+        <!-- <mat-form-field>
+            <mat-label>Confirmar Senha</mat-label>
+            <input formControlName="Cpassword" type="text" matInput>
+        </mat-form-field> -->
+        <button [disabled]="formSignup.invalid" class="btn btn-primary mt-3" (click)="onSignup()">Salvar</button>
+        <a (click)="formReset()" (click)="login = 'login'" class="mt-3">Possui conta ?</a>
+    </form>
+</div>

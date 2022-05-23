@@ -6,21 +6,22 @@ import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lis
 import { TurmaComponent } from './components/turma/turma.component';
 
 const routes: Routes = [
-  { path: '',
-    component: HomeComponent },
 
-  { path: 'turma/:turmaId',
-    component: TurmaComponent },
+    { path: '',
+      component: HomeComponent,},
 
-  { path: 'turma/:turmaId/aluno',
-    component: AlunoComponent },
+    { path: 'turma/:turmaId',
+      component: TurmaComponent},
 
-  { path: 'turma/:turmaId/frequencia',
-    component: ListaDeFrequenciaComponent },
-];
+    { path: 'turma/:turmaId/aluno',
+      component: AlunoComponent },
+  
+    { path: 'turma/:turmaId/frequencia',
+      component: ListaDeFrequenciaComponent},
+  ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

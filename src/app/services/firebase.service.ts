@@ -1,12 +1,15 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
 
-  constructor(private db:AngularFirestore) { }
+  isLogged:any = false
+
+  constructor(private db:AngularFirestore, public dbAuth:AngularFireAuth) { }
 
   getTurma() {
     return this.db.collection('/turmas').get()
@@ -30,7 +33,28 @@ export class FirebaseService {
 
   getPresenca() {}
 
-  addProfessor() {}
 
   addPresencaF() {}
+
+  signin(email:any, password:any) {
+    this.dbAuth.signInWithEmailAndPassword(email, password).then((res:any) => {
+      this.isLogged = true
+      localStorage.setItem('user', JSON.stringify(res.user))
+    })
+  }
+  
+  signup(email:any, password:any) {
+    this.dbAuth.createUserWithEmailAndPassword(email, password,).then((res:any) => {
+      this.isLogged = true
+      localStorage.setItem('user', JSON.stringify(res.user))
+      window.location.reload()
+    })
+  }
+
+  logout() {
+    this.dbAuth.signOut()
+    localStorage.removeItem('user')
+    this.isLogged = false
+    window.location.reload()
+  }
 }
