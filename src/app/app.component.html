@@ -1,7 +1,7 @@
-<app-head (sidebar)="recive($event)" [sidebarStatus]="sidebar"></app-head>
-<mat-drawer-container class="h-75">
+  <app-head (sidebar)="recive($event)" [sidebarStatus]="sidebar"></app-head>
+  <mat-drawer-container class="height">
     <!-- Sidebar -->
-  <mat-drawer mode="side" opened="{{sidebar}}" class="p-4">
+    <mat-drawer mode="side" opened="{{sidebar}}" class="p-4 h-100">
     <app-sidebar></app-sidebar>
   </mat-drawer>
   <!-- O componente do meio -->

@@ -1,25 +1,15 @@
-<div class="d-flex justify-content-between">
-  <mat-form-field class="w-75">
-    <mat-label>Pesquisar turma</mat-label>
-    <input type="text" matInput >
-  </mat-form-field>
-  <button class="btn btn-warning h-75" matSuffix>
-    <mat-icon>search</mat-icon>
-  </button>
-</div>
 <h2 class="mb-1 fs-5" routerLink="">Turmas</h2>
+  <div class="d-flex justify-content-between">
+    <mat-form-field [formGroup]="search">
+      <mat-label>Pesquisar turma</mat-label>
+      <input type="text" matInput formControlName="search" (keyup)="searchs()">
+    </mat-form-field>
+  </div>
 <ul class="navbar-nav mb-3 ps-3">
-  <li class="nav-item">
-    <a class="nav-link link-dark fs-6" routerLink="turma">Teste 1</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link link-dark fs-6" routerLink="turma">Teste 2</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link link-dark fs-6" routerLink="turma">Teste 3</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link link-dark fs-6" routerLink="turma">Teste 4</a>
+  <li class="nav-item" *ngFor="let turma of newTurmas" (click)="selectedTurma(turma.nome)">
+    <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
   </li>
 </ul>
-<button class="btn btn-primary" (click)="openAddTurma()">Adicionar turma</button>
+<div class="d-flex flex-column">
+  <button class="btn btn-primary mb-3" (click)="openAddTurma()">Adicionar turma</button>
+</div>

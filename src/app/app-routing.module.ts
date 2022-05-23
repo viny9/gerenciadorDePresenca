@@ -9,13 +9,13 @@ const routes: Routes = [
   { path: '',
     component: HomeComponent },
 
-  { path: 'turma',
+  { path: 'turma/:turmaId',
     component: TurmaComponent },
 
-  { path: 'turma/aluno',
+  { path: 'turma/:turmaId/aluno',
     component: AlunoComponent },
 
-  { path: 'turma/frequencia',
+  { path: 'turma/:turmaId/frequencia',
     component: ListaDeFrequenciaComponent },
 ];
 

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -12,6 +12,9 @@ import { TurmaComponent } from './components/turma/turma.component';
 import { AlunoComponent } from './components/aluno/aluno.component';
 import { AddTurmaComponent } from './views/add-turma/add-turma.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
+import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
+import { environment } from '../environments/environment';
+import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,7 +26,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { AngularFireModule } from '@angular/fire/compat'
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +45,7 @@ import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-
     AddTurmaComponent,
     ListaDeFrequenciaComponent,
     JustificarFaltasComponent,
+    AddAlunoComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,10 +58,17 @@ import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-
     MatTableModule,
     MatExpansionModule,
     MatDialogModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule,
+
+    // Firebase
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
