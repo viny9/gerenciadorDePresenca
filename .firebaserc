@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "gerenciadordepresenca-9f4a4": {
+      "hosting": {
+        "GerenciadorDePresenca": [
+          "gerenciadordepresenca-9f4a4"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "gerenciadordepresenca-9f4a4"
+  }
+}

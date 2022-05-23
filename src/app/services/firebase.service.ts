@@ -9,23 +9,28 @@ export class FirebaseService {
   constructor(private db:AngularFirestore) { }
 
   getTurma() {
-    return this.db.collection('turmas').get()
+    return this.db.collection('/turmas').get()
   }
 
   addTurma(turma:any) {
     return this.db.collection('turmas').add(turma)
   }
   
-  getAlunos() {
-    return this.db.collection('/turmas/XjvDDh7fH5YtpLfGusA7/alunos').get()
+  readAlunos(id:any) {
+    return this.db.collection(`/turmas/${id}/alunos`).get()
+  }
+
+  addAluno(aluno:any, id:any) {
+    return this.db.collection(`/turmas/${id}/alunos`).add(aluno)
+  }
+
+  removeAlunos(pathId:any, id:any) {
+    return this.db.collection(`/turmas/${pathId}/alunos`).doc(id).delete()
   }
 
   getPresenca() {}
 
   addProfessor() {}
-
-  addAluno() {}
-
 
   addPresencaF() {}
 }

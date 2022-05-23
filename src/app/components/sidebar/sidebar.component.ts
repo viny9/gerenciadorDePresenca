@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddTurmaComponent } from '../../views/add-turma/add-turma.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,9 +16,9 @@ export class SidebarComponent implements OnInit {
   newTurmas:any [] = []
   search:any
 
-  constructor( public dialog: MatDialog, private db: FirebaseService) { }
+  constructor( public dialog: MatDialog, private db: FirebaseService, private router:Router) { }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.createForm()
 
     this.db.getTurma().subscribe((infos:any) => {
@@ -30,13 +31,14 @@ export class SidebarComponent implements OnInit {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
       })
     })
-}
+  }
 
-createForm() {
-  this.search = new FormGroup({
-    search: new FormControl()
-  })
-}
+  //Vai criar um form para o FormGroup
+  createForm() {
+    this.search = new FormGroup({
+      search: new FormControl()
+    })
+  }
 
   searchs() {
       const filtrado = this.turmas.filter((turma:any) =>{
@@ -56,5 +58,35 @@ createForm() {
     const ref = this.dialog.open(AddTurmaComponent, {
       width: '500px'
     })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      if(infos === undefined) {
+        return 
+      } else {
+        this.addTurma(infos)
+      }
+    })
+  }
+
+  addTurma(turma:any) {
+    this.db.addTurma(turma).then(() => {
+      window.location.reload()
+    })
+  }
+
+  selectedTurma(nome:any) {
+    this.db.getTurma().subscribe(infos => {
+      const ids = infos.docs
+
+      const names = infos.docs.map((infos:any) => {
+        return infos.data().nome
+      })
+
+      const index = names.indexOf(nome)
+      const id = ids[index].id
+
+      this.router.navigate([`turma/${id}`])
+
+    })  
   }
 }

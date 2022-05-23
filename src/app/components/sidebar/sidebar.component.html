@@ -6,11 +6,10 @@
     </mat-form-field>
   </div>
 <ul class="navbar-nav mb-3 ps-3">
-  <li class="nav-item" *ngFor="let turma of newTurmas">
-    <a class="nav-link link-dark fs-6" routerLink="turma">{{turma.nome}}</a>
+  <li class="nav-item" *ngFor="let turma of newTurmas" (click)="selectedTurma(turma.nome)">
+    <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
   </li>
 </ul>
 <div class="d-flex flex-column">
   <button class="btn btn-primary mb-3" (click)="openAddTurma()">Adicionar turma</button>
-  <button class="btn btn-danger" (click)="openAddTurma()">Excluir turma</button>
 </div>

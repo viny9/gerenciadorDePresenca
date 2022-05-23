@@ -14,6 +14,7 @@ import { AddTurmaComponent } from './views/add-turma/add-turma.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
 import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 import { environment } from '../environments/environment';
+import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,11 +26,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
-import { AngularFireStorageModule } from '@angular/fire/compat/storage'
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 
 @NgModule({
@@ -43,6 +45,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage'
     AddTurmaComponent,
     ListaDeFrequenciaComponent,
     JustificarFaltasComponent,
+    AddAlunoComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage'
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    MatMenuModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

@@ -23,19 +23,17 @@ export class AddTurmaComponent implements OnInit {
       nome: new FormControl('', [Validators.required])
     })
   }
-
-  addTurma() { 
-    this.db.addTurma(this.form.value).then(() => {
-      window.location.reload()
-    })
-  }
-
+  
   error() {
     return this.form.controls['nome'].hasError('required')? 'Você tem que digitar alguma coisa' : ''
   }
-
+  
   close () {
     this.ref.close()
+  }
+
+  addTurma() { 
+    this.ref.close(this.form.value)
   }
 
 }
