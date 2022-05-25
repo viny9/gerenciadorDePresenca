@@ -14,7 +14,7 @@
           <th mat-header-cell *matHeaderCellDef class="border-end text-center">1</th>
           <td mat-cell *matCellDef="let aluno">
               <div class="border-end py-3">
-                  <mat-radio-group aria-label="presenca" class="d-flex px-3" color="primary">
+                  <mat-radio-group aria-label="presenca" class="d-flex px-3" color="primary" (change)="findAlunoId(aluno.nome)" (change)="presenca($event)">
                     <mat-radio-button value="P" class="pe-3">P</mat-radio-button>
                     <mat-radio-button value="F" >F</mat-radio-button>
                   </mat-radio-group>
@@ -83,10 +83,10 @@
         </ng-container> 
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns" class="align-middle"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle"  routerLink="aluno"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle"></tr>
       </mat-table>
       <div class="mt-4">
         <button class="btn btn-danger me-3" routerLink="/turma/{{pathId}}">Cancelar</button>
-        <button class="btn btn-success" routerLink="">Salvar</button>
+        <button class="btn btn-success" routerLink="" (click)="addPresenca()">Salvar</button>
       </div>
 </div>

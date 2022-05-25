@@ -1,6 +1,6 @@
-<app-login-logout *ngIf="login == false" (isSignedIn)="recive1($event)"></app-login-logout>
+<app-login-logout *ngIf="login == false" (notAdmin)="normalAcess($event)"></app-login-logout>
 <div *ngIf="login == true">
-  <app-head (sidebar)="recive($event)" [sidebarStatus]="sidebar"></app-head>
+  <app-head (sidebar)="sidebarToggle($event)" [sidebarStatus]="sidebar"></app-head>
   <mat-drawer-container class="height">
     <!-- Sidebar -->
     <mat-drawer mode="side" opened="{{sidebar}}" class="p-4 h-100">

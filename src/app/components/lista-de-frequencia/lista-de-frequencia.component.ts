@@ -11,9 +11,11 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class ListaDeFrequenciaComponent implements OnInit {
 
   pathId:any
+  id:any
   alunos = []
   displayedColumns = ['numeroDoAluno', 'nomes', '1', '2', '3', '4', '5', '6'] 
-  // horario:any
+  frequencia:any
+  horario:any
 
   constructor(private db:FirebaseService, private turmaId:ActivatedRoute) { }
 
@@ -22,8 +24,6 @@ export class ListaDeFrequenciaComponent implements OnInit {
       this.pathId = id.turmaId
       this.getAlunos(id)
     })
-    // this.db.readAlunos()
-    // this.horarios()
   }
 
 
@@ -42,10 +42,51 @@ export class ListaDeFrequenciaComponent implements OnInit {
     })
   }
 
-  // horarios() {
-  //   const date = new Date()
-  //   const hour = date.getHours()
-  //   this.horario = hour
-  // }
+  findAlunoId(nome:any) {
+    this.db.readAlunos(this.pathId).subscribe(infos => {
+
+      const ids = infos.docs
+      const names = infos.docs.map((infos:any) => {
+        return infos.data().nome
+      })
+
+      const index = names.indexOf(nome)
+      this.id = ids[index].id
+
+    })  
+  }
+
+  presenca(value:any) {
+    this.frequencia = value.value
+  }
+ 
+
+  addPresenca() {
+    const date = new Date()
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+
+    const frequencia = {
+      date: `${day}/${month}/${year}`,
+      horario: 1,
+      materia: 'Português',
+      presenca: this.frequencia
+    }
+
+    if(this.frequencia == 'P') {
+      this.db.addPresenca(this.pathId, this.id, frequencia)
+    } else if(this.frequencia == 'F') {
+      this.db.addPresenca(this.pathId, this.id, frequencia)
+    } else {
+      console.log('Error')
+    }
+  }
+
+  horarios() {
+    const date = new Date()
+    const hour = date.getHours()
+    this.horario = hour
+  }
 
 }

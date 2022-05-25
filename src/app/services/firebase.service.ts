@@ -7,7 +7,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class FirebaseService {
 
-  isLogged:any = false
 
   constructor(private db:AngularFirestore, public dbAuth:AngularFireAuth) { }
 
@@ -23,38 +22,23 @@ export class FirebaseService {
     return this.db.collection(`/turmas/${id}/alunos`).get()
   }
 
+  readAluno(pathId:any, id:any) {
+    return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).get()
+  }
+
   addAluno(aluno:any, id:any) {
     return this.db.collection(`/turmas/${id}/alunos`).add(aluno)
   }
 
   removeAlunos(pathId:any, id:any) {
-    return this.db.collection(`/turmas/${pathId}/alunos`).doc(id).delete()
+    return this.db
+      .collection(`/turmas/${pathId}/alunos`).doc(id).delete()
   }
 
-  getPresenca() {}
-
-
-  addPresencaF() {}
-
-  signin(email:any, password:any) {
-    this.dbAuth.signInWithEmailAndPassword(email, password).then((res:any) => {
-      this.isLogged = true
-      localStorage.setItem('user', JSON.stringify(res.user))
-    })
-  }
-  
-  signup(email:any, password:any) {
-    this.dbAuth.createUserWithEmailAndPassword(email, password,).then((res:any) => {
-      this.isLogged = true
-      localStorage.setItem('user', JSON.stringify(res.user))
-      window.location.reload()
-    })
+  getPresenca(pathId:any, id:any) {
+    return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).collection('/presenca').get()
   }
 
-  logout() {
-    this.dbAuth.signOut()
-    localStorage.removeItem('user')
-    this.isLogged = false
-    window.location.reload()
-  }
+  addPresenca(pathId:any, alunoId:any, presenca:any) {
+    return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').add(presenca)  }
 }

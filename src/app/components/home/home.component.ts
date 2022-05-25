@@ -1,6 +1,7 @@
 import { FirebaseService } from './../../services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent implements OnInit {
 
   turmas:any  [] = []
 
-  constructor(private db: FirebaseService, private router: Router ) { }
+  constructor(private db: FirebaseService,private dbAuth:AuthService , private router: Router ) { }
 
   ngOnInit(): void {
       this.db.getTurma().subscribe((infos:any) => {
@@ -41,6 +42,10 @@ export class HomeComponent implements OnInit {
       this.router.navigate([`turma/${id}`])
 
     })  
+  }
+
+  log() {
+    this.dbAuth.logout()
   }
 
 

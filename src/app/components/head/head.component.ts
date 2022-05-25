@@ -1,5 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-head',
@@ -10,10 +10,12 @@ export class HeadComponent implements OnInit {
 
   @Output() sidebar = new EventEmitter
   @Input() sidebarStatus:any
+  show:any
 
-  constructor(private route:ActivatedRoute) { }
+  constructor(private dbAuth:AuthService) { }
 
   ngOnInit(): void {
+    this.show = this.dbAuth.admin
   }
   
   sidebarToggle() {

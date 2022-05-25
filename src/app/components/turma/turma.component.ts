@@ -2,7 +2,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddAlunoComponent } from 'src/app/views/add-aluno/add-aluno.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-turma',
@@ -12,17 +13,26 @@ import { ActivatedRoute } from '@angular/router';
 export class TurmaComponent implements OnInit {
 
   alunos:any = []
-  columns = ['numero', 'nome', 'options']
+  columns:any
   pathId:any
   id:any
+  notAdmin:any
   
-  constructor(private db:FirebaseService, private dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private db:FirebaseService, private dbAuth:AuthService, private dialog: MatDialog, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((infos:any) => {
       this.pathId = infos.turmaId
       this.getAlunos(infos.turmaId)
     })
+
+    if(this.dbAuth.admin == false) {
+      this.notAdmin = true
+      this.columns = ['numero', 'nome']
+    } else {
+      this.notAdmin = false
+      this.columns = ['numero', 'nome', 'options']
+    }
   }
 
   getAlunos(id:any) {
@@ -40,7 +50,7 @@ export class TurmaComponent implements OnInit {
     })
   }
 
-  findAlunoId(nome:any) {
+  selectedAluno(nome:any) {
     this.db.readAlunos(this.pathId).subscribe(infos => {
 
       const ids = infos.docs
@@ -51,6 +61,7 @@ export class TurmaComponent implements OnInit {
       const index = names.indexOf(nome)
       this.id = ids[index].id
 
+      this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
     })  
   }
  

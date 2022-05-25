@@ -2,12 +2,12 @@
   <mat-table [dataSource]="alunos" class="border shadow h-100">
     <ng-container matColumnDef="numero">
       <th mat-header-cell *matHeaderCellDef class="px-3 border-end">No.</th>
-      <td mat-cell *matCellDef="let aluno, let i = index" class="border-end" routerLink="aluno">{{i + 1}}</td>
+      <td mat-cell *matCellDef="let aluno, let i = index" class="border-end" (click)="selectedAluno(aluno.nome)">{{i + 1}}</td>
     </ng-container>
 
     <ng-container matColumnDef="nome">
       <th mat-header-cell *matHeaderCellDef class="w-100 px-3 border-end">Nome</th>
-      <td mat-cell *matCellDef="let aluno" class="px-3 border-end" routerLink="aluno">{{aluno.nome}}</td>
+      <td mat-cell *matCellDef="let aluno" class="px-3 border-end" (click)="selectedAluno(aluno.nome)">{{aluno.nome}}</td>
     </ng-container>
 
     <ng-container matColumnDef="options">
@@ -20,12 +20,12 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns" class="align-middle"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns; let i = index;" class="align-middle" (click)="findAlunoId(row.nome)"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns; let i = index;" class="align-middle"></tr>
   </mat-table>
 
   <div class="mt-3">
-    <button class="btn btn-primary me-3" routerLink="frequencia">Adicionar Frequencia</button>
-    <button class="btn btn-warning " (click)="openAddAluno()">Adicionar Aluno</button>
+    <button *ngIf="notAdmin == false" class="btn btn-primary me-3" routerLink="frequencia">Adicionar Frequencia</button>
+    <button *ngIf="notAdmin == false" class="btn btn-warning " (click)="openAddAluno()">Adicionar Aluno</button>
   </div>
 
   <div>

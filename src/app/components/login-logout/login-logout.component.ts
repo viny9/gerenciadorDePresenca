@@ -1,7 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseService } from './../../services/firebase.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login-logout',
@@ -10,23 +12,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginLogoutComponent implements OnInit {
 
-  @Output() isSignedIn = new EventEmitter
+  @Output() notAdmin = new EventEmitter
 
   login = 'login'
   formSignin:any
   formSignup:any
 
-  constructor(private db:FirebaseService, private snackBar:MatSnackBar) { }
+  constructor(private dbAuth:AuthService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    if(localStorage.getItem('user')!== null) {
-      this.isSignedIn.emit(true)
-    } else {
-      this.isSignedIn.emit(false)
-    }
+    this.route.params.subscribe((params:any) => {
+      if(params.signup == undefined) {
+        this.login = 'login'
+      } else {
+        this.login = params.signup
+      }
+    })
     this.createForm()
-    console.log(localStorage)
   }
 
   createForm() {
@@ -36,34 +38,20 @@ export class LoginLogoutComponent implements OnInit {
     })
 
     this.formSignup = new FormGroup({
-      // nome: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      // Cpassword: new FormControl('', [Validators.required]),
     })
   }
 
   onSignin () {
-    this.db.signin(this.formSignin.value.email, this.formSignin.value.password)
-      this.isSignedIn.emit(true)
-  }
-
-  onSignup () {
-    this.db.signup(this.formSignup.value.email, this.formSignup.value.password)
-    if(this.db.isLogged == true) {
-      this.isSignedIn.emit(true)
+    this.dbAuth.signin(this.formSignin.value.email, this.formSignin.value.password)
+    if(this.dbAuth.admin == true) {
+      window.location.reload()
     }
   }
 
-
-  log() {
-    this.db.logout()
-    this.isSignedIn.emit(false)
-  }
-
-  formReset() {
-    this.formSignin.reset()
-    this.formSignup.reset()
+  onSignup () {
+    this.dbAuth.signup(this.formSignup.value.email, this.formSignup.value.password)
   }
 
   formError() {
@@ -72,35 +60,8 @@ export class LoginLogoutComponent implements OnInit {
     } else { return }
   }
 
-  logins() {
-    // const professores:any = []
-    // this.db.getProfessor().subscribe((infos:any) => {
-    //   infos.forEach((element:any) => {
-    //     professores.push(element.data())
-    //   });
-
-    //   console.log(window.localStorage)
-      
-    //   for (let i = 0; i < professores.length; i++) {
-    //     // console.log(professores[i].nome.includes(this.formLogin.value.nome))
-    //     // console.log(professores[i].password.includes(this.formLogin.value.password))
-    //     if(professores[i].email.includes(this.formLogin.value.email) && professores[i].password.includes(this.formLogin.value.password)) {
-    //       this.loginStatus.emit(false)
-    //     } else {
-    //       this.openSnackbar()
-    //     }
-    //   }
-    // })
-    console.log(this.formSignin)
+  normalUser() {
+    this.notAdmin.emit(true)
   }
-
-  openSnackbar() {
-    this.snackBar.open('Email ou Senha incorrtos', 'X', {
-      duration: 1500,
-      panelClass: 'snackbar',
-      verticalPosition:'top'
-    })
-  }
-
 
 }

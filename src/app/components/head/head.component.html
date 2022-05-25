@@ -1,6 +1,6 @@
 <mat-toolbar class="border-bottom px-4">
-    <button class="btn btn-outline-dark border-0 d-flex" (click)="sidebarToggle()">
+    <button *ngIf="show" class="btn btn-outline-dark border-0 d-flex me-3" (click)="sidebarToggle()">
         <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="ms-3">Nome da turma</h1>
+    <h1>Nome da turma</h1>
 </mat-toolbar>

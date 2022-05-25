@@ -1,22 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from './services/firebase.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  {
+export class AppComponent implements OnInit  {
   title = 'GerenciadorDePresenca';
   sidebar = true
   login:any = false
 
-  recive(status:boolean) {
+  constructor(private dbAuth:AuthService) { }
+
+  ngOnInit(): void {
+  if(localStorage.getItem('user')!== null) {
+    this.dbAuth.admin = true
+    this.login = this.dbAuth.admin
+  } else {
+    this.dbAuth.admin = false
+    this.login = this.dbAuth.admin
+  }
+}
+
+sidebarToggle(status:boolean) {
     this.sidebar = status
   }
 
-  recive1(status?:boolean) {
+  normalAcess(status:boolean) {
     this.login = status
+    this.sidebar = false
   }
-
 }
