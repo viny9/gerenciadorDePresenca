@@ -1,4 +1,41 @@
 ::ng-deep .snackbar {
-    background-color: #fff;
-    color: #000;
+  background-color: #fff;
+  color: #000;
+}
+
+@media (max-width:349px) {
+  .form {
+    width: 15rem;
   }
+
+  .teste {
+    width: 15rem;
+  }
+}
+
+@media (min-width: 350px) and (max-width:576px) {
+  .form {
+    width: 20rem;
+  }
+  
+  .teste {
+    width: 25rem;
+  }
+}
+
+@media (min-width: 577px) and (max-width:991px) {
+  .form {
+    width: 25rem;
+    height: 23rem;
+  }
+  
+  .teste {
+    width: 25rem;
+  }
+}
+
+@media (min-width: 991px){
+  .teste {
+    width: 25rem;
+  }
+}

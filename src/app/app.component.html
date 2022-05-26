@@ -3,11 +3,11 @@
   <app-head (sidebar)="sidebarToggle($event)" [sidebarStatus]="sidebar"></app-head>
   <mat-drawer-container class="height">
     <!-- Sidebar -->
-    <mat-drawer mode="side" opened="{{sidebar}}" class="p-4 h-100">
+    <mat-drawer [mode]="sidebarMode" opened="{{sidebar}}" class="p-4 h-100 shadow sidebar">
       <app-sidebar></app-sidebar>
     </mat-drawer>
     <!-- O componente do meio -->
-    <mat-drawer-content class="p-4">
+    <mat-drawer-content class="p-4 view">
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>

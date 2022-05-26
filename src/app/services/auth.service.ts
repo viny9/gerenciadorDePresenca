@@ -19,6 +19,9 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(res.user))
         localStorage.setItem('token', JSON.stringify(this.generateToken()))
       })
+      .then(() => {
+        window.location.reload()
+      })
 
       .catch((error: any) => {
         this.openSnackbar('Email ou senha incorreto')

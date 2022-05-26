@@ -1,3 +1,14 @@
 .mat-row:hover {
     background-color: rgb(245, 244, 244);
 }
+
+@media (max-width:576px) {
+    .teste {
+        width: 100%;
+    }
+    
+    .teste2 button{
+        margin-bottom: 15px ;
+    }
+  }
+  

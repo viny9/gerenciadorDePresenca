@@ -2,9 +2,9 @@
     <p>Data da falta</p>
     <p>Horario</p>
     <p>Disciplina</p>
-    <mat-form-field class="w-75">
+    <mat-form-field [formGroup]="justificativa" class="w-75">
         <mat-label>Justificativa</mat-label>
-        <textarea matInput></textarea>
+        <textarea formControlName="justi" matInput></textarea>
     </mat-form-field>
     <div>
         <button (click)="close()" class="btn btn-danger me-3">Fechar</button>

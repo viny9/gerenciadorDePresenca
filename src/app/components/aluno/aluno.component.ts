@@ -24,7 +24,6 @@ export class AlunoComponent implements OnInit {
     this.route.params.subscribe((params:any) => {
       this.getAluno(params)
       this.faltas(params)
-      console.log(params)
     })
       if(this.dbAuth.admin == false) {
         this.notAdmin = true
@@ -38,7 +37,6 @@ export class AlunoComponent implements OnInit {
   getAluno(pathIds:any) {
     this.db.readAluno(pathIds.turmaId, pathIds.alunoId).forEach((element:any) => {
       this.alunoInfos = [element.data()]
-      console.log(element)
     })
   }
 
@@ -62,9 +60,12 @@ export class AlunoComponent implements OnInit {
   }
 
   openJustificarFaltas() {
-    this.ref.open(JustificarFaltasComponent, {
+   const ref = this.ref.open(JustificarFaltasComponent, {
       width: '500px'
     })
-  }
 
+    ref.afterClosed().subscribe((infos:any) => {
+      this.db
+    })
+  }
 }

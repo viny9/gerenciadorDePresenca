@@ -34,6 +34,8 @@ import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
+import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     JustificarFaltasComponent,
     AddAlunoComponent,
     LoginLogoutComponent,
+    UpdateTurmaComponent,
+    UpdateAlunoComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,9 @@
+import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from './../../services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.component';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +13,18 @@ import { AuthService } from 'src/app/services/auth.service';
 export class HomeComponent implements OnInit {
 
   turmas:any  [] = []
+  id:any
+  notAdmin:any
 
-  constructor(private db: FirebaseService,private dbAuth:AuthService , private router: Router ) { }
+  constructor(private db: FirebaseService,private dbAuth:AuthService , private router: Router, private dialog:MatDialog) {
+    this.db.titleInfos = {
+      title: 'Turmas'
+    }
+   }
 
   ngOnInit(): void {
-      this.db.getTurma().subscribe((infos:any) => {
+    this.notAdmin = this.dbAuth.admin
+      this.db.getTurmas().subscribe((infos:any) => {
         infos.docs.forEach((element:any) => {
           this.turmas.push(element.data())
         });
@@ -27,9 +36,9 @@ export class HomeComponent implements OnInit {
       })
     }
 
-  //Vai achar o id para navegar para turma escolhida
+  //Vai achar o id e navegar para turma escolhida
   selectedTurma(nome:any) {
-    this.db.getTurma().subscribe(infos => {
+    this.db.getTurmas().subscribe(infos => {
 
       const ids = infos.docs
       const names = infos.docs.map((infos:any) => {
@@ -42,6 +51,38 @@ export class HomeComponent implements OnInit {
       this.router.navigate([`turma/${id}`])
 
     })  
+  }
+
+  findId(nome:any) {
+    this.db.getTurmas().subscribe(infos => {
+
+      const ids = infos.docs
+      const names = infos.docs.map((infos:any) => {
+        return infos.data().nome
+      })
+
+      const index = names.indexOf(nome)
+      this.id = ids[index].id
+
+    })  
+  }
+
+  removeTurma() {
+    this.db.deleteTurma(this.id).then(() => {
+      window.location.reload()
+    })
+  }
+
+  openUpdateTurma() {
+    const ref = this.dialog.open(UpdateTurmaComponent, {
+      width: '500px'
+    })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      this.db.updateTurma(this.id, infos).then(() => {
+        window.location.reload()
+      })
+    })
   }
 
   log() {

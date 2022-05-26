@@ -4,6 +4,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddAlunoComponent } from 'src/app/views/add-aluno/add-aluno.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.component';
 
 @Component({
   selector: 'app-turma',
@@ -23,7 +24,8 @@ export class TurmaComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((infos:any) => {
       this.pathId = infos.turmaId
-      this.getAlunos(infos.turmaId)
+      this.getAlunos(this.pathId)
+      this.getTurmaName(this.pathId)
     })
 
     if(this.dbAuth.admin == false) {
@@ -37,6 +39,7 @@ export class TurmaComponent implements OnInit {
 
   getAlunos(id:any) {
     const aluno:any = []
+    this.alunos = []
 
     this.db.readAlunos(id).subscribe((infos:any) => {
       infos.forEach((element:any) => {
@@ -48,6 +51,14 @@ export class TurmaComponent implements OnInit {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
       })
     })
+  }
+
+  getTurmaName(id:any) {
+    this.db.getTurma(id).subscribe((infos:any) => {
+      this.db.titleInfos = {
+      title: infos.data().nome
+      }
+   })
   }
 
   selectedAluno(nome:any) {
@@ -62,6 +73,19 @@ export class TurmaComponent implements OnInit {
       this.id = ids[index].id
 
       this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
+    })  
+  }
+
+  findId(nome:any) {
+    this.db.readAlunos(this.pathId).subscribe(infos => {
+
+      const ids = infos.docs
+      const names = infos.docs.map((infos:any) => {
+        return infos.data().nome
+      })
+
+      const index = names.indexOf(nome)
+      this.id = ids[index].id
     })  
   }
  
@@ -83,6 +107,18 @@ export class TurmaComponent implements OnInit {
   addAluno(aluno:any) {
     this.db.addAluno(aluno, this.pathId).then(() => {
       window.location.reload()
+    })
+  }
+
+  openUpdateAluno() {
+    const ref = this.dialog.open(UpdateAlunoComponent, {
+      width: '500px'
+    })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      this.db.updateAluno(this.pathId, this.id, infos).then(() => {
+        window.location.reload()
+      })
     })
   }
 

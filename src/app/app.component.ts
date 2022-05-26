@@ -8,12 +8,19 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit  {
   title = 'GerenciadorDePresenca';
-  sidebar = true
+  sidebar = false
+  sidebarMode:any
   login:any = false
 
   constructor(private dbAuth:AuthService) { }
 
   ngOnInit(): void {
+    if(window.screen.width < 700) {
+      this.sidebarMode = 'over'
+    } else {
+      this.sidebarMode = 'side' 
+    }
+    
   if(localStorage.getItem('user')!== null) {
     this.dbAuth.admin = true
     this.login = this.dbAuth.admin

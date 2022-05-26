@@ -45,9 +45,6 @@ export class LoginLogoutComponent implements OnInit {
 
   onSignin () {
     this.dbAuth.signin(this.formSignin.value.email, this.formSignin.value.password)
-    if(this.dbAuth.admin == true) {
-      window.location.reload()
-    }
   }
 
   onSignup () {
@@ -60,7 +57,7 @@ export class LoginLogoutComponent implements OnInit {
     } else { return }
   }
 
-  normalUser() {
+  notAdmins() {
     this.notAdmin.emit(true)
   }
 

@@ -1,13 +1,17 @@
-  <h2 class="mb-1 fs-5 pointer" routerLink="">Turmas</h2>
+  <button class="btn w-100 text-start">
+    <h2 class="mb-1 fs-5 pointer" routerLink="">Turmas</h2>
+  </button>
   <div class="d-flex justify-content-between">
     <mat-form-field [formGroup]="search">
       <mat-label>Pesquisar turma</mat-label>
       <input type="text" matInput formControlName="search" (keyup)="searchs()">
     </mat-form-field>
   </div>
-<ul class="navbar-nav mb-3 ps-3">
+<ul class="navbar-nav mb-3">
   <li class="nav-item" *ngFor="let turma of newTurmas" (click)="selectedTurma(turma.nome)">
-    <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
+    <button class="btn btn-outline-primary border-0 w-100 text-start rounded-0">
+      <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
+    </button>
   </li>
 </ul>
 <div class="d-flex flex-column">

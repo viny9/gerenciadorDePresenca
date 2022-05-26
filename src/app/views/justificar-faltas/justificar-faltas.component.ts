@@ -1,3 +1,4 @@
+import { FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -8,9 +9,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class JustificarFaltasComponent implements OnInit {
 
+  justificativa:any
+
   constructor(private ref:MatDialogRef<JustificarFaltasComponent>) { }
 
   ngOnInit(): void {
+    this.justificativa = new FormGroup({
+      justi: new FormControl('')
+    })
   }
 
   close() {
@@ -18,7 +24,7 @@ export class JustificarFaltasComponent implements OnInit {
   }
 
   justificar() {
-    this.ref.close()
+    this.ref.close(this.justificativa.value.justi)
   }
 
 }

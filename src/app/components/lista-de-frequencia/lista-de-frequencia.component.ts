@@ -16,6 +16,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
   displayedColumns = ['numeroDoAluno', 'nomes', '1', '2', '3', '4', '5', '6'] 
   frequencia:any
   horario:any
+  testes:any
+  hour:any
 
   constructor(private db:FirebaseService, private turmaId:ActivatedRoute) { }
 
@@ -24,6 +26,10 @@ export class ListaDeFrequenciaComponent implements OnInit {
       this.pathId = id.turmaId
       this.getAlunos(id)
     })
+
+    this.hour = `${new Date().getHours()}.${new Date().getMinutes()}`
+    this.hour = eval(this.hour)
+    console.log(this.hour)
   }
 
 
@@ -56,8 +62,14 @@ export class ListaDeFrequenciaComponent implements OnInit {
     })  
   }
 
-  presenca(value:any) {
+  presenca(value:any, h?:any) {
     this.frequencia = value.value
+    this.horario = h
+    
+    const teste = {
+      presenca: value.value,
+      horario: h
+    }
   }
  
 
@@ -67,19 +79,21 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
+
     const frequencia = {
       date: `${day}/${month}/${year}`,
-      horario: 1,
+      horario: this.horario,
       materia: 'Português',
       presenca: this.frequencia
     }
+
+    console.log(this.horario)
 
     if(this.frequencia == 'P') {
       this.db.addPresenca(this.pathId, this.id, frequencia)
     } else if(this.frequencia == 'F') {
       this.db.addPresenca(this.pathId, this.id, frequencia)
     } else {
-      console.log('Error')
     }
   }
 

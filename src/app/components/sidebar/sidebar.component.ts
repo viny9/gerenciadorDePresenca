@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.createForm()
 
-    this.db.getTurma().subscribe((infos:any) => {
+    this.db.getTurmas().subscribe((infos:any) => {
       infos.docs.forEach((element:any) => {
         this.turmas.push(element.data())
         this.newTurmas = this.turmas
@@ -76,7 +76,7 @@ export class SidebarComponent implements OnInit {
   }
 
   selectedTurma(nome:any) {
-    this.db.getTurma().subscribe(infos => {
+    this.db.getTurmas().subscribe(infos => {
       const ids = infos.docs
 
       const names = infos.docs.map((infos:any) => {
