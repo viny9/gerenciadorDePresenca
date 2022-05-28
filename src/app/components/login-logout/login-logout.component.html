@@ -17,8 +17,13 @@
 </div>
 
 <div *ngIf="login == 'signup'" class="d-flex align-items-center justify-content-center h-100 w-100">
-    <form class="border rounded d-flex flex-column h-50 p-4 shadow teste" [formGroup]="formSignup">
+    <form class="border rounded d-flex flex-column h-50 p-4 shadow teste h-75" [formGroup]="formSignup">
         <h1 class="text-center">Cadastro</h1>
+
+        <mat-form-field class="mt-3">
+            <mat-label>Nome</mat-label>
+            <input formControlName="nome" type="text" matInput>
+        </mat-form-field>
 
         <mat-form-field class="mt-3">
             <mat-label>Email</mat-label>
@@ -30,6 +35,30 @@
             <input formControlName="password" type="text" matInput>
         </mat-form-field>
 
+        <mat-form-field class="mt-3">
+            <mat-label>Turmas</mat-label>
+            <mat-chip-list #chiplist>
+                <mat-chip *ngFor="let turma of addTurmas" (removed)="removedTurmas(turma)">
+                    {{turma}}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip>
+                <input type="text" placeholder="Adicionar turma" matInput
+                #teste
+                formControlName="turma"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chiplist"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let turma of turmas " [value]="turma">
+                    {{turma.nome}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        
         <button [disabled]="formSignup.invalid" class="btn btn-primary mt-4" (click)="onSignup()">Salvar</button>
     </form>
 </div>

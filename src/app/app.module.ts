@@ -29,6 +29,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
@@ -70,6 +72,8 @@ import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.componen
     MatRadioModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatAutocompleteModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

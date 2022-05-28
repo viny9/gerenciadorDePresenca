@@ -16,21 +16,40 @@ export class SidebarComponent implements OnInit {
   turmas:any [] = []
   newTurmas:any [] = []
   search:any
+  professores:any = []
+  professor:any
 
   constructor( public dialog: MatDialog, private db: FirebaseService, private router:Router) { }
 
   ngOnInit(): void {
     this.createForm()
+    this.getProfessores()
 
-    this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
-        this.turmas.push(element.data())
-        this.newTurmas = this.turmas
-      });
+    this.turmas = this.turmas.sort((a:any, b:any) => {
+      return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
+    })
+  }
 
-      this.turmas = this.turmas.sort((a:any, b:any) => {
-        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
+  getProfessores() {
+    this.db.getProfessores().subscribe((infos: any) => {
+      infos.docs.forEach((element: any) => {
+        this.professores.push(element.data())
+      }); 
+
+      const user = this.professores.filter((professor: any) => {
+        if (`"${professor.uid}"` == localStorage['user']) {
+          return professor
+        }
       })
+
+      this.professor = user
+
+      const turmas:any = []
+      for (let i = 0; i < this.professor[0].turma.length; i++) {
+        turmas.push({nome: this.professor[0].turma[i]})
+      }
+
+      this.turmas = turmas
     })
   }
 

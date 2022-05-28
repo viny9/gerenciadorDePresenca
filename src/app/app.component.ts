@@ -1,3 +1,4 @@
+import { FirebaseService } from './services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 
@@ -11,14 +12,17 @@ export class AppComponent implements OnInit  {
   sidebar = false
   sidebarMode:any
   login:any = false
+  teste:any = []
 
-  constructor(private dbAuth:AuthService) { }
+  constructor(private dbAuth:AuthService, private db:FirebaseService) { }
 
   ngOnInit(): void {
     if(window.screen.width < 700) {
       this.sidebarMode = 'over'
+      this.sidebar = false
     } else {
       this.sidebarMode = 'side' 
+      this.sidebar = true
     }
     
   if(localStorage.getItem('user')!== null) {
@@ -29,6 +33,7 @@ export class AppComponent implements OnInit  {
     this.login = this.dbAuth.admin
   }
 }
+
 
 sidebarToggle(status:boolean) {
     this.sidebar = status
