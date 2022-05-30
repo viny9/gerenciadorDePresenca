@@ -1,4 +1,4 @@
-<app-login-logout *ngIf="login == false" (notAdmin)="normalAcess($event)"></app-login-logout>
+<app-login *ngIf="login == false"></app-login>
 <div *ngIf="login == true">
   <app-head (sidebar)="sidebarToggle($event)" [sidebarStatus]="sidebar"></app-head>
   <mat-drawer-container class="height">

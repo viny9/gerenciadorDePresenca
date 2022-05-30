@@ -1,0 +1,16 @@
+<div class="d-flex align-items-center justify-content-center h-100 w-100">
+    <form class="border rounded col-3 d-flex flex-column p-4 shadow form" [formGroup]="formSignin">
+        <h1 class="text-center">Login</h1>
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input formControlName="email" type="text" matInput>
+            <mat-error *ngIf="formSignin.controls['email']">{{formError()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input formControlName="password" type="text" matInput>
+        </mat-form-field>
+        <button [disabled]="formSignin.invalid" class="btn btn-primary mt-3" (click)="onSignin()">Entrar</button>
+    </form>
+</div>

@@ -14,7 +14,7 @@ import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.co
 export class TurmaComponent implements OnInit {
 
   alunos:any = []
-  columns:any
+  columns:any= ['numero', 'nome', 'options']
   pathId:any
   id:any
   notAdmin:any
@@ -27,14 +27,6 @@ export class TurmaComponent implements OnInit {
       this.getAlunos(this.pathId)
       this.getTurmaName(this.pathId)
     })
-
-    if(this.dbAuth.admin == false) {
-      this.notAdmin = true
-      this.columns = ['numero', 'nome']
-    } else {
-      this.notAdmin = false
-      this.columns = ['numero', 'nome', 'options']
-    }
   }
 
   getAlunos(id:any) {

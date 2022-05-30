@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.component';
-import { parse } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -13,9 +12,7 @@ import { parse } from 'querystring';
 })
 export class HomeComponent implements OnInit {
 
-  professores: any = []
   turmas: any[] = []
-  professor: any
   id: any
   notAdmin: any
 
@@ -26,35 +23,50 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notAdmin = this.dbAuth.admin
-    this.getProfessores()
+    this.notAdmin = this.dbAuth.notAdmin
 
-      //Vai ordenar o array
-    this.turmas = this.turmas.sort((a: any, b: any) => {
-      return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+    if(localStorage['tipo'] == '"professor"') {
+      this.getProfTurmas()
+    } else if(localStorage['tipo'] == '"admin"') {
+      this.getTurmas()
+    }
+  }
+
+  getTurmas() {
+    this.db.getTurmas().subscribe((infos:any) => {
+      infos.docs.forEach((element:any) => {
+        this.turmas.push(element.data())
+
+        this.turmas = this.turmas.sort((a: any, b: any) => {
+          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+        })
+      })
     })
   }
 
-  getProfessores() {
-    this.db.getProfessores().subscribe((infos: any) => {
-      infos.docs.forEach((element: any) => {
-        this.professores.push(element.data())
+  getProfTurmas() {
+    const professores = <any>[]
+      this.db.getProfessores().subscribe((infos: any) => {
+        infos.docs.forEach((element: any) => {
+        professores.push(element.data())
       }); 
 
-      const user = this.professores.filter((professor: any) => {
+      const user = professores.filter((professor: any) => {
         if (`"${professor.uid}"` == localStorage['user']) {
           return professor
         }
       })
-
-      this.professor = user
+      
       const turmas:any = []
-
-      for (let i = 0; i < this.professor[0].turma.length; i++) {
-        turmas.push({nome: this.professor[0].turma[i]})
+      for (let i = 0; i < user[0].turma.length; i++) {
+        turmas.push({nome: user[0].turma[i]})
       }
-
+      
       this.turmas = turmas
+
+      this.turmas = this.turmas.sort((a: any, b: any) => {
+        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+      })
     })
   }
 

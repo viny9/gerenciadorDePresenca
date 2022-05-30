@@ -2,7 +2,7 @@
   <div *ngIf="turmas" class="row gx-4 teste">
     <div class="col-3 px-2 pb-3 teste2" *ngFor="let turma of turmas">
       <mat-card (click)="findId(turma.nome)">
-        <button *ngIf="notAdmin" class="btn float-end" [matMenuTriggerFor]="menu">
+        <button *ngIf="!notAdmin" class="btn float-end" [matMenuTriggerFor]="menu">
           <mat-icon>more_horizontal</mat-icon>
         </button>
         <h1 class="pb-2 mb-0" (click)="selectedTurma(turma.nome)">{{turma.nome}}</h1>

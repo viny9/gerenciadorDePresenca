@@ -16,7 +16,6 @@ export class HeadComponent implements OnInit {
   constructor(private db:FirebaseService, private dbAuth:AuthService) { }
 
   ngOnInit(): void {
-    this.show = this.dbAuth.admin
   }
 
   get title() {

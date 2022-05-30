@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AlunoComponent } from './components/aluno/aluno.component';
 import { HomeComponent } from './components/home/home.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
-import { LoginLogoutComponent } from './components/login-logout/login-logout.component';
+import { SignupComponent } from './components/signup/signup.component';
 import { TurmaComponent } from './components/turma/turma.component';
 
 const routes: Routes = [
@@ -20,8 +20,8 @@ const routes: Routes = [
     { path: 'turma/:turmaId/frequencia',
       component: ListaDeFrequenciaComponent},
 
-    { path: ':signup',
-      component: LoginLogoutComponent},
+    { path: 'signup',
+      component: SignupComponent},
 
   ];
 

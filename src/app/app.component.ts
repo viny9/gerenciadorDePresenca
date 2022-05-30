@@ -1,4 +1,3 @@
-import { FirebaseService } from './services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 
@@ -12,11 +11,16 @@ export class AppComponent implements OnInit  {
   sidebar = false
   sidebarMode:any
   login:any = false
-  teste:any = []
 
-  constructor(private dbAuth:AuthService, private db:FirebaseService) { }
+  constructor(private dbAuth:AuthService) { }
 
   ngOnInit(): void {
+    //Vai dizer se o usuario fez login
+    if(localStorage['tipo'] != null) {
+      this.login = true
+    }
+
+    //Dependendo do tamanho da tela a sidebar vai estar fechada por padrão
     if(window.screen.width < 700) {
       this.sidebarMode = 'over'
       this.sidebar = false
@@ -24,23 +28,18 @@ export class AppComponent implements OnInit  {
       this.sidebarMode = 'side' 
       this.sidebar = true
     }
-    
-  if(localStorage.getItem('user')!== null) {
-    this.dbAuth.admin = true
-    this.login = this.dbAuth.admin
-  } else {
-    this.dbAuth.admin = false
-    this.login = this.dbAuth.admin
-  }
+
+    //Vai dizer se o usuario e admin ou professor
+    if(localStorage['tipo'] == '"admin"') {
+      this.dbAuth.notAdmin = false
+    } else if(localStorage['tipo'] == '"professor"'){
+      this.dbAuth.notAdmin = true
+    }
 }
 
+    //Vai abri e fechar a sidebar
+    sidebarToggle(status:boolean) {
+        this.sidebar = status
+    }
 
-sidebarToggle(status:boolean) {
-    this.sidebar = status
-  }
-
-  normalAcess(status:boolean) {
-    this.login = status
-    this.sidebar = false
-  }
 }

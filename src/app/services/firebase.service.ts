@@ -78,5 +78,9 @@ export class FirebaseService {
   getProfessores() {
     return this.db.collection('professores').get()
   }
+
+  getProfessor() {
+    return this.db.collection('professores').doc().get()
+  }
 }
 

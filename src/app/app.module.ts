@@ -15,7 +15,6 @@ import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lis
 import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 import { environment } from '../environments/environment';
 import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
-import { LoginLogoutComponent } from './components/login-logout/login-logout.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -38,6 +37,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
 import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -51,9 +52,10 @@ import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.componen
     ListaDeFrequenciaComponent,
     JustificarFaltasComponent,
     AddAlunoComponent,
-    LoginLogoutComponent,
     UpdateTurmaComponent,
     UpdateAlunoComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
