@@ -12,36 +12,70 @@ import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.co
 })
 export class HomeComponent implements OnInit {
 
-  turmas:any  [] = []
-  id:any
-  notAdmin:any
+  turmas: any[] = []
+  id: any
+  notAdmin: any
 
-  constructor(private db: FirebaseService,private dbAuth:AuthService , private router: Router, private dialog:MatDialog) {
+  constructor(private db: FirebaseService, private dbAuth: AuthService, private router: Router, private dialog: MatDialog) {
     this.db.titleInfos = {
       title: 'Turmas'
     }
-   }
+  }
 
   ngOnInit(): void {
-    this.notAdmin = this.dbAuth.admin
-      this.db.getTurmas().subscribe((infos:any) => {
-        infos.docs.forEach((element:any) => {
-          this.turmas.push(element.data())
-        });
+    this.notAdmin = this.dbAuth.notAdmin
 
-        //Vai ordenar o array
-        this.turmas = this.turmas.sort((a:any, b:any) => {
-          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
+    if(localStorage['tipo'] == '"professor"') {
+      this.getProfTurmas()
+    } else if(localStorage['tipo'] == '"admin"') {
+      this.getTurmas()
+    }
+  }
+
+  getTurmas() {
+    this.db.getTurmas().subscribe((infos:any) => {
+      infos.docs.forEach((element:any) => {
+        this.turmas.push(element.data())
+
+        this.turmas = this.turmas.sort((a: any, b: any) => {
+          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
         })
       })
-    }
+    })
+  }
+
+  getProfTurmas() {
+    const professores = <any>[]
+      this.db.getProfessores().subscribe((infos: any) => {
+        infos.docs.forEach((element: any) => {
+        professores.push(element.data())
+      }); 
+
+      const user = professores.filter((professor: any) => {
+        if (`"${professor.uid}"` == localStorage['user']) {
+          return professor
+        }
+      })
+      
+      const turmas:any = []
+      for (let i = 0; i < user[0].turma.length; i++) {
+        turmas.push({nome: user[0].turma[i]})
+      }
+      
+      this.turmas = turmas
+
+      this.turmas = this.turmas.sort((a: any, b: any) => {
+        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+      })
+    })
+  }
 
   //Vai achar o id e navegar para turma escolhida
-  selectedTurma(nome:any) {
+  selectedTurma(nome: any) {
     this.db.getTurmas().subscribe(infos => {
 
       const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
+      const names = infos.docs.map((infos: any) => {
         return infos.data().nome
       })
 
@@ -50,21 +84,21 @@ export class HomeComponent implements OnInit {
 
       this.router.navigate([`turma/${id}`])
 
-    })  
+    })
   }
 
-  findId(nome:any) {
+  findId(nome: any) {
     this.db.getTurmas().subscribe(infos => {
 
       const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
+      const names = infos.docs.map((infos: any) => {
         return infos.data().nome
       })
 
       const index = names.indexOf(nome)
       this.id = ids[index].id
 
-    })  
+    })
   }
 
   removeTurma() {
@@ -78,7 +112,7 @@ export class HomeComponent implements OnInit {
       width: '500px'
     })
 
-    ref.afterClosed().subscribe((infos:any) => {
+    ref.afterClosed().subscribe((infos: any) => {
       this.db.updateTurma(this.id, infos).then(() => {
         window.location.reload()
       })

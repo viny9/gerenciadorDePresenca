@@ -14,9 +14,9 @@ export class AlunoComponent implements OnInit {
 
   alunoInfos:any = []
   falta:any = []
-  notAdmin:any = true
+  normal:any
 
-  displayedColumns:any
+  displayedColumns:any = ['dia', 'materia', 'horario', 'acoes']
 
   constructor(private ref: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
 
@@ -25,13 +25,13 @@ export class AlunoComponent implements OnInit {
       this.getAluno(params)
       this.faltas(params)
     })
-      if(this.dbAuth.admin == false) {
-        this.notAdmin = true
-        this.displayedColumns = ['dia', 'materia', 'horario']
-      } else {
-        this.notAdmin = false
-        this.displayedColumns = ['dia', 'materia', 'horario', 'acoes']
-      }
+
+    if(this.dbAuth.user == true) {
+      this.normal = this.dbAuth.user
+      this.displayedColumns =  ['dia', 'materia', 'horario']
+    } else {
+      this.displayedColumns = ['dia', 'materia', 'horario', 'acoes']
+    }
   }
 
   getAluno(pathIds:any) {

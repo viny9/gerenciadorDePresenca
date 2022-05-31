@@ -66,13 +66,21 @@ export class FirebaseService {
   getPresenca(pathId:any, id:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).collection('/presenca').get()
   }
-
+ 
   addPresenca(pathId:any, alunoId:any, presenca:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').add(presenca)  
   }
 
   justificarFalta (pathId:any, alunoId:any, presenca:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').doc().update(presenca)
+  }
+
+  getProfessores() {
+    return this.db.collection('professores').get()
+  }
+
+  getProfessor() {
+    return this.db.collection('professores').doc().get()
   }
 }
 

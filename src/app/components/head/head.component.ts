@@ -11,12 +11,10 @@ export class HeadComponent implements OnInit {
 
   @Output() sidebar = new EventEmitter
   @Input() sidebarStatus:any
-  show:any
 
-  constructor(private db:FirebaseService, private dbAuth:AuthService) { }
+  constructor(private db:FirebaseService) { }
 
   ngOnInit(): void {
-    this.show = this.dbAuth.admin
   }
 
   get title() {
