@@ -14,6 +14,6 @@
     </form>
     <div>
         <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
-        <button (click)="addAluno()" class="btn btn-success">Adicionar</button>
+        <button (click)="addAluno()" [disabled]="form.invalid" class="btn btn-success">Adicionar</button>
     </div>
 </div>

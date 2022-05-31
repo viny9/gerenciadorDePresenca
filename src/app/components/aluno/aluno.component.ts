@@ -24,14 +24,23 @@ export class AlunoComponent implements OnInit {
     this.route.params.subscribe((params:any) => {
       this.getAluno(params)
       this.faltas(params)
+      this.getTurmaName(params.turmaId)
     })
 
     if(this.dbAuth.user == true) {
       this.normal = this.dbAuth.user
-      this.displayedColumns =  ['dia', 'materia', 'horario']
+      this.displayedColumns =  ['dia', 'materia', 'horario', 'professor']
     } else {
-      this.displayedColumns = ['dia', 'materia', 'horario', 'acoes']
+      this.displayedColumns = ['dia', 'materia', 'horario', 'professor','acoes']
     }
+  }
+
+  getTurmaName(id:any) {
+    this.db.getTurma(id).subscribe((infos:any) => {
+      this.db.titleInfos = {
+      title: infos.data().nome
+      }
+   })
   }
 
   getAluno(pathIds:any) {

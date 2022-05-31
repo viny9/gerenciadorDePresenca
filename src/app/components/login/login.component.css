@@ -1,0 +1,17 @@
+@media (max-width: 280px) {
+    .teste {
+        width: 15rem;
+    }
+  }
+
+@media (min-width: 281px) and (max-width:576px) {
+    .teste {
+        width: 20rem;
+    }
+  }
+  
+  @media (min-width: 577px) and (max-width:991px) {
+    .teste {
+        width: 22rem;
+    }
+  }

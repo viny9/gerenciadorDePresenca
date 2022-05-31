@@ -108,10 +108,15 @@ export class TurmaComponent implements OnInit {
     })
 
     ref.afterClosed().subscribe((infos:any) => {
-      this.db.updateAluno(this.pathId, this.id, infos).then(() => {
-        window.location.reload()
-      })
+      if(infos === undefined) {
+        return
+      } else {
+        this.db.updateAluno(this.pathId, this.id, infos).then(() => {
+          window.location.reload()
+        })
+      }
     })
+
   }
 
   deleteAluno() {

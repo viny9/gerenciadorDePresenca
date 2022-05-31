@@ -28,17 +28,20 @@ export class AuthService {
   signin(email: any, password: any) {
       this.dbAuth.signInWithEmailAndPassword(email, password)
       .then((res: any) => {
+        console.log(res)
         this.typeOfUser(res)  //Verificar se usuario é um professor e passa o tipo de usuario para o localStore
         localStorage.setItem('user', JSON.stringify(res.user.uid))
       })
       .then(() => {
-        this.router.navigate(['/'])
+        setTimeout(() => {
+          this.router.navigate([`/`])
+        }, 500);
       })
       .then(() => {
         //Para ter tempo de fazer tudo na função
         setTimeout(() => {
           window.location.reload()
-        }, 500);
+        }, 800);
       })
       .catch((error: any) => {
         this.signinErrors(error)
