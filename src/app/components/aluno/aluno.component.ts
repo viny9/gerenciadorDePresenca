@@ -14,6 +14,7 @@ export class AlunoComponent implements OnInit {
 
   alunoInfos:any = []
   falta:any = []
+  normal:any
 
   displayedColumns:any = ['dia', 'materia', 'horario', 'acoes']
 
@@ -24,6 +25,13 @@ export class AlunoComponent implements OnInit {
       this.getAluno(params)
       this.faltas(params)
     })
+
+    if(this.dbAuth.user == true) {
+      this.normal = this.dbAuth.user
+      this.displayedColumns =  ['dia', 'materia', 'horario']
+    } else {
+      this.displayedColumns = ['dia', 'materia', 'horario', 'acoes']
+    }
   }
 
   getAluno(pathIds:any) {

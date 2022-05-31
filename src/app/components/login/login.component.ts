@@ -10,6 +10,9 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
 
   formSignin:any
+  notAdmin: any
+  login:any = false
+  @Output() isLogged = new EventEmitter
 
   constructor(private dbAuth:AuthService) { }
 
@@ -21,6 +24,11 @@ export class LoginComponent implements OnInit {
     this.formSignin = new FormGroup({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
+    })
+
+    this.notAdmin = new FormGroup({
+      turma: new FormControl('', [Validators.required]),
+      nome: new FormControl('', [Validators.required]),
     })
   }
 
@@ -34,4 +42,11 @@ export class LoginComponent implements OnInit {
     } else { return }
   }
 
+  enter() {
+    this.dbAuth.alunoInfos(this.notAdmin.value.turma, this.notAdmin.value.nome)
+    const logged = this.dbAuth.isLogged 
+    if(logged == true) {
+        this.isLogged.emit(true)
+    }
+  }
 }

@@ -2,6 +2,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,20 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class AuthService {
 
   notAdmin:any = true
+  isLogged:any
+  turma:any
   user:any
 
-  constructor(private dbAuth: AngularFireAuth, private db:AngularFirestore , private snackBar: MatSnackBar) {}
+  constructor(private dbAuth: AngularFireAuth, private db:AngularFirestore , private snackBar: MatSnackBar, private router: Router) {}
 
+  canActivate() {
+    if(localStorage['tipo'] != null) {
+      return true
+    } else {
+      return false
+    }
+  }
+  
   //Login
   signin(email: any, password: any) {
       this.dbAuth.signInWithEmailAndPassword(email, password)
@@ -21,13 +32,16 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(res.user.uid))
       })
       .then(() => {
+        this.router.navigate(['/'])
+      })
+      .then(() => {
         //Para ter tempo de fazer tudo na função
         setTimeout(() => {
           window.location.reload()
         }, 500);
       })
       .catch((error: any) => {
-       this.signinErrors(error)
+        this.signinErrors(error)
       })
   }
 
@@ -114,13 +128,54 @@ export class AuthService {
       })
   }
 
+  alunoInfos(turmad:any, nome:any) {
+    //Vai pegar todas as turmas
+    this.db.collection('turmas').get().subscribe((infos:any) => {
+
+      //Vair pegar o id da turma digitada
+      this.findId(infos, turmad)
+
+      //Se a turma for achada ele vai atrás do id do aluno
+      if(this.turma != undefined) {
+        this.getAluno(this.turma, nome)
+     }
+    })
+  }
+
+  getAluno(turma:any, nome:any) {
+    //Vai pegar todos os alunos
+    this.db.collection('turmas').doc(turma).collection('alunos').get().subscribe((infos:any) => {
+   
+      //Vai achar o id do aluno digitado
+      this.findId(infos, nome)
+
+      //Vai pegar o id da turma e do aluno e colocar na rota
+      this.router.navigate([`/turma/${turma}/aluno/${this.turma}`])
+    })
+  }
+  
+  findId(infos:any, teste:any) {
+      const ids = infos.docs
+      const names = infos.docs.map((infos: any) => {
+      return infos.data().nome
+    })
+    
+    const index = names.indexOf(teste)
+    
+    if(names.indexOf(teste) == -1) {
+      this.openSnackbar('Turma ou aluno incorreto')
+      this.isLogged = false
+    } else if(names.indexOf(teste) >= 0){
+      this.turma = ids[index].id
+      this.isLogged = true
+    }
+}
+
   logout() {
     this.dbAuth.signOut()
     localStorage.removeItem('user')
-    localStorage.removeItem('token')
-    localStorage.removeItem('professor')
     localStorage.removeItem('tipo')
-
+    
     window.location.reload()
   }
 

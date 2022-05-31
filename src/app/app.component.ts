@@ -11,6 +11,7 @@ export class AppComponent implements OnInit  {
   sidebar = false
   sidebarMode:any
   login:any = false
+  res:any = false
 
   constructor(private dbAuth:AuthService) { }
 
@@ -18,6 +19,10 @@ export class AppComponent implements OnInit  {
     //Vai dizer se o usuario fez login
     if(localStorage['tipo'] != null) {
       this.login = true
+    } else if(localStorage['tipo'] == null) {
+      this.login = false
+      this.res = true
+      this.dbAuth.user = true
     }
 
     //Dependendo do tamanho da tela a sidebar vai estar fechada por padrão
@@ -40,6 +45,10 @@ export class AppComponent implements OnInit  {
     //Vai abri e fechar a sidebar
     sidebarToggle(status:boolean) {
         this.sidebar = status
+    }
+
+    recive(isLogged:any) {
+      this.login = isLogged
     }
 
 }
