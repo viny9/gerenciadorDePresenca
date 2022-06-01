@@ -17,7 +17,7 @@ export class AuthService {
   constructor(private dbAuth: AngularFireAuth, private db:AngularFirestore , private snackBar: MatSnackBar, private router: Router) {}
 
   canActivate() {
-    if(localStorage['tipo'] != null) {
+    if(sessionStorage['tipo'] != null) {
       return true
     } else {
       return false
@@ -28,9 +28,9 @@ export class AuthService {
   signin(email: any, password: any) {
       this.dbAuth.signInWithEmailAndPassword(email, password)
       .then((res: any) => {
-        console.log(res)
         this.typeOfUser(res)  //Verificar se usuario é um professor e passa o tipo de usuario para o localStore
-        localStorage.setItem('user', JSON.stringify(res.user.uid))
+        sessionStorage.setItem('user', JSON.stringify(res.user.uid))
+        // sessionStorage.setItem('user', JSON.stringify(res.user.uid))
       })
       .then(() => {
         setTimeout(() => {
@@ -124,9 +124,9 @@ export class AuthService {
       })
 
         if(filtered.length == 0) {
-          localStorage.setItem('tipo', JSON.stringify('admin'))
+          sessionStorage.setItem('tipo', JSON.stringify('admin'))
         }else if(filtered.length == 1){
-          localStorage.setItem('tipo', JSON.stringify('professor'))
+          sessionStorage.setItem('tipo', JSON.stringify('professor'))
         }
       })
   }
@@ -176,8 +176,8 @@ export class AuthService {
 
   logout() {
     this.dbAuth.signOut()
-    localStorage.removeItem('user')
-    localStorage.removeItem('tipo')
+    sessionStorage.removeItem('user')
+    sessionStorage.removeItem('tipo')
     
     window.location.reload()
   }

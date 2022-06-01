@@ -24,9 +24,9 @@ export class SidebarComponent implements OnInit {
     this.notAdmin = this.dbAuth.notAdmin
     this.createForm()
     
-    if(localStorage['tipo'] == '"admin"') {
+    if(sessionStorage['tipo'] == '"admin"') {
       this.getTurmas()
-    } else if(localStorage['tipo'] == '"professor"') {
+    } else if(sessionStorage['tipo'] == '"professor"') {
       this.getProfTurmas()
     }
   }
@@ -56,7 +56,7 @@ export class SidebarComponent implements OnInit {
       }); 
 
       const user = professores.filter((professor: any) => {
-        if (`"${professor.uid}"` == localStorage['user']) {
+        if (`"${professor.uid}"` == sessionStorage['user']) {
           return professor
         }
       })
