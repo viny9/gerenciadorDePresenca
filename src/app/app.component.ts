@@ -17,9 +17,9 @@ export class AppComponent implements OnInit  {
 
   ngOnInit(): void {
     //Vai dizer se o usuario fez login
-    if(localStorage['tipo'] != null) {
+    if(sessionStorage['tipo'] != null) {
       this.login = true
-    } else if(localStorage['tipo'] == null) {
+    } else if(sessionStorage['tipo'] == null) {
       this.login = false
       this.res = true
       this.dbAuth.user = true
@@ -35,9 +35,9 @@ export class AppComponent implements OnInit  {
     }
 
     //Vai dizer se o usuario e admin ou professor
-    if(localStorage['tipo'] == '"admin"') {
+    if(sessionStorage['tipo'] == '"admin"') {
       this.dbAuth.notAdmin = false
-    } else if(localStorage['tipo'] == '"professor"'){
+    } else if(sessionStorage['tipo'] == '"professor"'){
       this.dbAuth.notAdmin = true
     }
 }

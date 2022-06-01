@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.notAdmin = this.dbAuth.notAdmin
 
-    if(localStorage['tipo'] == '"professor"') {
+    if(sessionStorage['tipo'] == '"professor"') {
       this.getProfTurmas()
-    } else if(localStorage['tipo'] == '"admin"') {
+    } else if(sessionStorage['tipo'] == '"admin"') {
       this.getTurmas()
     }
   }
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       }); 
 
       const user = professores.filter((professor: any) => {
-        if (`"${professor.uid}"` == localStorage['user']) {
+        if (`"${professor.uid}"` == sessionStorage['user']) {
           return professor
         }
       })

@@ -21,7 +21,8 @@ export class UpdateAlunoComponent implements OnInit {
 
   createForm() {
     this.form = new FormGroup({
-      nome: new FormControl('', [Validators.required])
+      nome: new FormControl('', [Validators.required]),
+      numeroDoResponsavel: new FormControl('', [Validators.required])
     })
   }
   

@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-center h-100 w-100">
-    <form *ngIf="!login" class="border rounded col-3 d-flex flex-column p-4 shadow form" [formGroup]="formSignin">
+    <form *ngIf="!login" class="border rounded col-3 d-flex flex-column p-4 shadow form teste" [formGroup]="formSignin">
         <h1 class="text-center">Login</h1>
         <mat-form-field>
             <mat-label>Email</mat-label>
@@ -16,7 +16,7 @@
         <!-- <a class="mt-3" (click)="!login">Não sou um professor</a> -->
     </form>
 
-    <form *ngIf="login" class="border rounded col-3 d-flex flex-column p-4 shadow form" [formGroup]="notAdmin">
+    <form *ngIf="login" class="border rounded col-3 d-flex flex-column p-4 shadow form teste" [formGroup]="notAdmin">
         <h1 class="text-center">Teste</h1>
         <mat-form-field>
             <mat-label>Nome completo do aluno</mat-label>
