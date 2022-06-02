@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +13,7 @@ export class AuthService {
   isLogged:any
   turma:any
   user:any
+  load:any = true
 
   constructor(private dbAuth: AngularFireAuth, private db:AngularFirestore , private snackBar: MatSnackBar, private router: Router) {}
 
@@ -41,6 +43,9 @@ export class AuthService {
         setTimeout(() => {
           window.location.reload()
         }, 800);
+      })
+      .then(() => {
+        this.load = false
       })
       .catch((error: any) => {
         this.signinErrors(error)
@@ -190,14 +195,6 @@ export class AuthService {
       this.isLogged = true
     }
 }
-
-  logout() {
-    this.dbAuth.signOut()
-    sessionStorage.removeItem('user')
-    sessionStorage.removeItem('tipo')
-    
-    window.location.reload()
-  }
 
   //Menssagem de erro
   openSnackbar(message: any) {

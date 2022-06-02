@@ -16,7 +16,7 @@
     </li>
   </ul>
 </div>
-<mat-divider></mat-divider>
+<mat-divider *ngIf="!notAdmin"></mat-divider>
 <div class="d-flex flex-column" *ngIf="!notAdmin">
   <button class="navBtn border-0 px-4 py-3 text-start" (click)="openAddTurma()">Adicionar turma</button>
   <mat-divider></mat-divider>

@@ -1,6 +1,6 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ export class FirebaseService {
   private headInfos = new BehaviorSubject<Object>({
     title: ''
   })
+
+  load:any = true
 
   constructor(public db:AngularFirestore) { }
 

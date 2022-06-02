@@ -38,6 +38,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
@@ -82,6 +83,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     MatChipsModule,
     MatAutocompleteModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

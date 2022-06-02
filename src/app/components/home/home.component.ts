@@ -17,20 +17,23 @@ export class HomeComponent implements OnInit {
   id: any
   notAdmin: any
 
-  constructor(private db: FirebaseService, private dbAuth: AuthService, private router: Router, private dialog: MatDialog) {
+  constructor(private db: FirebaseService, public dbAuth: AuthService, private router: Router, private dialog: MatDialog) {
+
     this.db.titleInfos = {
       title: 'Turmas'
     }
+
   }
 
   ngOnInit(): void {
     this.notAdmin = this.dbAuth.notAdmin
-
+  
     if(sessionStorage['tipo'] == '"professor"') {
       this.getProfTurmas()
     } else if(sessionStorage['tipo'] == '"admin"') {
       this.getTurmas()
     }
+
   }
 
   getTurmas() {
@@ -42,6 +45,7 @@ export class HomeComponent implements OnInit {
           return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
         })
       })
+        
     })
   }
 
@@ -132,10 +136,6 @@ export class HomeComponent implements OnInit {
         })
       }
     })
-  }
-
-  log() {
-    this.dbAuth.logout()
   }
 
 
