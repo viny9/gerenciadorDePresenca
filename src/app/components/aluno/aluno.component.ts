@@ -15,13 +15,17 @@ export class AlunoComponent implements OnInit {
   alunoInfos:any = []
   falta:any = []
   normal:any
+  pathIds:any
+  id:any
 
-  displayedColumns:any = ['dia', 'materia', 'horario', 'acoes']
+  displayedColumns:any = []
 
   constructor(private ref: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params:any) => {
+      this.pathIds = params
+      console.log(this.pathIds)
       this.getAluno(params)
       this.faltas(params)
       this.getTurmaName(params.turmaId)
@@ -29,9 +33,9 @@ export class AlunoComponent implements OnInit {
 
     if(this.dbAuth.user == true) {
       this.normal = this.dbAuth.user
-      this.displayedColumns =  ['dia', 'materia', 'horario', 'professor']
+      this.displayedColumns =  ['dia', 'materia', 'horario', 'professor', 'status',]
     } else {
-      this.displayedColumns = ['dia', 'materia', 'horario', 'professor','acoes']
+      this.displayedColumns = ['dia', 'materia', 'horario', 'professor', 'status', 'acoes']
     }
   }
 
@@ -68,13 +72,40 @@ export class AlunoComponent implements OnInit {
     })
   }
 
-  openJustificarFaltas() {
+  findId(nome: any) {
+    this.db.getPresenca(this.pathIds.turmaId, this.pathIds.alunoId).subscribe(infos => {
+
+      const ids = infos.docs
+      const names = infos.docs.map((infos: any) => {
+        return infos.data().id
+      })
+      
+      const index = names.indexOf(nome.id)
+      this.id = ids[index].id
+
+    })
+  }
+
+  openJustificarFaltas(falta:any) {
    const ref = this.ref.open(JustificarFaltasComponent, {
-      width: '500px'
+      width: '500px',
+      data: falta
     })
 
-    ref.afterClosed().subscribe((infos:any) => {
-      this.db
+    ref.afterClosed().subscribe((infos?:any) => {
+      if(infos == undefined) {
+        return 
+      } else {
+        const justificado = {
+          ...falta, 
+          justificativa: infos
+        }
+        
+        justificado.status = 'Justificado'
+    
+          this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
+          .then(() => { window.location.reload() })
+      }
     })
   }
 }

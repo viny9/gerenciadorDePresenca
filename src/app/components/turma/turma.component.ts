@@ -14,6 +14,7 @@ import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.co
 export class TurmaComponent implements OnInit {
 
   alunos:any = []
+  aluno:any = []
   columns:any= ['numero', 'nome', 'options']
   pathId:any
   id:any
@@ -42,6 +43,12 @@ export class TurmaComponent implements OnInit {
       this.alunos = this.alunos.sort((a:any, b:any) => {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
       })
+    })
+  }
+
+  getAluno() {
+    this.db.readAluno(this.pathId, this.id).subscribe((infos:any) => {
+      this.aluno = infos.data()
     })
   }
 
@@ -78,22 +85,24 @@ export class TurmaComponent implements OnInit {
 
       const index = names.indexOf(nome)
       this.id = ids[index].id
+
+      this.getAluno()
     })  
   }
  
   //Vai abrir o Dialog 
   openAddAluno() {
-    const ref = this.dialog.open(AddAlunoComponent, {
-      width: '500px',
-    })
-
-    ref.afterClosed().subscribe((infos:any) => {
-      if(infos === undefined) {
-        return
-      } else {
-        this.addAluno(infos)
-      }
-    })
+      const ref = this.dialog.open(AddAlunoComponent, {
+        width: '500px',
+      })
+      
+      ref.afterClosed().subscribe((infos:any) => {
+        if(infos === undefined) {
+          return
+        } else {
+          this.addAluno(infos)
+        }
+      })
   }
 
   addAluno(aluno:any) {
@@ -104,7 +113,8 @@ export class TurmaComponent implements OnInit {
 
   openUpdateAluno() {
     const ref = this.dialog.open(UpdateAlunoComponent, {
-      width: '500px'
+      width: '500px', 
+      data: this.aluno
     })
 
     ref.afterClosed().subscribe((infos:any) => {

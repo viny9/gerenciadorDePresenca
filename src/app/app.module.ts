@@ -15,6 +15,11 @@ import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lis
 import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 import { environment } from '../environments/environment';
 import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
+import { GerenciadorDePerfisComponent } from './components/gerenciador-de-perfis/gerenciador-de-perfis.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
+import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,15 +35,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
-import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
-import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +61,7 @@ import { SignupComponent } from './components/signup/signup.component';
     UpdateAlunoComponent,
     LoginComponent,
     SignupComponent,
+    GerenciadorDePerfisComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,12 +82,16 @@ import { SignupComponent } from './components/signup/signup.component';
     MatSnackBarModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

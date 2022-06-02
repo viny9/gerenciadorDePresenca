@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AddTurmaComponent } from '../add-turma/add-turma.component';
 
@@ -13,12 +13,13 @@ export class UpdateTurmaComponent implements OnInit {
 
   form:any
 
-  constructor( private ref:MatDialogRef<AddTurmaComponent>, private db: FirebaseService) { }
+  constructor( private ref:MatDialogRef<AddTurmaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any) { }
 
   ngOnInit(): void {
     this.createForm()
   }
-
+  
   createForm() {
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required])
