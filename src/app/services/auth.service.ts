@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -70,13 +69,19 @@ export class AuthService {
             nome: nome, 
             turma: turmas,
             email: res.user.email,
-            admin: true,
-            professor: false,
             userType: userType,
+            uid: res.user.uid,
+          }
+
+          const user = {
+            nome: nome,
+            email: email, 
+            type: userType,
             uid: res.user.uid,
           }
   
           this.db.collection('professores').add(prof)
+          this.db.collection('users').add(user)
         })
         .then(() => {       //Para dar tempo de eviar as informações pro servidor antes de reniciar a pagina
           setTimeout(() => {     
@@ -88,10 +93,22 @@ export class AuthService {
         })
 
     } else if(userType == 'admin') {
-      this.dbAuth.createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        window.location.reload()
+      this.dbAuth.createUserWithEmailAndPassword(email, password).then((res:any) => {
+
+        const user = {
+          nome: nome,
+          email: email, 
+          type: userType,
+          uid: res.user.uid,
+        }
+
+        this.db.collection('users').add(user)
       })
+     .then(() => {       //Para dar tempo de eviar as informações pro servidor antes de reniciar a pagina
+          setTimeout(() => {     
+            window.location.reload()
+          }, 500);
+        })
       .catch((error: any) => {
         return this.signupErrors(error)
       })

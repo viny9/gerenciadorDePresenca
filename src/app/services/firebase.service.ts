@@ -1,6 +1,5 @@
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -12,7 +11,7 @@ export class FirebaseService {
     title: ''
   })
 
-  constructor(private db:AngularFirestore, public dbAuth:AngularFireAuth) { }
+  constructor(public db:AngularFirestore) { }
 
   get titleInfos() {
     return this.headInfos.value
@@ -71,16 +70,20 @@ export class FirebaseService {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').add(presenca)  
   }
 
-  justificarFalta (pathId:any, alunoId:any, presenca:any) {
-    return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').doc().update(presenca)
-  }
-
   getProfessores() {
     return this.db.collection('professores').get()
   }
 
   getProfessor() {
     return this.db.collection('professores').doc().get()
+  }
+
+  getUsers() {
+    return this.db.collection('users').get()
+  }
+
+  justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
+    return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('/presenca').doc(falta).set(presenca)
   }
 }
 

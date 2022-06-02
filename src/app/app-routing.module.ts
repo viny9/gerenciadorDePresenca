@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlunoComponent } from './components/aluno/aluno.component';
+import { GerenciadorDePerfisComponent } from './components/gerenciador-de-perfis/gerenciador-de-perfis.component';
 import { HomeComponent } from './components/home/home.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
     { path: 'signup',
       canActivate: [AuthService],
       component: SignupComponent },
+
+    { path: 'perfis',
+      canActivate: [AuthService],
+      component: GerenciadorDePerfisComponent },
 
   ];
 

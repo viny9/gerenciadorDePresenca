@@ -1,51 +1,47 @@
 <div>
   <h1>{{alunoInfos[0]?.nome}}</h1>
-  <mat-accordion class="w-100">
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Faltas
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div>
-        <mat-table [dataSource]="falta">
-          <ng-container matColumnDef="dia">
-            <th mat-header-cell *matHeaderCellDef class="ps-0 w-25 ">Dia</th>
-            <td mat-cell *matCellDef="let teste" class="ps-0 ">{{teste.date}}</td>
-          </ng-container>
 
-          <ng-container matColumnDef="materia">
-            <th mat-header-cell *matHeaderCellDef class="teste w-25">Materia</th>
-            <td mat-cell *matCellDef="let teste" class="teste">{{teste.materia}}</td>
-          </ng-container>
+  <div>
+    <table mat-table [dataSource]="falta" class="mat-elevation-z8 w-100">
+      <ng-container matColumnDef="dia">
+        <th mat-header-cell *matHeaderCellDef class="">Dia</th>
+        <td mat-cell *matCellDef="let teste">{{teste.date}}</td>
+      </ng-container>
 
-          <ng-container matColumnDef="professor">
-            <th mat-header-cell *matHeaderCellDef class="teste w-25">Professor</th>
-            <td mat-cell *matCellDef="let teste" class="teste">{{teste.professor}}</td>
-          </ng-container>
+      <ng-container matColumnDef="materia">
+        <th mat-header-cell *matHeaderCellDef class="teste ">Materia</th>
+        <td mat-cell *matCellDef="let teste" class="teste">{{teste.materia}}</td>
+      </ng-container>
 
-          <ng-container matColumnDef="horario">
-            <th mat-header-cell *matHeaderCellDef class="w-25">horario</th>
-            <td mat-cell *matCellDef="let teste" class="">{{teste.horario}}</td>
-          </ng-container>
+      <ng-container matColumnDef="professor">
+        <th mat-header-cell *matHeaderCellDef class="teste w-25">Professor</th>
+        <td mat-cell *matCellDef="let teste" class="teste">{{teste.professor}}</td>
+      </ng-container>
+      
+      <ng-container matColumnDef="horario">
+        <th mat-header-cell *matHeaderCellDef class="">Horario</th>
+        <td mat-cell *matCellDef="let teste" class="">{{teste.horario}}</td>
+      </ng-container>
 
-          <ng-container matColumnDef="acoes" *ngIf="!normal">
-            <th mat-header-cell *matHeaderCellDef class="text-center ps-2">Jusificar</th>
-            <td mat-cell *matCellDef="let teste" class="ps2">
-              <div class="ps-2">
-                <button class="btn btn-primary" (click)="openJustificarFaltas()">Jusificar</button>
-              </div>
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="">Status</th>
+        <td mat-cell *matCellDef="let teste" class="">{{teste.status}}</td>
+      </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-50 w-100"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle w-100"></tr>
-        </mat-table>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+      <ng-container matColumnDef="acoes" *ngIf="!normal">
+        <th mat-header-cell *matHeaderCellDef class="text-center wx">Jusificar</th>
+        <td mat-cell *matCellDef="let teste" class="ps2 wx">
+          <div class="ps-2 text-center" >
+            <button class="btn btn-primary" (click)="findId(teste)" (click)="openJustificarFaltas(teste)">Jusificar</button>
+          </div>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle"></tr>
+    </table>
+  </div>
 
-  <!-- <div>
+    <!-- <div>
     <a href="https://web.whatsapp.com/" target="_blank">Eviar mensagem</a>
   </div> -->
-</div>

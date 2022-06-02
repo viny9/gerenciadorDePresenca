@@ -13,6 +13,7 @@ import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.co
 export class HomeComponent implements OnInit {
 
   turmas: any[] = []
+  turma:any
   id: any
   notAdmin: any
 
@@ -41,6 +42,12 @@ export class HomeComponent implements OnInit {
           return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
         })
       })
+    })
+  }
+
+  getTurma() {
+    this.db.getTurma(this.id).subscribe((infos:any) => {
+      this.turma = infos.data()
     })
   }
 
@@ -98,6 +105,8 @@ export class HomeComponent implements OnInit {
       const index = names.indexOf(nome)
       this.id = ids[index].id
 
+      this.getTurma()
+
     })
   }
 
@@ -109,13 +118,19 @@ export class HomeComponent implements OnInit {
 
   openUpdateTurma() {
     const ref = this.dialog.open(UpdateTurmaComponent, {
-      width: '500px'
+      width: '500px',
+      data: this.turma
     })
 
     ref.afterClosed().subscribe((infos: any) => {
-      this.db.updateTurma(this.id, infos).then(() => {
-        window.location.reload()
-      })
+      if(infos == undefined) {
+        return 
+      }
+      else {
+        this.db.updateTurma(this.id, infos).then(() => {
+          window.location.reload()
+        })
+      }
     })
   }
 

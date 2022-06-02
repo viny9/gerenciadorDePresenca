@@ -97,12 +97,16 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
+    const teste = Math.random().toString(36).substring(2, 12)
+
     const frequencia = {
+      id: teste,
       date: `${day}/${month}/${year}`,
       horario: this.horario,
       presenca: value.value,
       materia: this.form.value.materia,
-      professor: this.form.value.nomeDoProfessor
+      professor: this.form.value.nomeDoProfessor,
+      status: 'Não justificada'
     }
 
     //Só precisa evitar que uma mesma pessoa possa estar e faltar ao mesmo tempo
@@ -125,7 +129,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const minutes = date.getMinutes()
 
     //Horarios que a chamada vai estar aberta
-    if(hour == 7 && minutes >= 30 && minutes <= 45) {
+    if(hour == 8 && minutes >= 20 && minutes <= 45) {
       this.horario = 1
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 2

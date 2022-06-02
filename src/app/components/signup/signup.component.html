@@ -2,7 +2,7 @@
     <form class="border rounded d-flex flex-column p-4 shadow  teste" [formGroup]="formSignup">
         <h1 class="text-center">Cadastro</h1>
 
-        <mat-form-field class="mt-3" *ngIf="userType == 'professor'">
+        <mat-form-field class="mt-3">
             <mat-label>Nome</mat-label>
             <input formControlName="nome" type="text" matInput>
         </mat-form-field>
@@ -46,7 +46,7 @@
             <mat-radio-button value="professor">Professor</mat-radio-button>
         </mat-radio-group>
     
-        <button *ngIf="userType == 'admin'" [disabled]="formSignup.controls.email.status == 'VALID' && formSignup.controls.password.status == 'VALID'? false : true" (click)="onSignup()" class="btn btn-primary mt-4">Salvar</button>
+        <button *ngIf="userType == 'admin'" [disabled]="formSignup.controls.nome.status == 'VALID' && formSignup.controls.email.status == 'VALID' && formSignup.controls.password.status == 'VALID'? false : true" (click)="onSignup()" class="btn btn-primary mt-4">Salvar</button>
         <button  *ngIf="userType == 'professor'" [disabled]="formSignup.invalid" class="btn btn-primary mt-4" (click)="onSignup()">Salvar</button>
     </form>
 </div>
