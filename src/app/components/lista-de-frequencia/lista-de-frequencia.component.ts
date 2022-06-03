@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-lista-de-frequencia',
@@ -18,6 +19,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
   frequencia:any = []
   horario:any
   form:any
+  teste:any = []
 
   //Auto complete
   input = new FormControl()
@@ -30,6 +32,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
       map((materia: string | null) => (materia ? this._filter(materia) : this.materias.slice())),
     );
   }
+
+  //Tentar não deixar mandar duas faltas pelo id
 
   ngOnInit(): void {
     this.createForm()
@@ -102,17 +106,44 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const frequencia = {
       id: teste,
       date: `${day}/${month}/${year}`,
-      horario: this.horario,
+      horario: 1,
       presenca: value.value,
       materia: this.form.value.materia,
       professor: this.form.value.nomeDoProfessor,
       status: 'Não justificada'
     }
 
-    //Só precisa evitar que uma mesma pessoa possa estar e faltar ao mesmo tempo
     this.frequencia.push(frequencia)
+
+    console.log(value)
+    
+    //Só precisa evitar que uma mesma pessoa possa estar e faltar ao mesmo tempo
     console.log(this.frequencia)
   }
+  
+  radioChange($event: MatRadioChange) {
+    //Passar o valor para uma variavel global
+    
+    const selected = $event.source.name
+    const value = $event.source.value
+
+    const a = {
+      nome: selected, 
+      value: value
+    }
+
+    this.teste.push(a)
+
+
+    if(this.teste.includes(a)) {
+      console.log('teste')
+    }
+
+    // console.log(a)
+    console.log(a)
+    console.log(this.teste)
+    // console.log(selected, $event.value);
+}
 
  //Vai adicionar a presença
   addPresenca() {
@@ -129,11 +160,12 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const minutes = date.getMinutes()
 
     //Horarios que a chamada vai estar aberta
-    if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //Matutino
+    if(hour == 11 && minutes >= 0 && minutes <= 59) {
       this.horario = 1
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 2
-    } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    } else if(hour == 10 && minutes >= 0 && minutes < 59) {
       this.horario = 3
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 4
@@ -142,6 +174,36 @@ export class ListaDeFrequenciaComponent implements OnInit {
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 6
     }
+
+    //Verspetino
+    // if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //   this.horario = 1
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 2
+    // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    //   this.horario = 3
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 4
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 5
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 6
+    // }
+
+    //Noturno
+    // if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //   this.horario = 1
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 2
+    // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    //   this.horario = 3
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 4
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 5
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 6
+    // }
   }
 
   private _filter(value:any): string[] {

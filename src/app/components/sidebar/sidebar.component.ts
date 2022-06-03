@@ -81,7 +81,7 @@ export class SidebarComponent implements OnInit {
   //Vai criar um form para o FormGroup
   createForm() {
     this.search = new FormGroup({
-      search: new FormControl()
+      search: new FormControl(),
     })
   }
 
@@ -134,5 +134,9 @@ export class SidebarComponent implements OnInit {
       this.router.navigate([`turma/${id}`])
 
     })  
+  }
+
+  logout() {
+    this.dbAuth.logOut()
   }
 }

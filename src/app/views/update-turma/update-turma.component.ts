@@ -24,6 +24,8 @@ export class UpdateTurmaComponent implements OnInit {
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required])
     })
+
+    this.form.controls['nome'].setValue(this.data.nome)
   }
   
   error() {

@@ -194,7 +194,18 @@ export class AuthService {
       this.turma = ids[index].id
       this.isLogged = true
     }
-}
+  }
+
+  logOut () {
+    this.dbAuth.signOut().then(() => {
+      sessionStorage.removeItem('tipo')
+      sessionStorage.removeItem('user')
+    })
+    
+    .then(() => {
+      window.location.reload()
+    })
+  }
 
   //Menssagem de erro
   openSnackbar(message: any) {

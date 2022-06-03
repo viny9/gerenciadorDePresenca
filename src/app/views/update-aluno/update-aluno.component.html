@@ -3,13 +3,13 @@
     <form [formGroup]="form">
         <mat-form-field class="w-100">
             <mat-label>Nome do Aluno</mat-label>
-            <input type="text" matInput formControlName="nome" [placeholder]="data?.nome">
+            <input type="text" matInput formControlName="nome">
             <mat-error *ngIf="form.controls['nome']">{{error()}}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="w-100">
             <mat-label>Número dos responsaveis</mat-label>
-            <input type="text" matInput formControlName="numeroDoResponsavel" [placeholder]="data?.numeroDoResponsavel">
+            <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11">
             <mat-error  *ngIf="form.controls['numeroDoResponsavel']">{{error()}}</mat-error>
         </mat-form-field>
     </form>

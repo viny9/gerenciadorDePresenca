@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private dbAuth:AuthService) { }
 
+//Adicionar um sessionStorage para o pais Responsavel para ver se melhorar deles entrar
+
   ngOnInit(): void {
     this.createForm()
   }
@@ -44,9 +46,9 @@ export class LoginComponent implements OnInit {
 
   enter() {
     this.dbAuth.alunoInfos(this.notAdmin.value.turma, this.notAdmin.value.nome)
-    const logged = this.dbAuth.isLogged 
-    if(logged == true) {
+      const logged = this.dbAuth.isLogged 
+      if(logged == true) {
         this.isLogged.emit(true)
-    }
+      }
   }
 }
