@@ -20,6 +20,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
 import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
+import { DeleteComponent } from './views/delete/delete.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -40,12 +41,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode'
+
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { EditarFaltaComponent } from './views/editar-falta/editar-falta.component';
-import { DeleteComponent } from './views/delete/delete.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,7 @@ import { DeleteComponent } from './views/delete/delete.component';
     MatAutocompleteModule,
     MatDividerModule,
     MatProgressSpinnerModule,
+    NgxQRCodeModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

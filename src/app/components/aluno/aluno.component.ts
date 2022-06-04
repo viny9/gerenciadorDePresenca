@@ -24,6 +24,9 @@ export class AlunoComponent implements OnInit {
 
   displayedColumns:any = []
 
+  elementType = 'url';
+  value = 'http://localhost:4200/turma/RGsNfdSaSFNx7JIIxAwi/aluno/YPUhtM1VdtCYARDlhDLD';
+
   constructor(private dialog: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
 
 //Da um revisada no código pra ver se ta funcionando 
