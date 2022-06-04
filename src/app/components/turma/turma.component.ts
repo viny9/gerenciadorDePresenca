@@ -5,6 +5,7 @@ import { AddAlunoComponent } from 'src/app/views/add-aluno/add-aluno.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.component';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-turma',
@@ -130,8 +131,17 @@ export class TurmaComponent implements OnInit {
   }
 
   deleteAluno() {
-    this.db.removeAlunos(this.pathId, this.id).then(() => {
-      window.location.reload()
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja remover esse aluno ?'
+    })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      if(infos == true) {
+        this.db.removeAlunos(this.pathId, this.id).then(() => {
+          window.location.reload()
+        })
+      }
     })
   }
 }

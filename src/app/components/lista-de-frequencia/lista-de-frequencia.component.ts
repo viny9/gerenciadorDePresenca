@@ -19,7 +19,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
   frequencia:any = []
   horario:any
   form:any
-  teste:any = []
+  teste:any
 
   //Auto complete
   input = new FormControl()
@@ -101,50 +101,10 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
-    const teste = Math.random().toString(36).substring(2, 12)
-
-    const frequencia = {
-      id: teste,
-      date: `${day}/${month}/${year}`,
-      horario: 1,
-      presenca: value.value,
-      materia: this.form.value.materia,
-      professor: this.form.value.nomeDoProfessor,
-      status: 'Não justificada'
-    }
-
-    this.frequencia.push(frequencia)
-
-    console.log(value)
+    console.log(value.source.checked)
     
-    //Só precisa evitar que uma mesma pessoa possa estar e faltar ao mesmo tempo
-    console.log(this.frequencia)
   }
   
-  radioChange($event: MatRadioChange) {
-    //Passar o valor para uma variavel global
-    
-    const selected = $event.source.name
-    const value = $event.source.value
-
-    const a = {
-      nome: selected, 
-      value: value
-    }
-
-    this.teste.push(a)
-
-
-    if(this.teste.includes(a)) {
-      console.log('teste')
-    }
-
-    // console.log(a)
-    console.log(a)
-    console.log(this.teste)
-    // console.log(selected, $event.value);
-}
-
  //Vai adicionar a presença
   addPresenca() {
 

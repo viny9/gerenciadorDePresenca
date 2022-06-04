@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
   enter() {
     this.dbAuth.alunoInfos(this.notAdmin.value.turma, this.notAdmin.value.nome)
       const logged = this.dbAuth.isLogged 
-      if(logged == true) {
-        this.isLogged.emit(true)
-      }
+      // if(logged == true) {
+      //   this.isLogged.emit(true)
+      // }
   }
 }

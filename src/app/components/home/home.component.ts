@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.component';
+import { ThisReceiver } from '@angular/compiler';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-home',
@@ -45,7 +47,6 @@ export class HomeComponent implements OnInit {
           return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
         })
       })
-        
     })
   }
 
@@ -67,17 +68,21 @@ export class HomeComponent implements OnInit {
           return professor
         }
       })
-      
-      const turmas:any = []
-      for (let i = 0; i < user[0].turma.length; i++) {
-        turmas.push({nome: user[0].turma[i]})
-      }
-      
-      this.turmas = turmas
+      const turmas:any = user[0].turma
 
-      this.turmas = this.turmas.sort((a: any, b: any) => {
-        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
-      })
+      this.getTurmas()
+      
+      console.log(this.turmas)
+      for (let i = 0; i < turmas.length; i++) {
+        const t = this.turmas.filter((turma:any) => {
+          if(turma.nome.includes(turmas[i])) {
+            return turma
+          }
+        })
+      }
+        this.turmas = this.turmas.sort((a: any, b: any) => {
+          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+        })
     })
   }
 
@@ -115,9 +120,18 @@ export class HomeComponent implements OnInit {
   }
 
   removeTurma() {
-    this.db.deleteTurma(this.id).then(() => {
-      window.location.reload()
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja excluir essa turma ?'
     })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      if(infos == true) {
+        this.db.deleteTurma(this.id).then(() => {
+          window.location.reload()
+        })
+      }
+   })
   }
 
   openUpdateTurma() {

@@ -80,6 +80,10 @@ export class FirebaseService {
     return this.db.collection('professores').doc().get()
   }
 
+  updateProfessor() {
+    return this.db.collection('professores').doc()
+  }
+
   getUsers() {
     return this.db.collection('users').get()
   }

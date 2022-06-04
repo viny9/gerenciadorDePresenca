@@ -45,6 +45,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { EditarFaltaComponent } from './views/editar-falta/editar-falta.component';
+import { DeleteComponent } from './views/delete/delete.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { EditarFaltaComponent } from './views/editar-falta/editar-falta.componen
     SignupComponent,
     GerenciadorDePerfisComponent,
     EditarFaltaComponent,
+    DeleteComponent,
   ],
   imports: [
     BrowserModule,

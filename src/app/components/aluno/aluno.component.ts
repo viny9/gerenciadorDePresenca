@@ -1,3 +1,4 @@
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from './../../services/firebase.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +24,7 @@ export class AlunoComponent implements OnInit {
 
   displayedColumns:any = []
 
-  constructor(private ref: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
+  constructor(private dialog: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
 
 //Da um revisada no código pra ver se ta funcionando 
 //E implementa separado um gerador de qrCode 
@@ -97,7 +98,7 @@ export class AlunoComponent implements OnInit {
   }
 
   openJustificarFaltas() {
-   const ref = this.ref.open(JustificarFaltasComponent, {
+   const ref = this.dialog.open(JustificarFaltasComponent, {
       width: '500px',
       data: this.selectedFalta
     })
@@ -122,7 +123,7 @@ export class AlunoComponent implements OnInit {
   }
 
   openEditarFalta() {
-    const ref = this.ref.open(EditarFaltaComponent, {
+    const ref = this.dialog.open(EditarFaltaComponent, {
       width: '500px',
       data: this.selectedFalta
     })
@@ -153,11 +154,21 @@ export class AlunoComponent implements OnInit {
   }
   
   deleteFalta() {
-    this.selectedFalta.presenca = 'P'
-    delete this.selectedFalta.status
-    delete this.selectedFalta.justificativa
 
-    this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, this.selectedFalta)
-    .then(() => window.location.reload() )
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Ao clicar em deletar essa falta será convertida em presença'
+    })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      if(infos == true) {
+        this.selectedFalta.presenca = 'P'
+        delete this.selectedFalta.status
+        delete this.selectedFalta.justificativa
+        
+        this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, this.selectedFalta)
+        .then(() => window.location.reload() )
+      }
+    })
   }
 }
