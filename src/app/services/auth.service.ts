@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   //Login
-  signin(email: any, password: any) {
+ async signin(email: any, password: any) {
     this.dbAuth.signInWithEmailAndPassword(email, password)
       .then((res: any) => {
         this.typeOfUser(res) //Verificar se usuario é um professor e passa o tipo de usuario para o localStore
@@ -69,19 +69,11 @@ export class AuthService {
             nome: nome,
             turma: turmas,
             email: res.user.email,
-            userType: userType,
-            uid: res.user.uid,
-          }
-
-          const user = {
-            nome: nome,
-            email: email,
             type: userType,
             uid: res.user.uid,
           }
 
-          this.db.collection('professores').add(prof)
-          this.db.collection('users').add(user)
+          this.db.collection('users').add(prof)
         })
         .then(() => { //Para dar tempo de eviar as informações pro servidor antes de reniciar a pagina
           setTimeout(() => {
@@ -129,7 +121,7 @@ export class AuthService {
 
   typeOfUser(res: any) {
     const professores: any = []
-    this.db.collection('professores').get().subscribe((infos: any) => {
+    this.db.collection('users').get().subscribe((infos: any) => {
       infos.docs.forEach((element: any) => {
         professores.push(element.data())
       });
@@ -140,9 +132,9 @@ export class AuthService {
         }
       })
 
-      if (filtered.length == 0) {
+      if (filtered[0].type == 'admin') {
         sessionStorage.setItem('tipo', JSON.stringify('admin'))
-      } else if (filtered.length == 1) {
+      } else if (filtered[0].type == 'professor') {
         sessionStorage.setItem('tipo', JSON.stringify('professor'))
       }
     })
@@ -207,7 +199,6 @@ export class AuthService {
       }
     })
   }
-
 
   logOut() {
     this.dbAuth.signOut().then(() => {

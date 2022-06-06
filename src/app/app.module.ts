@@ -39,7 +39,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode'
 
@@ -89,7 +89,7 @@ import { EditarFaltaComponent } from './views/editar-falta/editar-falta.componen
     MatChipsModule,
     MatAutocompleteModule,
     MatDividerModule,
-    MatProgressSpinnerModule,
+    MatCheckboxModule,
     NgxQRCodeModule,
 
     // Firebase

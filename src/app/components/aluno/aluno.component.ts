@@ -77,8 +77,6 @@ export class AlunoComponent implements OnInit {
         }
       })
 
-      console.log(this.falta)
-
       this.falta = this.falta.sort((a:any, b:any) => {
         return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;    
       })
@@ -94,8 +92,12 @@ export class AlunoComponent implements OnInit {
         return infos.data().id
       })
       
-      const index = names.indexOf(nome.id)
-      this.id = ids[index].id
+      try {
+        const index = names.indexOf(nome.id)
+        this.id = ids[index].id
+      } catch (error){
+        this.db.handleError(error)
+      }
 
     })
   }
@@ -116,8 +118,6 @@ export class AlunoComponent implements OnInit {
         }
         
         justificado.status = 'Justificado'
-
-        console.log(justificado)
 
         this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
         .then(() => { window.location.reload() })

@@ -40,13 +40,13 @@ export class HomeComponent implements OnInit {
 
   getTurmas() {
     this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
-        this.turmas.push(element.data())
-
-        this.turmas = this.turmas.sort((a: any, b: any) => {
-          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+        infos.docs.forEach((element:any) => {
+          this.turmas.push(element.data())
+          
+          this.turmas = this.turmas.sort((a: any, b: any) => {
+            return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+          })
         })
-      })
     })
   }
 
@@ -58,31 +58,34 @@ export class HomeComponent implements OnInit {
 
   getProfTurmas() {
     const professores = <any>[]
-      this.db.getProfessores().subscribe((infos: any) => {
-        infos.docs.forEach((element: any) => {
-        professores.push(element.data())
-      }); 
+      this.db.getUsers().subscribe((infos: any) => {
 
-      const user = professores.filter((professor: any) => {
-        if (`"${professor.uid}"` == sessionStorage['user']) {
+        try {
+          infos.docs.forEach((element: any) => {
+            professores.push(element.data())
+          }); 
+          
+          const user = professores.filter((professor: any) => {
+            if (`"${professor.uid}"` == sessionStorage['user']) {
           return professor
         }
-      })
-      const turmas:any = user[0].turma
 
-      this.getTurmas()
-      
-      console.log(this.turmas)
-      for (let i = 0; i < turmas.length; i++) {
-        const t = this.turmas.filter((turma:any) => {
-          if(turma.nome.includes(turmas[i])) {
-            return turma
-          }
-        })
+      })
+      const turmas:any = []
+
+      for (let i = 0; i < user[0].turma.length; i++) {
+        turmas.push({nome: user[0].turma[i]})
       }
-        this.turmas = this.turmas.sort((a: any, b: any) => {
-          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
-        })
+
+      this.turmas = turmas
+      
+      this.turmas = this.turmas.sort((a: any, b: any) => {
+        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+      })
+
+      } catch (error) {
+        this.db.handleError(error)
+      }
     })
   }
 
@@ -95,11 +98,14 @@ export class HomeComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      const id = ids[index].id
-
-      this.router.navigate([`turma/${id}`])
-
+      try {
+        const index = names.indexOf(nome)
+        const id = ids[index].id
+        this.router.navigate([`turma/${id}`])
+        
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')
+      }
     })
   }
 
@@ -111,10 +117,14 @@ export class HomeComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
-
-      this.getTurma()
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        
+        this.getTurma()
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')
+      }
 
     })
   }

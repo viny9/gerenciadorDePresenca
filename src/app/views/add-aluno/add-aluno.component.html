@@ -4,12 +4,12 @@
         <mat-form-field>
             <mat-label>Nome do Aluno</mat-label>
             <input type="text" matInput formControlName="nome">
-            <mat-error *ngIf="form.controls['nome']">{{formError()}}</mat-error>
+            <mat-error *ngIf="form.controls['nome']">{{formError('nome')}}</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Número dos responsaveis</mat-label>
-            <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11">
-            <mat-error  *ngIf="form.controls['numeroDoResponsavel']">{{formError()}}</mat-error>
+            <input type="text" matInput formControlName="numeroDoResponsavel" minlength="11" maxlength="11">
+            <mat-error  *ngIf="form.controls['numeroDoResponsavel']">{{formError('numeroDoResponsavel')}}</mat-error>
         </mat-form-field>
     </form>
     <div>

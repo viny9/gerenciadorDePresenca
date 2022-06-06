@@ -69,10 +69,14 @@ export class TurmaComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
-
-      this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        
+        this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
+      } catch (error) {
+        this.dbAuth.openSnackbar('Aluno não encontrado')
+      }
     })  
   }
 
@@ -84,10 +88,14 @@ export class TurmaComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
-
-      this.getAluno()
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        
+        this.getAluno()
+      } catch (error) {
+        this.db.handleError(error)
+      }
     })  
   }
  
