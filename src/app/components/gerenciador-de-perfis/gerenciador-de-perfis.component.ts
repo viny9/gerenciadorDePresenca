@@ -1,6 +1,7 @@
+import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { UserEditComponent } from 'src/app/views/user-edit/user-edit.component';
 
 @Component({
   selector: 'app-gerenciador-de-perfis',
@@ -11,8 +12,11 @@ export class GerenciadorDePerfisComponent implements OnInit {
 
   dataSource:any = []
   displayedColumns:any = ['position', 'nome', 'email', 'type', 'actions']
+  id:any
+  data:any
+  turmas:any
 
-  constructor(private db:FirebaseService) { }
+  constructor(private db:FirebaseService, private dialog:MatDialog) { }
 
   ngOnInit(): void {
     const users:any = []
@@ -24,5 +28,62 @@ export class GerenciadorDePerfisComponent implements OnInit {
       });
     })
   }
+
+  findId(email: any) {
+    this.db.getUsers().subscribe(infos => {
+      const ids = infos.docs
+      const names = infos.docs.map((infos: any) => {
+        return infos.data().email
+      })
+
+      try {
+        const index = names.indexOf(email)
+        this.id = ids[index].id
+
+        this.user()
+      } catch (error) {
+        console.log(error)
+      }
+
+    })
+  }
+
+  user() {
+    this.db.getUser(this.id).subscribe((infos:any) => {
+      this.data = infos.data()
+    })
+  }
+
+  openUser() {
+    setTimeout(() => {
+      const ref = this.dialog.open(UserEditComponent, {
+        width: '500px',
+        data: this.data, 
+      })
+
+      ref.afterClosed().subscribe((infos:any) => {
+        if(infos === undefined) {
+          return 
+        }else {
+    
+          const testes = {
+            ...this.data,
+            ...infos
+          }
+          
+          if(testes.type == 'admin') {
+            delete testes.turma
+          }
+
+          this.db.updateUser(this.id, testes)
+        }
+      })
+  }, 300);
+
+  }
   
+  deleteUser() {
+   this.db.deleteUser(this.id)
+    .then(() => window.location.reload()) 
+  }
 }

@@ -24,6 +24,9 @@ export class UpdateAlunoComponent implements OnInit {
       nome: new FormControl('', [Validators.required]),
       numeroDoResponsavel: new FormControl('', [Validators.required])
     })
+
+    this.form.controls['nome'].setValue(this.data.nome)
+    this.form.controls['numeroDoResponsavel'].setValue(this.data.numeroDoResponsavel)
   }
   
   error() {

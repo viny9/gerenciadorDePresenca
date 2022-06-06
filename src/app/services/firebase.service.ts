@@ -1,6 +1,8 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY} from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class FirebaseService {
 
   load:any = true
 
-  constructor(public db:AngularFirestore) { }
+  constructor(public db:AngularFirestore, private snackBar:MatSnackBar) { }
 
   get titleInfos() {
     return this.headInfos.value
@@ -25,67 +27,121 @@ export class FirebaseService {
 
   getTurmas() {
     return this.db.collection('/turmas').get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
 
   getTurma(pathId:any) {
     return this.db.collection('/turmas').doc(pathId).get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
 
-  addTurma(turma:any) {
+ async addTurma(turma:any) {
     return this.db.collection('turmas').add(turma)
+    .catch(e => this.handleError(e))
   }
   
-  updateTurma(id:any, newTurma:any) {
+  async updateTurma(id:any, newTurma:any) {
     return this.db.collection('turmas').doc(id).update(newTurma)
+    .catch(e => this.handleError(e))
   }
   
-  deleteTurma(turma:any) {
+  async deleteTurma(turma:any) {
     return this.db.collection('/turmas').doc(turma).delete()
+    .catch(e => this.handleError(e))
   }
   
   readAlunos(id:any) {
     return this.db.collection(`/turmas/${id}/alunos`).get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
 
   readAluno(pathId:any, id:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
 
-  updateAluno(pathId:any, id:any, newAluno:any) {
+  async updateAluno(pathId:any, id:any, newAluno:any) {
     return this.db.collection('turmas').doc(pathId).collection('alunos').doc(id).update(newAluno)
+    .catch(e => this.handleError(e))
+
   }
 
-  addAluno(aluno:any, id:any) {
+  async addAluno(aluno:any, id:any) {
     return this.db.collection(`/turmas/${id}/alunos`).add(aluno)
+    .catch(e => this.handleError(e))
   }
 
-  removeAlunos(pathId:any, id:any) {
-    return this.db
-      .collection(`/turmas/${pathId}/alunos`).doc(id).delete()
+  async removeAlunos(pathId:any, id:any) {
+    return this.db.collection(`/turmas/${pathId}/alunos`).doc(id).delete()
+    .catch(e => this.handleError(e))
   }
 
   getPresenca(pathId:any, id:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).collection('/presenca').get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
  
-  addPresenca(pathId:any, alunoId:any, presenca:any) {
+  async addPresenca(pathId:any, alunoId:any, presenca:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').add(presenca)  
-  }
-
-  getProfessores() {
-    return this.db.collection('professores').get()
-  }
-
-  getProfessor() {
-    return this.db.collection('professores').doc().get()
+    .catch(e => this.handleError(e))
   }
 
   getUsers() {
     return this.db.collection('users').get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
+  }
+  
+  getUser(id:any) {
+    return this.db.collection('users').doc(id).get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
   }
 
-  justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
-    return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('/presenca').doc(falta).set(presenca)
+  deleteProfTurma(id:any, turma:any) {
+    this.db.collection('users').doc(id).update(turma)
   }
+
+  async updateUser(id:any, newUser:any) {
+    return this.db.collection('users').doc(id).update(newUser)
+    .then(() => window.location.reload())
+    .catch((e) => this.handleError(e))
+  }
+
+  deleteUser(id:any) {
+    return this.db.collection('users').doc(id).delete()
+  }
+
+  async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
+    return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('/presenca').doc(falta).set(presenca)
+    .catch(e => this.handleError(e))
+  }
+
+  handleError(e:any) {
+    this.openSnackbar('ocorre um error')
+    return EMPTY
+  }
+  
+  openSnackbar(message: any) {
+    this.snackBar.open(message, 'X', {
+      duration: 1500,
+      panelClass: 'snackbar',
+      verticalPosition: 'top'
+    })
+  }
+
+
 }
 

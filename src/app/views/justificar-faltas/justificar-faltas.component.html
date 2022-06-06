@@ -1,15 +1,11 @@
 <div class="h-100">
-    <p>Data da falta: {{data.date}}</p>
-    <p>Horario: {{data.horario}}</p>
-    <p>Disciplina: {{data.materia}}</p>
-    <p *ngIf="data.justificativa">Justificativa: {{data.justificativa}}</p>
-    <mat-form-field [formGroup]="justificativa" class="w-75">
+    <mat-form-field class="w-75"> 
         <mat-label>Justificativa</mat-label>
-        <textarea formControlName="justi" matInput></textarea>
+        <textarea [formControl]="justi" matInput></textarea>
     </mat-form-field>
+    
     <div>
         <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
-        <button *ngIf="data.justificativa" (click)="justificar()" class="btn btn-primary">Editar</button>
-        <button *ngIf="!data.justificativa" (click)="justificar()" class="btn btn-primary">Justificar</button>
+        <button [disabled]="justi.invalid" (click)="justificar()" class="btn btn-success">Justificar</button>
     </div>
 </div>

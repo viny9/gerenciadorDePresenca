@@ -1,6 +1,6 @@
-import { FormControl, FormGroup } from '@angular/forms';
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-justificar-faltas',
@@ -9,16 +9,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class JustificarFaltasComponent implements OnInit {
 
-  justificativa:any
+  justi = new FormControl('', [Validators.required])
 
-  constructor(private ref:MatDialogRef<JustificarFaltasComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data:any) { }
+  constructor(private ref:MatDialogRef<JustificarFaltasComponent>) { }
 
   ngOnInit(): void {
-    this.justificativa = new FormGroup({
-      justi: new FormControl('')
-    })
-    console.log(this.data)
   }
 
   close() {
@@ -26,7 +21,7 @@ export class JustificarFaltasComponent implements OnInit {
   }
 
   justificar() {
-    this.ref.close(this.justificativa.value.justi)
+    this.ref.close(this.justi.value)
   }
 
 }

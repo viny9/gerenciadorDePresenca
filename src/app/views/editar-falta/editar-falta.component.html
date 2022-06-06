@@ -1,0 +1,27 @@
+<div class="h-100">
+    <form [formGroup]="form">
+        <mat-form-field class="w-75">
+            <mat-label>Horario</mat-label>
+        <input formControlName="horario" matInput >
+    </mat-form-field>
+    
+    <mat-form-field class="w-75">
+        <mat-label>Disciplina</mat-label>
+        <input formControlName="materia" matInput>
+    </mat-form-field>
+    
+    <mat-form-field class="w-75" *ngIf="justificativa"> 
+        <mat-label>Justificativa</mat-label>
+        <input formControlName="justi" matInput>
+    </mat-form-field>
+    
+    <mat-form-field class="w-75"> 
+        <mat-label>Professor</mat-label>
+        <input formControlName="professor" matInput>
+    </mat-form-field>
+
+</form>
+
+    <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
+    <button [disabled]="form.invalid" (click)="editar()" class="btn btn-success">Editar</button>
+</div>

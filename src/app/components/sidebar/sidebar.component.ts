@@ -24,9 +24,9 @@ export class SidebarComponent implements OnInit {
     this.notAdmin = this.dbAuth.notAdmin
     this.createForm()
     
-    if(sessionStorage['tipo'] == '"admin"') {
+    if(sessionStorage['tipo'] == 'admin') {
       this.getTurmas()
-    } else if(sessionStorage['tipo'] == '"professor"') {
+    } else if(sessionStorage['tipo'] == 'professor') {
       this.getProfTurmas()
     }
   }
@@ -50,13 +50,14 @@ export class SidebarComponent implements OnInit {
   //Vai pegar as turmas do Professor
   getProfTurmas() {
     const professores:any = []
-      this.db.getProfessores().subscribe((infos: any) => {
+      this.db.getUsers().subscribe((infos: any) => {
         infos.docs.forEach((element: any) => {
         professores.push(element.data())
       }); 
 
-      const user = professores.filter((professor: any) => {
-        if (`"${professor.uid}"` == sessionStorage['user']) {
+      try {
+        const user = professores.filter((professor: any) => {
+          if (professor.id == sessionStorage['id']) {
           return professor
         }
       })
@@ -67,37 +68,43 @@ export class SidebarComponent implements OnInit {
       }
 
       this.turmas = turmas
-
+      
       this.turmas = this.turmas.sort((a:any, b:any) => {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
       })
-
+      
       //Para pesquisar depois
       this.newTurmas = this.turmas
-
+    } catch (error) {
+     this.db.handleError(error) 
+    }
     })
   }
   
   //Vai criar um form para o FormGroup
   createForm() {
     this.search = new FormGroup({
-      search: new FormControl()
+      search: new FormControl(),
     })
   }
 
   searchs() {
-    this.newTurmas = this.turmas
+    try {
+      this.newTurmas = this.turmas
       const filtrado = this.turmas.filter((turma:any) =>{
         if(turma.nome.includes(this.search.value.search)) {
           return turma
         } else {}
       })
-
+      
       if(filtrado.length === 0) {
         this.newTurmas = this.turmas
       } else {
         this.newTurmas = filtrado
       }
+    } catch (error) {
+      this.db.handleError(error)      
+    }
   }
 
   openAddTurma() {
@@ -115,7 +122,8 @@ export class SidebarComponent implements OnInit {
   }
 
   addTurma(turma:any) {
-    this.db.addTurma(turma).then(() => {
+    this.db.addTurma(turma)
+    .then(() => {
       window.location.reload()
     })
   }
@@ -128,11 +136,19 @@ export class SidebarComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      const id = ids[index].id
-
-      this.router.navigate([`turma/${id}`])
+      try {
+        const index = names.indexOf(nome)
+        const id = ids[index].id
+        
+        this.router.navigate([`turma/${id}`])
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')        
+      }
 
     })  
+  }
+
+  logout() {
+    this.dbAuth.logOut()
   }
 }

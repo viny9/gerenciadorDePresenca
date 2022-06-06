@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-lista-de-frequencia',
@@ -18,6 +19,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
   frequencia:any = []
   horario:any
   form:any
+  teste:any
+  testes:any = []
 
   //Auto complete
   input = new FormControl()
@@ -30,6 +33,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
       map((materia: string | null) => (materia ? this._filter(materia) : this.materias.slice())),
     );
   }
+
+  //Tentar não deixar mandar duas faltas pelo id
 
   ngOnInit(): void {
     this.createForm()
@@ -47,6 +52,10 @@ export class ListaDeFrequenciaComponent implements OnInit {
     this.form = new FormGroup({
       nomeDoProfessor: new FormControl('', [Validators.required]),
       materia: new FormControl('', [Validators.required])
+    })
+
+    this.teste = new FormGroup({
+      value: new FormControl()
     })
   }
 
@@ -81,45 +90,64 @@ export class ListaDeFrequenciaComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id.push(ids[index].id)
+      try {
+        const index = names.indexOf(nome)
+        this.id.push(ids[index].id)
 
-      //Não vai deixar adicionar um item repitido
-      const filteredArray = this.id.filter((before:any, after:any) => this.id.indexOf(before) == after);
-      this.id = filteredArray
-    })    
-  }
+        //Não vai deixar os ids se repetir
+        const filteredArray = this.id.filter((before:any, after:any) => this.id.indexOf(before) == after);
+        this.id = filteredArray
+
+      } catch (error) {
+          this.db.handleError(error)
+        }
+      })   
+    } 
 
   // Vai pegar os valores do radio button
-  presenca(value:any) {
+  presenca(teste:any, value:any) {
     const date = new Date()
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
-    const teste = Math.random().toString(36).substring(2, 12)
+    this.db.readAlunos(this.pathId).subscribe(infos => {
 
-    const frequencia = {
-      id: teste,
-      date: `${day}/${month}/${year}`,
-      horario: this.horario,
-      presenca: value.value,
-      materia: this.form.value.materia,
-      professor: this.form.value.nomeDoProfessor,
-      status: 'Não justificada'
+      const ids = infos.docs
+      const names = infos.docs.map((infos:any) => {
+        return infos.data().nome
+      })
+
+      const index = names.indexOf(teste)
+
+      const frequencia = {
+        id:  ids[index].id,
+        date: `${day}/${month}/${year}`,
+        horario: 1,
+        presenca: value.value,
+        materia: this.form.value.materia,
+        professor: this.form.value.nomeDoProfessor,
+        status: 'Não justificada'
+      }
+
+    
+    let indexs = this.testes.findIndex( (age:any) => age.id == frequencia.id);
+    
+    if(indexs == -1) {
+      this.testes.push(frequencia)
+    }else if(indexs >= 0) {
+      this.testes[indexs] = frequencia
+    } else {
+      console.log('teste')
     }
-
-    //Só precisa evitar que uma mesma pessoa possa estar e faltar ao mesmo tempo
-    this.frequencia.push(frequencia)
-    console.log(this.frequencia)
-  }
-
+  })
+}
+  
  //Vai adicionar a presença
   addPresenca() {
-
   //Vai adicionar presença para cada item no Array de ids
     for (let i = 0; i < this.id.length; i++) {
-      this.db.addPresenca(this.pathId, this.id[i], this.frequencia[i])
+      this.db.addPresenca(this.pathId, this.id[i], this.testes[i])
     }
   }
 
@@ -129,11 +157,12 @@ export class ListaDeFrequenciaComponent implements OnInit {
     const minutes = date.getMinutes()
 
     //Horarios que a chamada vai estar aberta
-    if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //Matutino
+    if(hour == 11 && minutes >= 0 && minutes <= 59) {
       this.horario = 1
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    } else if(hour == 23 && minutes >= 0 && minutes < 59) {
       this.horario = 2
-    } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    } else if(hour == 13 && minutes >= 0 && minutes < 59) {
       this.horario = 3
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 4
@@ -142,6 +171,36 @@ export class ListaDeFrequenciaComponent implements OnInit {
     } else if(hour == 4 && minutes >= 0 && minutes < 10) {
       this.horario = 6
     }
+
+    //Verspetino
+    // if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //   this.horario = 1
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 2
+    // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    //   this.horario = 3
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 4
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 5
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 6
+    // }
+
+    //Noturno
+    // if(hour == 8 && minutes >= 20 && minutes <= 45) {
+    //   this.horario = 1
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 2
+    // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+    //   this.horario = 3
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 4
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 5
+    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+    //   this.horario = 6
+    // }
   }
 
   private _filter(value:any): string[] {
@@ -151,4 +210,5 @@ export class ListaDeFrequenciaComponent implements OnInit {
       turma.toLowerCase().includes(filterValue)
     })
   }
+
 }

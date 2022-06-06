@@ -17,12 +17,16 @@ export class AppComponent implements OnInit  {
 
   ngOnInit(): void {
     //Vai dizer se o usuario fez login
-    if(sessionStorage['tipo'] != null) {
+    if(sessionStorage['tipo'] == 'admin' ) {
       this.login = true
-    } else if(sessionStorage['tipo'] == null) {
-      this.login = false
+    } else if(sessionStorage['tipo'] == 'professor') {
+      this.login = true
+    } else if(sessionStorage['tipo'] == 'user') {
+      this.login = true
       this.res = true
       this.dbAuth.user = true
+    } else if(sessionStorage['tipo'] == null){
+      this.login = false
     }
 
     //Dependendo do tamanho da tela a sidebar vai estar fechada por padrão
@@ -35,9 +39,9 @@ export class AppComponent implements OnInit  {
     }
 
     //Vai dizer se o usuario e admin ou professor
-    if(sessionStorage['tipo'] == '"admin"') {
+    if(sessionStorage['tipo'] == 'admin') {
       this.dbAuth.notAdmin = false
-    } else if(sessionStorage['tipo'] == '"professor"'){
+    } else if(sessionStorage['tipo'] == 'professor'){
       this.dbAuth.notAdmin = true
     }
 }

@@ -98,7 +98,6 @@ export class SignupComponent implements OnInit {
 
   testes(tipo:any) {
     this.userType = tipo.value
-   console.log(this.userType)
   }
  
 

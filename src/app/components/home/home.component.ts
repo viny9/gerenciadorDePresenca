@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UpdateTurmaComponent } from 'src/app/views/update-turma/update-turma.component';
+import { ThisReceiver } from '@angular/compiler';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-home',
@@ -28,9 +30,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.notAdmin = this.dbAuth.notAdmin
   
-    if(sessionStorage['tipo'] == '"professor"') {
+    if(sessionStorage['tipo'] == 'professor') {
       this.getProfTurmas()
-    } else if(sessionStorage['tipo'] == '"admin"') {
+    } else if(sessionStorage['tipo'] == 'admin') {
       this.getTurmas()
     }
 
@@ -38,14 +40,13 @@ export class HomeComponent implements OnInit {
 
   getTurmas() {
     this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
-        this.turmas.push(element.data())
-
-        this.turmas = this.turmas.sort((a: any, b: any) => {
-          return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+        infos.docs.forEach((element:any) => {
+          this.turmas.push(element.data())
+          
+          this.turmas = this.turmas.sort((a: any, b: any) => {
+            return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
+          })
         })
-      })
-        
     })
   }
 
@@ -57,27 +58,34 @@ export class HomeComponent implements OnInit {
 
   getProfTurmas() {
     const professores = <any>[]
-      this.db.getProfessores().subscribe((infos: any) => {
-        infos.docs.forEach((element: any) => {
-        professores.push(element.data())
-      }); 
+      this.db.getUsers().subscribe((infos: any) => {
 
-      const user = professores.filter((professor: any) => {
-        if (`"${professor.uid}"` == sessionStorage['user']) {
+        try {
+          infos.docs.forEach((element: any) => {
+            professores.push(element.data())
+          }); 
+          
+          const user = professores.filter((professor: any) => {
+            if (professor.id == sessionStorage['id']) {
           return professor
         }
+
       })
-      
       const turmas:any = []
+
       for (let i = 0; i < user[0].turma.length; i++) {
         turmas.push({nome: user[0].turma[i]})
       }
-      
-      this.turmas = turmas
 
+      this.turmas = turmas
+      
       this.turmas = this.turmas.sort((a: any, b: any) => {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;
       })
+
+      } catch (error) {
+        this.db.handleError(error)
+      }
     })
   }
 
@@ -90,11 +98,14 @@ export class HomeComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      const id = ids[index].id
-
-      this.router.navigate([`turma/${id}`])
-
+      try {
+        const index = names.indexOf(nome)
+        const id = ids[index].id
+        this.router.navigate([`turma/${id}`])
+        
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')
+      }
     })
   }
 
@@ -106,18 +117,29 @@ export class HomeComponent implements OnInit {
         return infos.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
-
-      this.getTurma()
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        
+        this.getTurma()
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')
+      }
 
     })
   }
 
   removeTurma() {
-    this.db.deleteTurma(this.id).then(() => {
-      window.location.reload()
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja excluir essa turma ?'
     })
+
+    ref.afterClosed().subscribe((infos:any) => {
+      if(infos == true) {
+        this.db.deleteTurma(this.id).then(() => window.location.reload() )
+      }
+   })
   }
 
   openUpdateTurma() {

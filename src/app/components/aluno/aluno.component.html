@@ -32,7 +32,17 @@
         <th mat-header-cell *matHeaderCellDef class="text-center wx">Jusificar</th>
         <td mat-cell *matCellDef="let teste" class="ps2 wx">
           <div class="ps-2 text-center" >
-            <button class="btn btn-primary" (click)="findId(teste)" (click)="openJustificarFaltas(teste)">Jusificar</button>
+            <button [matMenuTriggerFor]="menu" class="btn" (click)="findId(teste)">
+              <mat-icon>more_horizontal</mat-icon>
+
+              <!-- Aqui pode usar a variavel do *ngFor da tabela -->
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditarFalta()">Editar</button>
+                <button mat-menu-item (click)="deleteFalta()">Excluir</button>
+                <button mat-menu-item *ngIf=" teste.status == 'Não justificada'" (click)="openJustificarFaltas()">Justificar Falta</button>
+              </mat-menu>
+
+            </button>
           </div>
         </td>
       </ng-container>
@@ -41,6 +51,15 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle"></tr>
     </table>
   </div>
+</div>
+
+  <!-- <div class="mt-5 d-flex flex-column align-items-center">
+    <h1>Qr Code do link do site</h1>
+      <ngx-qrcode 
+      [value]="value"
+      cssClass="aclass">
+    </ngx-qrcode>
+  </div> -->
 
     <!-- <div>
     <a href="https://web.whatsapp.com/" target="_blank">Eviar mensagem</a>

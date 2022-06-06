@@ -3,7 +3,7 @@
     <form [formGroup]="form">
         <mat-form-field class="w-100">
             <mat-label>Nome da turma</mat-label>
-            <input type="text" matInput formControlName="nome" [placeholder]="data.nome">
+            <input type="text" matInput formControlName="nome">
             <mat-error *ngIf="form.controls['nome']">{{error()}}</mat-error>
         </mat-form-field>
     </form>
