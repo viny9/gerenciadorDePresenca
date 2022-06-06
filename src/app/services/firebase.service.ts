@@ -102,6 +102,19 @@ export class FirebaseService {
       catchError(e => this.handleError(e))
     )
   }
+  
+  getUser(id:any) {
+    return this.db.collection('users').doc(id).get()
+    .pipe(
+      catchError(e => this.handleError(e))
+    )
+  }
+
+  async updateUser(id:any, newUser:any) {
+    return this.db.collection('users').doc(id).update(newUser)
+    .then(() => window.location.reload())
+    .catch((e) => this.handleError(e))
+  }
 
   async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
     return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('/presenca').doc(falta).set(presenca)

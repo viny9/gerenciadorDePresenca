@@ -32,17 +32,17 @@
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="findId(row.email)"></tr>
   </table>
 
   <div class="text-end">
-    <button class="btn btn-danger mt-3">
-          <a class="text-decoration-none text-light" href="https://console.firebase.google.com/project/gerenciadordepresenca-9f4a4/authentication/users?hl=pt-br" target="_blank">Remover Usuarios</a>
+    <button class="btn btn-primary mt-3">
+          <a class="text-decoration-none text-light" href="https://console.firebase.google.com/project/gerenciadordepresenca-9f4a4/authentication/users?hl=pt-br" target="_blank">Editar Usuários</a>
     </button>
   </div>
   <div>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>Editar</button>
+      <button mat-menu-item (click)="openUser()">Tipo de usuário</button>
     </mat-menu>
     <!-- <a href="https://console.firebase.google.com/project/gerenciadordepresenca-9f4a4/authentication/users?hl=pt-br" target="_blank">L</a> -->
   </div>
