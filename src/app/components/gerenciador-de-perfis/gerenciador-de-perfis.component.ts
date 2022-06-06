@@ -82,4 +82,8 @@ export class GerenciadorDePerfisComponent implements OnInit {
 
   }
   
+  deleteUser() {
+   this.db.deleteUser(this.id)
+    .then(() => window.location.reload()) 
+  }
 }

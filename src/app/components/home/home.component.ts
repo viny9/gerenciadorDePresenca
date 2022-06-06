@@ -30,9 +30,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.notAdmin = this.dbAuth.notAdmin
   
-    if(sessionStorage['tipo'] == '"professor"') {
+    if(sessionStorage['tipo'] == 'professor') {
       this.getProfTurmas()
-    } else if(sessionStorage['tipo'] == '"admin"') {
+    } else if(sessionStorage['tipo'] == 'admin') {
       this.getTurmas()
     }
 
@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit {
           }); 
           
           const user = professores.filter((professor: any) => {
-            if (`"${professor.uid}"` == sessionStorage['user']) {
+            if (professor.id == sessionStorage['id']) {
           return professor
         }
 
@@ -137,9 +137,7 @@ export class HomeComponent implements OnInit {
 
     ref.afterClosed().subscribe((infos:any) => {
       if(infos == true) {
-        this.db.deleteTurma(this.id).then(() => {
-          window.location.reload()
-        })
+        this.db.deleteTurma(this.id).then(() => window.location.reload() )
       }
    })
   }

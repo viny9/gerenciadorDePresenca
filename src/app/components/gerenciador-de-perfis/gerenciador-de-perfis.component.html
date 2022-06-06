@@ -35,14 +35,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="findId(row.email)"></tr>
   </table>
 
-  <div class="text-end">
-    <button class="btn btn-primary mt-3">
-          <a class="text-decoration-none text-light" href="https://console.firebase.google.com/project/gerenciadordepresenca-9f4a4/authentication/users?hl=pt-br" target="_blank">Editar Usuários</a>
-    </button>
-  </div>
   <div>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="openUser()">Tipo de usuário</button>
+      <button mat-menu-item (click)="openUser()">Editar</button>
+      <button mat-menu-item (click)="deleteUser()">Excluir</button>
     </mat-menu>
     <!-- <a href="https://console.firebase.google.com/project/gerenciadordepresenca-9f4a4/authentication/users?hl=pt-br" target="_blank">L</a> -->
   </div>

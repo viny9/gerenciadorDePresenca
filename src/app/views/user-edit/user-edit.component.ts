@@ -46,8 +46,10 @@ export class UserEditComponent implements OnInit {
 
     this.form.controls['nome'].setValue(this.data.nome)
 
-    for (let i = 0; i < this.data.turma.length; i++) {
-      this.addTurmas.push(this.data.turma[i])
+    if(this.data.type == 'professor') {
+      for (let i = 0; i < this.data.turma.length; i++) {
+        this.addTurmas.push(this.data.turma[i])
+    }
     }
   }
 

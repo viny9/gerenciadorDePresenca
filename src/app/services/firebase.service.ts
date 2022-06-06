@@ -110,10 +110,18 @@ export class FirebaseService {
     )
   }
 
+  deleteProfTurma(id:any, turma:any) {
+    this.db.collection('users').doc(id).update(turma)
+  }
+
   async updateUser(id:any, newUser:any) {
     return this.db.collection('users').doc(id).update(newUser)
     .then(() => window.location.reload())
     .catch((e) => this.handleError(e))
+  }
+
+  deleteUser(id:any) {
+    return this.db.collection('users').doc(id).delete()
   }
 
   async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
@@ -133,6 +141,7 @@ export class FirebaseService {
       verticalPosition: 'top'
     })
   }
+
 
 }
 

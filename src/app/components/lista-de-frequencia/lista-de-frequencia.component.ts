@@ -158,7 +158,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
 
     //Horarios que a chamada vai estar aberta
     //Matutino
-    if(hour == 13 && minutes >= 0 && minutes <= 59) {
+    if(hour == 11 && minutes >= 0 && minutes <= 59) {
       this.horario = 1
     } else if(hour == 23 && minutes >= 0 && minutes < 59) {
       this.horario = 2
