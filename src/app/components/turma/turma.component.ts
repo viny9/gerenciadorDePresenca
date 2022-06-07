@@ -119,21 +119,22 @@ export class TurmaComponent implements OnInit {
   }
 
   openUpdateAluno() {
-    const ref = this.dialog.open(UpdateAlunoComponent, {
-      width: '500px', 
-      data: this.aluno
-    })
-
-    ref.afterClosed().subscribe((res:any) => {
-      if(res === undefined) {
-        return
-      } else {
-        this.db.updateAluno(this.pathId, this.id, res)
-      }
-    })
-
+    setTimeout(() => {
+      const ref = this.dialog.open(UpdateAlunoComponent, {
+        width: '500px', 
+        data: this.aluno
+      })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
+          return
+        } else {
+          this.db.updateAluno(this.pathId, this.id, res)
+        }
+      })
+    }, 500);
   }
-
+    
   deleteAluno() {
     const ref = this.dialog.open(DeleteComponent, {
       width: '500px',

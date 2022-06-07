@@ -52,7 +52,7 @@ export class SignupComponent implements OnInit {
       nome: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      turma: this.input,
+      turma: new FormControl(),
     })
   }
 

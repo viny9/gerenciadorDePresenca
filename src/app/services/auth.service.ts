@@ -97,6 +97,7 @@ export class AuthService {
         return res.data().nome
       })
       const index = names.indexOf(turmad)
+      console.log(turmad)
 
       if (index == -1) {
         this.openSnackbar('Turma ou aluno incorreto')

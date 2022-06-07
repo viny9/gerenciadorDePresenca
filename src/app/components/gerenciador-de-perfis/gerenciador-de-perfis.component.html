@@ -1,18 +1,22 @@
-<table mat-table [dataSource]="dataSource" class="w-100 mat-elevation-z8 teste">
+<table mat-table [dataSource]="dataSource" class="w-100 mat-elevation-z8 ">
 
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let i = index">{{i + 1}}</td>
+      <th mat-header-cell *matHeaderCellDef class="index"> No. </th>
+      <td mat-cell *matCellDef="let i = index" class="index">{{i + 1}}</td>
     </ng-container>
   
     <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef class="teste2"> Nome </th>
-      <td mat-cell *matCellDef="let user" class="teste2"> {{user.nome}} </td>
+      <th mat-header-cell *matHeaderCellDef> Nome </th>
+      <td mat-cell *matCellDef="let user">
+        <p class="nome text-truncate"> {{user.nome}} </p>
+      </td>
     </ng-container>
   
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+      <th mat-header-cell *matHeaderCellDef class="email"> Email </th>
+      <td mat-cell *matCellDef="let user"> 
+        <p class="email text-truncate"> {{user.email}} </p>
+      </td>
     </ng-container>
   
     <ng-container matColumnDef="type">

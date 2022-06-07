@@ -141,19 +141,22 @@ export class HomeComponent implements OnInit {
   }
 
   openUpdateTurma() {
-    const ref = this.dialog.open(UpdateTurmaComponent, {
-      width: '500px',
-      data: this.turma
-    })
-
-    ref.afterClosed().subscribe((res: any) => {
-      if(res == undefined) {
-        return 
-      }
-      else {
-        this.db.updateTurma(this.id, res)
-      }
-    })
+    setTimeout(() => {
+      
+      const ref = this.dialog.open(UpdateTurmaComponent, {
+        width: '500px',
+        data: this.turma
+      })
+      
+      ref.afterClosed().subscribe((res: any) => {
+        if(res == undefined) {
+          return 
+        }
+        else {
+          this.db.updateTurma(this.id, res)
+        }
+      })
+    }, 500);
   }
 
 

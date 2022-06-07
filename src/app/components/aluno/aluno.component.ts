@@ -103,52 +103,57 @@ export class AlunoComponent implements OnInit {
   }
 
   openJustificarFaltas() {
-   const ref = this.dialog.open(JustificarFaltasComponent, {
-      width: '500px',
-      data: this.selectedFalta
-    })
-
-    ref.afterClosed().subscribe((res?:any) => {
-      if(res == undefined) {
-        return 
-      } else {
-        const justificado = {
-          ...this.selectedFalta, 
-          justificativa: res
+    setTimeout(() => {
+      const ref = this.dialog.open(JustificarFaltasComponent, {
+        width: '500px',
+        data: this.selectedFalta
+      })
+      
+      ref.afterClosed().subscribe((res?:any) => {
+        if(res == undefined) {
+          return 
+        } else {
+          const justificado = {
+            ...this.selectedFalta, 
+            justificativa: res
+          }
+          justificado.status = 'Justificado'
+          
+          this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
         }
-        justificado.status = 'Justificado'
-
-        this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
-      }
-    })
+      })
+    }, 500);
   }
 
   openEditarFalta() {
-    const ref = this.dialog.open(EditarFaltaComponent, {
-      width: '500px',
-      data: this.selectedFalta
-    })
-
-    ref.afterClosed().subscribe((res:any) => {
-     if(res == undefined) {
-       return 
-    } else {
-
-      const falta = {
-        ...this.selectedFalta
-      }
+    setTimeout(() => {
       
-      falta.horario = res.horario
-      falta.materia = res.materia
-      falta.professor = res.professor
-
-      if(res.justificativa != undefined) {
-        falta.justificativa = res.justificativa
-      }
-
-      this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, falta)
-      }
-    })
+      const ref = this.dialog.open(EditarFaltaComponent, {
+        width: '500px',
+        data: this.selectedFalta
+      })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res == undefined) {
+          return 
+        } else {
+          
+          const falta = {
+            ...this.selectedFalta
+          }
+          
+          falta.horario = res.horario
+          falta.materia = res.materia
+          falta.professor = res.professor
+          
+          if(res.justificativa != undefined) {
+            falta.justificativa = res.justificativa
+          }
+          
+          this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, falta)
+        }
+      })
+    }, 500);
   }
   
   deleteFalta() {

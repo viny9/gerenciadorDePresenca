@@ -1,17 +1,16 @@
 @media (max-width:576px) {
-    .teste {
-    }
+  .index {
+    padding: 0 20px !important;
+  }
 
-    .teste2 {
-      width: 200px;
-    }
+  .nome {
+    width: 200px !important;
+    margin-bottom: 0;
   }
   
-  @media (min-width: 577px) and (max-width:991px) {
-    .teste {
-    }
-
-    .teste2 {
-      width: 200px;
-    }
+  .email {
+    padding: 0 10px;
+    width: 200px !important;
+    margin-bottom: 0;
   }
+}

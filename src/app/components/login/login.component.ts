@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     })
 
     this.notAdmin = new FormGroup({
-      turmas: this.input,
+      turmas: new FormControl(),
       nome: new FormControl('', [Validators.required]),
     })
   }
@@ -59,7 +59,8 @@ export class LoginComponent implements OnInit {
   }
 
   enter() {
-    this.dbAuth.alunoInfos(this.notAdmin.value.turma, this.notAdmin.value.nome)
+    console.log(this.notAdmin)
+    this.dbAuth.alunoInfos(this.notAdmin.controls['turmas'].value, this.notAdmin.value.nome)
       this.dbAuth.isLogged 
   }
 

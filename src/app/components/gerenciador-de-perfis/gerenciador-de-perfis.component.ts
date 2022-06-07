@@ -2,6 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { UserEditComponent } from 'src/app/views/user-edit/user-edit.component';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-gerenciador-de-perfis',
@@ -86,6 +87,15 @@ export class GerenciadorDePerfisComponent implements OnInit {
   }
   
   deleteUser() {
-   this.db.deleteUser(this.id)
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja remover esse usuário ?'
+    })
+
+    ref.afterClosed().subscribe((res:any) => {
+      if(res != undefined) {
+        this.db.deleteUser(this.id)
+      }
+    })
   }
 }
