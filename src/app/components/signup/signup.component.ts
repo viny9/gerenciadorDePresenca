@@ -19,8 +19,8 @@ export class SignupComponent implements OnInit {
   turmas:any = []
   userType:any = 'professor'
   formSignup:any
-  teste1: Observable<string[]>;
-  input = new FormControl() 
+  filterInput: Observable<string[]>;
+  input = new FormControl('', [Validators.required]) 
 
 
   constructor(private db:FirebaseService, private dbAuth:AuthService) {
@@ -28,7 +28,7 @@ export class SignupComponent implements OnInit {
       title: 'Cadastro'
     }
 
-    this.teste1 = this.input.valueChanges.pipe(
+    this.filterInput = this.input.valueChanges.pipe(
       startWith(null),
       map((turma: string | null) => (turma ? this._filter(turma) : this.turmas.slice())),
     );
@@ -40,8 +40,8 @@ export class SignupComponent implements OnInit {
   }
 
   getTurmas() {
-    this.db.getTurmas().subscribe((infos:any) => {
-      infos.forEach((element:any) => {
+    this.db.getTurmas().subscribe((res:any) => {
+      res.forEach((element:any) => {
         this.turmas.push(element.data())
       });
     })
@@ -52,7 +52,7 @@ export class SignupComponent implements OnInit {
       nome: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      turma: new FormControl(),
+      turma: this.input,
     })
   }
 
@@ -60,10 +60,14 @@ export class SignupComponent implements OnInit {
     this.dbAuth.signup(this.formSignup.value.nome, this.formSignup.value.email, this.formSignup.value.password, this.addTurmas, this.userType)
   }
 
+  type(tipo:any) {
+    this.userType = tipo.value
+  }
+
+//AutoComplete and Chips
   selected(event:MatAutocompleteSelectedEvent) {
     const input = this.formSignup.controls.turma
     this.addTurmas.push(event.option.viewValue)
-    // this.teste.nativeElement.value = ''
 
     input.setValue(null)
   }
@@ -96,9 +100,7 @@ export class SignupComponent implements OnInit {
     })
   }
 
-  testes(tipo:any) {
-    this.userType = tipo.value
-  }
+ 
  
 
 }

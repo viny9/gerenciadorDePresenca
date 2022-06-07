@@ -1,20 +1,19 @@
 <div>
-    <h1 class="text-center">Editar Aluno</h1>
-    <form [formGroup]="form">
-        <mat-form-field class="w-100">
-            <mat-label>Nome do Aluno</mat-label>
-            <input type="text" matInput formControlName="nome">
-            <mat-error *ngIf="form.controls['nome']">{{error()}}</mat-error>
-        </mat-form-field>
+  <h1 class="text-center">Editar Aluno</h1>
+  <form [formGroup]="form">
+    <mat-form-field class="w-100">
+      <mat-label>Nome do Aluno</mat-label>
+      <input type="text" matInput formControlName="nome">
+    </mat-form-field>
 
-        <mat-form-field class="w-100">
-            <mat-label>Número dos responsaveis</mat-label>
-            <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11">
-            <mat-error  *ngIf="form.controls['numeroDoResponsavel']">{{error()}}</mat-error>
-        </mat-form-field>
-    </form>
-    <div mat-dialog-actions>
-        <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
-        <button [disabled]="form.controls['nome'].invalid" (click)="updateTurma()" class="btn btn-success">Atualizar</button>
-    </div>
+    <mat-form-field class="w-100">
+      <mat-label>Número dos responsaveis</mat-label>
+      <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11">
+    </mat-form-field>
+  </form>
+  <div mat-dialog-actions>
+    <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
+    <button [disabled]="form.controls['nome'].invalid" (click)="updateTurma()"
+      class="btn btn-success">Salvar</button>
+  </div>
 </div>

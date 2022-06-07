@@ -11,25 +11,13 @@ import { AddTurmaComponent } from '../add-turma/add-turma.component';
 })
 export class UpdateTurmaComponent implements OnInit {
 
-  form:any
+  name:any = new FormControl('', [Validators.required])
 
   constructor( private ref:MatDialogRef<AddTurmaComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any) { }
 
   ngOnInit(): void {
-    this.createForm()
-  }
-  
-  createForm() {
-    this.form = new FormGroup({
-      nome: new FormControl('', [Validators.required])
-    })
-
-    this.form.controls['nome'].setValue(this.data.nome)
-  }
-  
-  error() {
-    return this.form.controls['nome'].hasError('required')? 'Você tem que digitar alguma coisa' : ''
+    this.name.setValue(this.data.nome)
   }
   
   close () {
@@ -37,7 +25,7 @@ export class UpdateTurmaComponent implements OnInit {
   }
 
   updateTurma() { 
-    this.ref.close(this.form.value)
+    this.ref.close(this.name.value)
   }
 
 }

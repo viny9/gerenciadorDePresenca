@@ -27,10 +27,10 @@ export class AuthService {
 
   //Login
   signin(email: any, password: any) {
-
   const users:any = []
-  this.db.collection('users').get().subscribe((infos:any) => {
-    infos.docs.forEach((element:any) => {
+
+  this.db.collection('users').get().subscribe((res:any) => {
+    res.docs.forEach((element:any) => {
      users.push(element.data())
     });
 
@@ -43,6 +43,8 @@ export class AuthService {
     if(user[0] == undefined) {
       this.openSnackbar('Email ou senha incorretos')
     } else if(user[0].password != password) {
+      this.openSnackbar('Email ou senha incorretos')
+    } else if(user[0].email != email) {
       this.openSnackbar('Email ou senha incorretos')
     } else if(user[0].email === email && user[0].password == password) {
       sessionStorage.setItem('tipo', user[0].type)
@@ -69,39 +71,37 @@ export class AuthService {
       
       this.db.collection('users').add(user)
         .then(() => window.location.reload())
+        .catch((e) => this.openSnackbar('teste') )
 
     } else if(userType == 'professor') {
+        const prof = {
+          nome: nome,
+          turma: turmas,
+          email: email,
+          password: password,
+          type: userType,
+          id: id
+        }
 
-      const prof = {
-        nome: nome,
-        turma: turmas,
-        email: email,
-        password: password,
-        type: userType,
-        id: id
-      }
-
-      this.db.collection('users').add(prof)
-        .then(() => window.location.reload())
+        this.db.collection('users').add(prof)
+          .then(() => window.location.reload())
+          .catch((e) => this.openSnackbar('teste1'))
     }
   }
 
   alunoInfos(turmad: any, nome: any) {
-    //Vai pegar todas as turmas
-    this.db.collection('turmas').get().subscribe((infos: any) => {
+    this.db.collection('turmas').get().subscribe((res: any) => {
 
-      //Vair pegar o id da turma digitada
-      const ids = infos.docs
-      const names = infos.docs.map((infos: any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res: any) => {
+        return res.data().nome
       })
-
       const index = names.indexOf(turmad)
 
-      if (names.indexOf(turmad) == -1) {
+      if (index == -1) {
         this.openSnackbar('Turma ou aluno incorreto')
         this.isLogged = false
-      } else if (names.indexOf(turmad) >= 0) {
+      } else if (index >= 0) {
         this.turma = ids[index].id
         this.isLogged = true
       }
@@ -114,21 +114,19 @@ export class AuthService {
   }
 
   getAluno(turma: any, nome: any) {
-    //Vai pegar todos os alunos
-    this.db.collection('turmas').doc(turma).collection('alunos').get().subscribe((infos: any) => {
+    this.db.collection('turmas').doc(turma).collection('alunos').get().subscribe((res: any) => {
 
-      //Vai achar o id do aluno digitado
-      const ids = infos.docs
-      const names = infos.docs.map((infos: any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res: any) => {
+        return res.data().nome
       })
 
       const index = names.indexOf(nome)
 
-      if (names.indexOf(nome) == -1) {
+      if (index == -1) {
         this.openSnackbar('Turma ou aluno incorreto')
         this.isLogged = false
-      } else if (names.indexOf(nome) >= 0) {
+      } else if (index >= 0) {
         this.aluno = ids[index].id
         this.isLogged = true
       }
@@ -136,9 +134,9 @@ export class AuthService {
       if (this.aluno == undefined) {
         this.turma = undefined
       } else {
-
         this.router.navigate([`/turma/${turma}/aluno/${this.aluno}`])
         sessionStorage.setItem('tipo', 'user')
+
         setTimeout(() => {
           window.location.reload()
         }, 500);
@@ -147,14 +145,12 @@ export class AuthService {
   }
 
   logOut() {
-    this.dbAuth.signOut().then(() => {
-        sessionStorage.removeItem('tipo')
-        sessionStorage.removeItem('id')
-      })
-
+    this.dbAuth.signOut()
       .then(() => {
-        window.location.reload()
-      })
+          sessionStorage.removeItem('tipo')
+          sessionStorage.removeItem('id')
+        })
+      .then(() => { window.location.reload() })
   }
 
   //Menssagem de erro

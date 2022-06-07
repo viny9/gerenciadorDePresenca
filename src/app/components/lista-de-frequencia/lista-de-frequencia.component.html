@@ -7,7 +7,7 @@
 
     <mat-form-field class="w-50">
       <mat-label>Materia</mat-label>
-      <input type="text" placeholder="Adicionar materia" matInput formControlName="materia" [matAutocomplete]="auto">
+      <input type="text" placeholder="Adicionar materia" matInput [formControl]="input" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let materia of materias " [value]="materia">
           {{materia}}
@@ -112,7 +112,7 @@
   </table>
 
   <div class="mt-4">
-    <button class="btn btn-danger me-3" routerLink="/turma/{{pathId}}">Cancelar</button>
+    <button class="btn btn-danger me-3" routerLink="/turma/{{pathId}}">Fechar</button>
     <button [disabled]="form.invalid" class="btn btn-success" routerLink="/turma/{{pathId}}"
       (click)="addPresenca()">Salvar</button>
   </div>

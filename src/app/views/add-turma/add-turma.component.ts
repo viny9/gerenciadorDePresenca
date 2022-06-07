@@ -22,12 +22,10 @@ export class AddTurmaComponent implements OnInit {
   createForm() {
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required]),
+      teste: new FormControl('', [Validators.required])
     })
   }
   
-  error() {
-    return this.form.controls['nome'].hasError('required')? 'Você tem que digitar alguma coisa' : ''
-  }
 
   turnos(value:any) {
     this.turno = value.value

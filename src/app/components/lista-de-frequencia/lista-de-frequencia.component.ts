@@ -19,11 +19,10 @@ export class ListaDeFrequenciaComponent implements OnInit {
   frequencia:any = []
   horario:any
   form:any
-  teste:any
-  testes:any = []
+  frequencias:any = []
 
   //Auto complete
-  input = new FormControl()
+  input = new FormControl('', [Validators.required])
   filterValue: Observable<string[]>;
   materias:any= ['Portugues', 'Matematica', 'Historia', 'Ingles', 'Geografia']
 
@@ -39,9 +38,9 @@ export class ListaDeFrequenciaComponent implements OnInit {
   ngOnInit(): void {
     this.createForm()
     
-    this.turmaId.params.subscribe((id:any) => {
-      this.pathId = id.turmaId
-      this.getAlunos(id)
+    this.turmaId.params.subscribe((res:any) => {
+      this.pathId = res.turmaId
+      this.getAlunos(res)
       this.getTurmaName(this.pathId)
     })
 
@@ -51,18 +50,14 @@ export class ListaDeFrequenciaComponent implements OnInit {
   createForm() {
     this.form = new FormGroup({
       nomeDoProfessor: new FormControl('', [Validators.required]),
-      materia: new FormControl('', [Validators.required])
-    })
-
-    this.teste = new FormGroup({
-      value: new FormControl()
+      materia: this.input
     })
   }
 
   getTurmaName(id:any) {
-    this.db.getTurma(id).subscribe((infos:any) => {
+    this.db.getTurma(id).subscribe((res:any) => {
       this.db.titleInfos = {
-      title: infos.data().nome
+      title: res.data().nome
       }
    })
   }
@@ -70,8 +65,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
   getAlunos(id:any) {
     const aluno:any = []
 
-    this.db.readAlunos(id.turmaId).subscribe((infos:any) => {
-      infos.forEach((element:any) => {
+    this.db.readAlunos(id.turmaId).subscribe((res:any) => {
+      res.forEach((element:any) => {
         aluno.push(element.data())
         this.alunos = aluno
       });
@@ -83,11 +78,11 @@ export class ListaDeFrequenciaComponent implements OnInit {
   }
 
   findAlunoId(nome:any) {
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
       try {
@@ -105,21 +100,20 @@ export class ListaDeFrequenciaComponent implements OnInit {
     } 
 
   // Vai pegar os valores do radio button
-  presenca(teste:any, value:any) {
+  presenca(nome:any, value:any) {
     const date = new Date()
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
-      const index = names.indexOf(teste)
-
+      const index = names.indexOf(nome)
       const frequencia = {
         id:  ids[index].id,
         date: `${day}/${month}/${year}`,
@@ -129,17 +123,14 @@ export class ListaDeFrequenciaComponent implements OnInit {
         professor: this.form.value.nomeDoProfessor,
         status: 'Não justificada'
       }
-
     
-    let indexs = this.testes.findIndex( (age:any) => age.id == frequencia.id);
+      const indexs = this.frequencias.findIndex((age:any) => age.id == frequencia.id);
     
     if(indexs == -1) {
-      this.testes.push(frequencia)
-    }else if(indexs >= 0) {
-      this.testes[indexs] = frequencia
-    } else {
-      console.log('teste')
-    }
+      this.frequencias.push(frequencia)
+    } else if(indexs >= 0) {
+      this.frequencias[indexs] = frequencia
+    } else { return }
   })
 }
   
@@ -147,7 +138,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
   addPresenca() {
   //Vai adicionar presença para cada item no Array de ids
     for (let i = 0; i < this.id.length; i++) {
-      this.db.addPresenca(this.pathId, this.id[i], this.testes[i])
+      this.db.addPresenca(this.pathId, this.id[i], this.frequencias[i])
     }
   }
 
@@ -158,7 +149,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
 
     //Horarios que a chamada vai estar aberta
     //Matutino
-    if(hour == 11 && minutes >= 0 && minutes <= 59) {
+    if(hour == 17 && minutes >= 0 && minutes <= 59) {
       this.horario = 1
     } else if(hour == 23 && minutes >= 0 && minutes < 59) {
       this.horario = 2

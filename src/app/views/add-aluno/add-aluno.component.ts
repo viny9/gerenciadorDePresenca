@@ -24,19 +24,6 @@ export class AddAlunoComponent implements OnInit {
     })
   }
 
-  formError(input:any) {
-  
-    console.log(this.form.controls['numeroDoResponsavel'])
-    if(input == 'nome') {
-      return this.teste(this.form.controls['numeroDoResponsavel'].errors)
-    } else if(input == 'numeroDoResponsavel') {
-      return this.teste(this.form.controls['numeroDoResponsavel'].errors)
-    } else {
-      return
-    }
-  }
-
-
   teste(e:any) {
     if(e.required == true) {
       return 'Você tem que digitar algo'

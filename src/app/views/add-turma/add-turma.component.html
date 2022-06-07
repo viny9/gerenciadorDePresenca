@@ -4,10 +4,9 @@
         <mat-form-field class="w-100 mb-3">
             <mat-label>Nome da turma</mat-label>
             <input type="text" matInput formControlName="nome">
-            <mat-error *ngIf="form.controls['nome']">{{error()}}</mat-error>
         </mat-form-field>
 
-        <mat-radio-group (change)="turnos($event)" color="primary">
+        <mat-radio-group (change)="turnos($event)" color="primary"  formControlName="teste">
             <mat-radio-button class="me-2" value="Matutino">Matutino</mat-radio-button>
             <mat-radio-button class="me-2" value="Verspetino">Verspetino</mat-radio-button>
             <mat-radio-button value="Noturno">Noturno</mat-radio-button>

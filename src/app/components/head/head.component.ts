@@ -21,7 +21,6 @@ export class HeadComponent implements OnInit {
     return this.db.titleInfos.title
   }
 
-
   sidebarToggle() {
     this.sidebar.emit(!this.sidebarStatus)
   }

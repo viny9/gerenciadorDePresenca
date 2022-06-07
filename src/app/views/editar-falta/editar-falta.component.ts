@@ -27,38 +27,43 @@ export class EditarFaltaComponent implements OnInit {
       professor: new FormControl('', [Validators.required]),
     })
 
-    if(this.data.justificativa != undefined) {
-      this.form.controls.justi = new FormControl('', [Validators.required])
-      this.form.controls['justi'].setValue(this.data.justificativa)
-
-      this.justificativa = true
-
-    } else {
-      this.justificativa = false
+    this.setFormValue()
     }
-      
-      this.form.controls['horario'].setValue(this.data.horario)
-      this.form.controls['materia'].setValue(this.data.materia)
-      this.form.controls['professor'].setValue(this.data.professor)
-  }
 
-  close() {
-    this.ref.close()
-  }
+    setFormValue() {
+      if(this.data.justificativa != undefined) {
+        
+        this.form.controls.justi = new FormControl('', [Validators.required])
+        this.form.controls['justi'].setValue(this.data.justificativa)
+        this.justificativa = true
 
-  editar() {
-  const falta:any = {
-    materia: this.form.value.materia,
-    horario: this.form.value.horario,
-    professor: this.form.value.professor
-  }
+      } else if(this.data.justificativa != undefined) {
 
-  if(this.data.justificativa != undefined) {
-    falta.justificativa = this.form.value.justi
-  }
-  
-  this.ref.close(falta)
+        this.justificativa = false
+      }
+        
+        this.form.controls['horario'].setValue(this.data.horario)
+        this.form.controls['materia'].setValue(this.data.materia)
+        this.form.controls['professor'].setValue(this.data.professor)
+    }
 
-  }
+    close() {
+      this.ref.close()
+    }
+
+    editar() {
+    const falta:any = {
+      materia: this.form.controls['materia'].value,
+      horario: this.form.controls['horario'].value,
+      professor: this.form.controls['professor'].value
+    }
+
+    if(this.data.justificativa != undefined) {
+      falta.justificativa = this.form.controls['justi'].value
+    }
+    
+    this.ref.close(falta)
+
+    }
 
 }
