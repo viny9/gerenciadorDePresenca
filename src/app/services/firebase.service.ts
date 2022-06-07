@@ -12,7 +12,6 @@ export class FirebaseService {
   private headInfos = new BehaviorSubject<Object>({
     title: ''
   })
-
   load:any = true
 
   constructor(public db:AngularFirestore, private snackBar:MatSnackBar) { }
@@ -25,110 +24,111 @@ export class FirebaseService {
     this.headInfos.next(headInfos)
   }
 
+  //Turmas
   getTurmas() {
     return this.db.collection('/turmas').get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
 
   getTurma(pathId:any) {
     return this.db.collection('/turmas').doc(pathId).get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
 
  async addTurma(turma:any) {
     return this.db.collection('turmas').add(turma)
-    .catch(e => this.handleError(e))
+      .then(() => { window.location.reload() })
+      .catch(e => this.handleError(e))
   }
   
   async updateTurma(id:any, newTurma:any) {
     return this.db.collection('turmas').doc(id).update(newTurma)
-    .catch(e => this.handleError(e))
+      .then(() => { window.location.reload() })
+      .catch(e => this.handleError(e))
   }
   
   async deleteTurma(turma:any) {
     return this.db.collection('/turmas').doc(turma).delete()
-    .catch(e => this.handleError(e))
+      .then(() => window.location.reload() )
+      .catch(e => this.handleError(e))
   }
   
+  //Alunos
   readAlunos(id:any) {
     return this.db.collection(`/turmas/${id}/alunos`).get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
 
   readAluno(pathId:any, id:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
 
   async updateAluno(pathId:any, id:any, newAluno:any) {
     return this.db.collection('turmas').doc(pathId).collection('alunos').doc(id).update(newAluno)
-    .catch(e => this.handleError(e))
-
+      .then(() => { window.location.reload() })
+      .catch(e => this.handleError(e))
   }
 
   async addAluno(aluno:any, id:any) {
     return this.db.collection(`/turmas/${id}/alunos`).add(aluno)
-    .catch(e => this.handleError(e))
+      .then(() => { window.location.reload() })
+      .catch(e => this.handleError(e))
   }
 
   async removeAlunos(pathId:any, id:any) {
     return this.db.collection(`/turmas/${pathId}/alunos`).doc(id).delete()
-    .catch(e => this.handleError(e))
+      .then(() => { window.location.reload() })
+      .catch(e => this.handleError(e))
   }
 
+  //Presença
   getPresenca(pathId:any, id:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(id).collection('/presenca').get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
  
   async addPresenca(pathId:any, alunoId:any, presenca:any) {
     return this.db.collection('/turmas').doc(pathId).collection('/alunos').doc(alunoId).collection('/presenca').add(presenca)  
-    .catch(e => this.handleError(e))
+      .catch(e => this.handleError(e))
   }
 
+  async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
+    return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('presenca').doc(falta).set(presenca)
+      .then(() => window.location.reload() )
+      .catch(e => this.handleError(e))
+  }
+
+  //Users
   getUsers() {
     return this.db.collection('users').get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
   
   getUser(id:any) {
     return this.db.collection('users').doc(id).get()
-    .pipe(
-      catchError(e => this.handleError(e))
-    )
+      .pipe( catchError(e => this.handleError(e)) )
   }
 
   deleteProfTurma(id:any, turma:any) {
     this.db.collection('users').doc(id).update(turma)
+      .then(() => { window.location.reload() })
+      .catch((e) => this.handleError(e))
   }
 
   async updateUser(id:any, newUser:any) {
     return this.db.collection('users').doc(id).update(newUser)
-    .then(() => window.location.reload())
-    .catch((e) => this.handleError(e))
+      .then(() => window.location.reload())
+      .catch((e) => this.handleError(e))
   }
 
-  deleteUser(id:any) {
+  async deleteUser(id:any) {
     return this.db.collection('users').doc(id).delete()
+      .then(() => window.location.reload())
+      .catch((e) => this.handleError(e))
   }
 
-  async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
-    return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('/presenca').doc(falta).set(presenca)
-    .catch(e => this.handleError(e))
-  }
-
+  //Erros
   handleError(e:any) {
     this.openSnackbar('ocorre um error')
     return EMPTY

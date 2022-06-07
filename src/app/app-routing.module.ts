@@ -9,29 +9,28 @@ import { TurmaComponent } from './components/turma/turma.component';
 import { AuthService } from './services/auth.service';
 
 const routes: Routes = [
+  { path: '',
+    canActivate: [AuthService],
+    component: HomeComponent },
 
-    { path: '',
-      canActivate: [AuthService],
-      component: HomeComponent },
+  { path: 'turma/:turmaId',
+    canActivate: [AuthService],
+    component: TurmaComponent },
+  
+  { path: 'turma/:turmaId/aluno/:alunoId',
+    component: AlunoComponent },
+  
+  { path: 'turma/:turmaId/frequencia',
+    canActivate: [AuthService],
+    component: ListaDeFrequenciaComponent },
 
-    { path: 'turma/:turmaId',
-      canActivate: [AuthService],
-      component: TurmaComponent },
-    
-    { path: 'turma/:turmaId/aluno/:alunoId',
-      component: AlunoComponent },
-    
-    { path: 'turma/:turmaId/frequencia',
-      canActivate: [AuthService],
-      component: ListaDeFrequenciaComponent },
+  { path: 'signup',
+    canActivate: [AuthService],
+    component: SignupComponent },
 
-    { path: 'signup',
-      canActivate: [AuthService],
-      component: SignupComponent },
-
-    { path: 'perfis',
-      canActivate: [AuthService],
-      component: GerenciadorDePerfisComponent },
+  { path: 'perfis',
+    canActivate: [AuthService],
+    component: GerenciadorDePerfisComponent },
 
   ];
 

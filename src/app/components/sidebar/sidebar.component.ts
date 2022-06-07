@@ -33,8 +33,8 @@ export class SidebarComponent implements OnInit {
 
   //Vai pegar todas as turmas
   getTurmas() {
-    this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
+    this.db.getTurmas().subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
         this.turmas.push(element.data())
       });
 
@@ -50,8 +50,8 @@ export class SidebarComponent implements OnInit {
   //Vai pegar as turmas do Professor
   getProfTurmas() {
     const professores:any = []
-      this.db.getUsers().subscribe((infos: any) => {
-        infos.docs.forEach((element: any) => {
+      this.db.getUsers().subscribe((res: any) => {
+        res.docs.forEach((element: any) => {
         professores.push(element.data())
       }); 
 
@@ -90,9 +90,8 @@ export class SidebarComponent implements OnInit {
 
   searchs() {
     try {
-      this.newTurmas = this.turmas
       const filtrado = this.turmas.filter((turma:any) =>{
-        if(turma.nome.includes(this.search.value.search)) {
+        if(turma.nome.toLowerCase().includes(this.search.value.search) || turma.nome.toUpperCase().includes(this.search.value.search) || turma.nome.includes(this.search.value.search)) {
           return turma
         } else {}
       })
@@ -123,17 +122,14 @@ export class SidebarComponent implements OnInit {
 
   addTurma(turma:any) {
     this.db.addTurma(turma)
-    .then(() => {
-      window.location.reload()
-    })
   }
 
   selectedTurma(nome:any) {
-    this.db.getTurmas().subscribe(infos => {
-      const ids = infos.docs
+    this.db.getTurmas().subscribe((res:any) => {
+      const ids = res.docs
 
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
       try {

@@ -24,13 +24,12 @@ export class AlunoComponent implements OnInit {
 
   displayedColumns:any = []
 
-  elementType = 'url';
-  value = 'http://localhost:4200/turma/RGsNfdSaSFNx7JIIxAwi/aluno/YPUhtM1VdtCYARDlhDLD';
+  // elementType = 'url';
+  // value = 'http://localhost:4200/turma/RGsNfdSaSFNx7JIIxAwi/aluno/YPUhtM1VdtCYARDlhDLD';
 
   constructor(private dialog: MatDialog, private db:FirebaseService, private dbAuth:AuthService, private route:ActivatedRoute) { }
 
 //Da um revisada no código pra ver se ta funcionando 
-//E implementa separado um gerador de qrCode 
 //talvez a twilio
   
   ngOnInit(): void {
@@ -41,7 +40,10 @@ export class AlunoComponent implements OnInit {
       this.getTurmaName(params.turmaId)
     })
 
+    this.columns()
+  }
 
+  columns() {
     if(this.dbAuth.user == true) {
       this.normal = this.dbAuth.user
       this.displayedColumns =  ['dia', 'materia', 'horario', 'professor', 'status',]
@@ -51,23 +53,23 @@ export class AlunoComponent implements OnInit {
   }
 
   getTurmaName(id:any) {
-    this.db.getTurma(id).subscribe((infos:any) => {
+    this.db.getTurma(id).subscribe((res:any) => {
       this.db.titleInfos = {
-      title: infos.data().nome
+      title: res.data().nome
       }
    })
   }
 
   getAluno(pathIds:any) {
-    this.db.readAluno(pathIds.turmaId, pathIds.alunoId).forEach((element:any) => {
-      this.alunoInfos = [element.data()]
+    this.db.readAluno(pathIds.turmaId, pathIds.alunoId).subscribe((res:any) => {
+      this.alunoInfos = [res.data()]
     })
   }
 
   faltas(pathsId:any) {
     const fre = <any>[]
-    this.db.getPresenca(pathsId.turmaId, pathsId.alunoId).subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
+    this.db.getPresenca(pathsId.turmaId, pathsId.alunoId).subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
         fre.push(element.data())
       });
 
@@ -85,11 +87,10 @@ export class AlunoComponent implements OnInit {
 
   findId(nome: any) {
     this.selectedFalta = nome
-    this.db.getPresenca(this.pathIds.turmaId, this.pathIds.alunoId).subscribe(infos => {
-
-      const ids = infos.docs
-      const names = infos.docs.map((infos: any) => {
-        return infos.data().id
+    this.db.getPresenca(this.pathIds.turmaId, this.pathIds.alunoId).subscribe(res => {
+      const ids = res.docs
+      const names = res.docs.map((res: any) => {
+        return res.data().id
       })
       
       try {
@@ -98,79 +99,76 @@ export class AlunoComponent implements OnInit {
       } catch (error){
         this.db.handleError(error)
       }
-
     })
   }
 
   openJustificarFaltas() {
-   const ref = this.dialog.open(JustificarFaltasComponent, {
-      width: '500px',
-      data: this.selectedFalta
-    })
-
-    ref.afterClosed().subscribe((infos?:any) => {
-      if(infos == undefined) {
-        return 
-      } else {
-        const justificado = {
-          ...this.selectedFalta, 
-          justificativa: infos
+    setTimeout(() => {
+      const ref = this.dialog.open(JustificarFaltasComponent, {
+        width: '500px',
+        data: this.selectedFalta
+      })
+      
+      ref.afterClosed().subscribe((res?:any) => {
+        if(res == undefined) {
+          return 
+        } else {
+          const justificado = {
+            ...this.selectedFalta, 
+            justificativa: res
+          }
+          justificado.status = 'Justificado'
+          
+          this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
         }
-        
-        justificado.status = 'Justificado'
-
-        this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
-        .then(() => { window.location.reload() })
-      }
-    })
+      })
+    }, 500);
   }
 
   openEditarFalta() {
-    const ref = this.dialog.open(EditarFaltaComponent, {
-      width: '500px',
-      data: this.selectedFalta
-    })
-
-    ref.afterClosed().subscribe((infos:any) => {
-     if(infos == undefined) {
-      return 
-
-      } else {
-
-      const falta = {
-        ...this.selectedFalta
-      }
+    setTimeout(() => {
       
-      falta.horario = infos.horario
-      falta.materia = infos.materia
-      falta.professor = infos.professor
-
-      if(infos.justificativa != undefined) {
-        falta.justificativa = infos.justificativa
-        falta.status = 'Justificado'
-      }
-
-      this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, falta)
-      .then(() => { window.location.reload() })
-      }
-    })
+      const ref = this.dialog.open(EditarFaltaComponent, {
+        width: '500px',
+        data: this.selectedFalta
+      })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res == undefined) {
+          return 
+        } else {
+          
+          const falta = {
+            ...this.selectedFalta
+          }
+          
+          falta.horario = res.horario
+          falta.materia = res.materia
+          falta.professor = res.professor
+          
+          if(res.justificativa != undefined) {
+            falta.justificativa = res.justificativa
+          }
+          
+          this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, falta)
+        }
+      })
+    }, 500);
   }
   
   deleteFalta() {
-
     const ref = this.dialog.open(DeleteComponent, {
       width: '500px',
       data: 'Ao clicar em deletar essa falta será convertida em presença'
     })
 
-    ref.afterClosed().subscribe((infos:any) => {
-      if(infos == true) {
+    ref.afterClosed().subscribe((res:any) => {
+      if(res == true) {
         this.selectedFalta.presenca = 'P'
         delete this.selectedFalta.status
         delete this.selectedFalta.justificativa
         
         this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, this.selectedFalta)
-        .then(() => window.location.reload() )
       }
     })
   }

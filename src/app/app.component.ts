@@ -11,25 +11,35 @@ export class AppComponent implements OnInit  {
   sidebar = false
   sidebarMode:any
   login:any = false
-  res:any = false
+  user:any = false
 
   constructor(private dbAuth:AuthService) { }
 
   ngOnInit(): void {
-    //Vai dizer se o usuario fez login
+    //Vai dizer se o usuario fez login e o seu tipo de login
+    this.typeOfUser()
+
+    //Dependendo do tamanho da tela a sidebar vai estar fechada por padrão
+    this.sidebarModes()
+  }
+
+  typeOfUser() {
     if(sessionStorage['tipo'] == 'admin' ) {
       this.login = true
+      this.dbAuth.notAdmin = false
     } else if(sessionStorage['tipo'] == 'professor') {
       this.login = true
+      this.dbAuth.notAdmin = true
     } else if(sessionStorage['tipo'] == 'user') {
       this.login = true
-      this.res = true
+      this.user = true
       this.dbAuth.user = true
     } else if(sessionStorage['tipo'] == null){
       this.login = false
     }
+  }
 
-    //Dependendo do tamanho da tela a sidebar vai estar fechada por padrão
+  sidebarModes() {
     if(window.screen.width < 700) {
       this.sidebarMode = 'over'
       this.sidebar = false
@@ -37,22 +47,15 @@ export class AppComponent implements OnInit  {
       this.sidebarMode = 'side' 
       this.sidebar = true
     }
+  }
 
-    //Vai dizer se o usuario e admin ou professor
-    if(sessionStorage['tipo'] == 'admin') {
-      this.dbAuth.notAdmin = false
-    } else if(sessionStorage['tipo'] == 'professor'){
-      this.dbAuth.notAdmin = true
-    }
-}
+  //Vai abri e fechar a sidebar
+  sidebarToggle(status:boolean) {
+      this.sidebar = status
+  }
 
-    //Vai abri e fechar a sidebar
-    sidebarToggle(status:boolean) {
-        this.sidebar = status
-    }
-
-    recive(isLogged:any) {
-      this.login = isLogged
-    }
+  recive(isLogged:any) {
+    this.login = isLogged
+  }
 
 }

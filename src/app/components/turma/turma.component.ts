@@ -24,8 +24,8 @@ export class TurmaComponent implements OnInit {
   constructor(private db:FirebaseService, private dbAuth:AuthService, private dialog: MatDialog, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((infos:any) => {
-      this.pathId = infos.turmaId
+    this.route.params.subscribe((res:any) => {
+      this.pathId = res.turmaId
       this.getAlunos(this.pathId)
       this.getTurmaName(this.pathId)
     })
@@ -35,8 +35,8 @@ export class TurmaComponent implements OnInit {
     const aluno:any = []
     this.alunos = []
 
-    this.db.readAlunos(id).subscribe((infos:any) => {
-      infos.forEach((element:any) => {
+    this.db.readAlunos(id).subscribe((res:any) => {
+      res.forEach((element:any) => {
         aluno.push(element.data())
         this.alunos = aluno
       });
@@ -48,25 +48,25 @@ export class TurmaComponent implements OnInit {
   }
 
   getAluno() {
-    this.db.readAluno(this.pathId, this.id).subscribe((infos:any) => {
-      this.aluno = infos.data()
+    this.db.readAluno(this.pathId, this.id).subscribe((res:any) => {
+      this.aluno = res.data()
     })
   }
 
   getTurmaName(id:any) {
-    this.db.getTurma(id).subscribe((infos:any) => {
+    this.db.getTurma(id).subscribe((res:any) => {
       this.db.titleInfos = {
-      title: infos.data().nome
+      title: res.data().nome
       }
    })
   }
 
   selectedAluno(nome:any) {
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
       try {
@@ -81,18 +81,18 @@ export class TurmaComponent implements OnInit {
   }
 
   findId(nome:any) {
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
       try {
         const index = names.indexOf(nome)
         this.id = ids[index].id
-        
         this.getAluno()
+        
       } catch (error) {
         this.db.handleError(error)
       }
@@ -105,50 +105,45 @@ export class TurmaComponent implements OnInit {
         width: '500px',
       })
       
-      ref.afterClosed().subscribe((infos:any) => {
-        if(infos === undefined) {
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
           return
         } else {
-          this.addAluno(infos)
+          this.addAluno(res)
         }
       })
   }
 
   addAluno(aluno:any) {
-    this.db.addAluno(aluno, this.pathId).then(() => {
-      window.location.reload()
-    })
+    this.db.addAluno(aluno, this.pathId)
   }
 
   openUpdateAluno() {
-    const ref = this.dialog.open(UpdateAlunoComponent, {
-      width: '500px', 
-      data: this.aluno
-    })
-
-    ref.afterClosed().subscribe((infos:any) => {
-      if(infos === undefined) {
-        return
-      } else {
-        this.db.updateAluno(this.pathId, this.id, infos).then(() => {
-          window.location.reload()
-        })
-      }
-    })
-
+    setTimeout(() => {
+      const ref = this.dialog.open(UpdateAlunoComponent, {
+        width: '500px', 
+        data: this.aluno
+      })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
+          return
+        } else {
+          this.db.updateAluno(this.pathId, this.id, res)
+        }
+      })
+    }, 500);
   }
-
+    
   deleteAluno() {
     const ref = this.dialog.open(DeleteComponent, {
       width: '500px',
       data: 'Você deseja remover esse aluno ?'
     })
 
-    ref.afterClosed().subscribe((infos:any) => {
-      if(infos == true) {
-        this.db.removeAlunos(this.pathId, this.id).then(() => {
-          window.location.reload()
-        })
+    ref.afterClosed().subscribe((res:any) => {
+      if(res == true) {
+        this.db.removeAlunos(this.pathId, this.id)
       }
     })
   }

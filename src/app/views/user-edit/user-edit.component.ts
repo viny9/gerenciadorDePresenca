@@ -43,19 +43,23 @@ export class UserEditComponent implements OnInit {
       nome: new FormControl(),
       turma: new FormControl()
     })
+    
+    this.setFormValues()
+  }
 
+  setFormValues() {
     this.form.controls['nome'].setValue(this.data.nome)
 
     if(this.data.type == 'professor') {
       for (let i = 0; i < this.data.turma.length; i++) {
         this.addTurmas.push(this.data.turma[i])
-    }
+      } 
     }
   }
 
   getTurmas() {
-    this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
+    this.db.getTurmas().subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
         this.autoComplete.push(element.data())
       });
     })
@@ -64,7 +68,6 @@ export class UserEditComponent implements OnInit {
   selected(event:MatAutocompleteSelectedEvent) {
     const input = this.form.controls.turma
     this.addTurmas.push(event.option.viewValue)
-    // this.teste.nativeElement.value = ''
 
     input.setValue(null)
   }
@@ -106,12 +109,12 @@ export class UserEditComponent implements OnInit {
   }
 
   edit() {
-    const teste = {
+    const user = {
       ...this.form.value,
       type: this.userType
     }
-    teste.turma = this.addTurmas
+    user.turma = this.addTurmas
 
-    this.ref.close(teste)
+    this.ref.close(user)
   }
 }

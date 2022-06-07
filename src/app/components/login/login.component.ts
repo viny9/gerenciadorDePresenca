@@ -1,3 +1,5 @@
+import { startWith, map } from 'rxjs';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,18 +10,36 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  
+  turmas:any = []
+  filterValue:any
+  input = new FormControl('', [Validators.required])
 
   formSignin:any
   notAdmin: any
   login:any = false
   @Output() isLogged = new EventEmitter
 
-  constructor(private dbAuth:AuthService) { }
+  constructor(private dbAuth:AuthService, private db:FirebaseService) { 
+    this.filterValue = this.input.valueChanges.pipe(
+      startWith(null),
+      map((turma: string | null) => (turma ? this._filter(turma) : this.turmas.slice())),
+    );
+  }
 
 //Adicionar um sessionStorage para o pais Responsavel para ver se melhorar deles entrar
 
   ngOnInit(): void {
+    this.getTurmas()
     this.createForm()
+  }
+
+  getTurmas() {
+    this.db.getTurmas().subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
+        this.turmas.push(element.data().nome)
+      });
+    })
   }
 
   createForm() {
@@ -29,7 +49,7 @@ export class LoginComponent implements OnInit {
     })
 
     this.notAdmin = new FormGroup({
-      turma: new FormControl('', [Validators.required]),
+      turmas: new FormControl(),
       nome: new FormControl('', [Validators.required]),
     })
   }
@@ -38,14 +58,17 @@ export class LoginComponent implements OnInit {
     this.dbAuth.signin(this.formSignin.value.email, this.formSignin.value.password)
   }
 
-  formError() {
-    if(this.formSignin.controls['email'].invalid) {
-      return this.formSignin.controls['email'].hasError('required')? 'Você tem que digitar algo' : ''
-    } else { return }
+  enter() {
+    console.log(this.notAdmin)
+    this.dbAuth.alunoInfos(this.notAdmin.controls['turmas'].value, this.notAdmin.value.nome)
+      this.dbAuth.isLogged 
   }
 
-  enter() {
-    this.dbAuth.alunoInfos(this.notAdmin.value.turma, this.notAdmin.value.nome)
-      this.dbAuth.isLogged 
+  private _filter(value:any): string[] {
+    const filterValue = value.toLowerCase()
+
+    return this.turmas.filter((turma:any) => {
+      turma.toLowerCase().includes(filterValue)
+    })
   }
 }

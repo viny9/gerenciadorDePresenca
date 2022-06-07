@@ -4,7 +4,6 @@
         <mat-form-field class="w-100 mb-3">
             <mat-label>Nome da turma</mat-label>
             <input type="text" matInput formControlName="nome">
-            <mat-error *ngIf="form.controls['nome']">{{error()}}</mat-error>
         </mat-form-field>
 
         <mat-radio-group (change)="turnos($event)" color="primary">

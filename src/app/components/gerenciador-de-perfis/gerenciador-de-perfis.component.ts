@@ -2,6 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { UserEditComponent } from 'src/app/views/user-edit/user-edit.component';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-gerenciador-de-perfis',
@@ -16,13 +17,17 @@ export class GerenciadorDePerfisComponent implements OnInit {
   data:any
   turmas:any
 
-  constructor(private db:FirebaseService, private dialog:MatDialog) { }
+  constructor(private db:FirebaseService, private dialog:MatDialog) {
+    this.db.titleInfos = {
+      title: 'Perfis'
+    }
+   }
 
   ngOnInit(): void {
     const users:any = []
 
-    this.db.getUsers().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
+    this.db.getUsers().subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
         users.push(element.data())
         this.dataSource = users
       });
@@ -30,27 +35,27 @@ export class GerenciadorDePerfisComponent implements OnInit {
   }
 
   findId(email: any) {
-    this.db.getUsers().subscribe(infos => {
-      const ids = infos.docs
-      const names = infos.docs.map((infos: any) => {
-        return infos.data().email
+    this.db.getUsers().subscribe(res => {
+      const ids = res.docs
+      const names = res.docs.map((res: any) => {
+        return res.data().email
       })
 
       try {
         const index = names.indexOf(email)
         this.id = ids[index].id
-
         this.user()
+
       } catch (error) {
-        console.log(error)
+        this.db.handleError(error)
       }
 
     })
   }
 
   user() {
-    this.db.getUser(this.id).subscribe((infos:any) => {
-      this.data = infos.data()
+    this.db.getUser(this.id).subscribe((res:any) => {
+      this.data = res.data()
     })
   }
 
@@ -61,21 +66,20 @@ export class GerenciadorDePerfisComponent implements OnInit {
         data: this.data, 
       })
 
-      ref.afterClosed().subscribe((infos:any) => {
-        if(infos === undefined) {
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
           return 
         }else {
-    
-          const testes = {
+          const user = {
             ...this.data,
-            ...infos
+            ...res
           }
           
-          if(testes.type == 'admin') {
-            delete testes.turma
+          if(user.type == 'admin') {
+            delete user.turma
           }
 
-          this.db.updateUser(this.id, testes)
+          this.db.updateUser(this.id, user)
         }
       })
   }, 300);
@@ -83,7 +87,15 @@ export class GerenciadorDePerfisComponent implements OnInit {
   }
   
   deleteUser() {
-   this.db.deleteUser(this.id)
-    .then(() => window.location.reload()) 
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja remover esse usuário ?'
+    })
+
+    ref.afterClosed().subscribe((res:any) => {
+      if(res != undefined) {
+        this.db.deleteUser(this.id)
+      }
+    })
   }
 }
