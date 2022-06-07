@@ -153,7 +153,8 @@ export class HomeComponent implements OnInit {
           return 
         }
         else {
-          this.db.updateTurma(this.id, res)
+          console.log({nome: res})
+          this.db.updateTurma(this.id, {nome: res})
         }
       })
     }, 500);

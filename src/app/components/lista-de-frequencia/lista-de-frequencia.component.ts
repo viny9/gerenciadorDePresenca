@@ -114,8 +114,9 @@ export class ListaDeFrequenciaComponent implements OnInit {
       })
 
       const index = names.indexOf(nome)
+      const id = Math.random().toString(12);
       const frequencia = {
-        id:  ids[index].id,
+        id: id,
         date: `${day}/${month}/${year}`,
         horario: 1,
         presenca: value.value,
@@ -149,7 +150,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
 
     //Horarios que a chamada vai estar aberta
     //Matutino
-    if(hour == 11 && minutes >= 0 && minutes <= 59) {
+    if(hour == 12 && minutes >= 0 && minutes <= 59) {
       this.horario = 1
     } else if(hour == 23 && minutes >= 0 && minutes < 59) {
       this.horario = 2

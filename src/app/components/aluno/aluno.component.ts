@@ -118,6 +118,8 @@ export class AlunoComponent implements OnInit {
             justificativa: res
           }
           justificado.status = 'Justificado'
+
+          console.log(this.selectedFalta)
           
           this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, justificado)
         }
@@ -141,7 +143,7 @@ export class AlunoComponent implements OnInit {
           const falta = {
             ...this.selectedFalta
           }
-          
+
           falta.horario = res.horario
           falta.materia = res.materia
           falta.professor = res.professor
@@ -163,10 +165,12 @@ export class AlunoComponent implements OnInit {
     })
 
     ref.afterClosed().subscribe((res:any) => {
+
       if(res == true) {
         this.selectedFalta.presenca = 'P'
         delete this.selectedFalta.status
         delete this.selectedFalta.justificativa
+        console.log(this.selectedFalta)
         
         this.db.justificarFalta(this.pathIds.turmaId, this.pathIds.alunoId, this.id, this.selectedFalta)
       }

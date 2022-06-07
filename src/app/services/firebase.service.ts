@@ -95,7 +95,7 @@ export class FirebaseService {
 
   async justificarFalta(pathId:any, alunoId:any, falta:any, presenca:any) {
     return this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('presenca').doc(falta).set(presenca)
-      .then(() => window.location.reload() )
+      .then(() => { window.location.reload()})
       .catch(e => this.handleError(e))
   }
 
@@ -123,8 +123,9 @@ export class FirebaseService {
   }
 
   async deleteUser(id:any) {
+    console.log(id)
     return this.db.collection('users').doc(id).delete()
-      .then(() => window.location.reload())
+      // .then(() => window.location.reload())
       .catch((e) => this.handleError(e))
   }
 
