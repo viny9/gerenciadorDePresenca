@@ -5,6 +5,7 @@ import { AddAlunoComponent } from 'src/app/views/add-aluno/add-aluno.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.component';
+import { DeleteComponent } from 'src/app/views/delete/delete.component';
 
 @Component({
   selector: 'app-turma',
@@ -14,7 +15,8 @@ import { UpdateAlunoComponent } from 'src/app/views/update-aluno/update-aluno.co
 export class TurmaComponent implements OnInit {
 
   alunos:any = []
-  columns:any
+  aluno:any = []
+  columns:any= ['numero', 'nome', 'options']
   pathId:any
   id:any
   notAdmin:any
@@ -22,27 +24,19 @@ export class TurmaComponent implements OnInit {
   constructor(private db:FirebaseService, private dbAuth:AuthService, private dialog: MatDialog, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((infos:any) => {
-      this.pathId = infos.turmaId
+    this.route.params.subscribe((res:any) => {
+      this.pathId = res.turmaId
       this.getAlunos(this.pathId)
       this.getTurmaName(this.pathId)
     })
-
-    if(this.dbAuth.admin == false) {
-      this.notAdmin = true
-      this.columns = ['numero', 'nome']
-    } else {
-      this.notAdmin = false
-      this.columns = ['numero', 'nome', 'options']
-    }
   }
 
   getAlunos(id:any) {
     const aluno:any = []
     this.alunos = []
 
-    this.db.readAlunos(id).subscribe((infos:any) => {
-      infos.forEach((element:any) => {
+    this.db.readAlunos(id).subscribe((res:any) => {
+      res.forEach((element:any) => {
         aluno.push(element.data())
         this.alunos = aluno
       });
@@ -53,78 +47,104 @@ export class TurmaComponent implements OnInit {
     })
   }
 
+  getAluno() {
+    this.db.readAluno(this.pathId, this.id).subscribe((res:any) => {
+      this.aluno = res.data()
+    })
+  }
+
   getTurmaName(id:any) {
-    this.db.getTurma(id).subscribe((infos:any) => {
+    this.db.getTurma(id).subscribe((res:any) => {
       this.db.titleInfos = {
-      title: infos.data().nome
+      title: res.data().nome
       }
    })
   }
 
   selectedAluno(nome:any) {
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
-
-      this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        
+        this.router.navigate([`turma/${this.pathId}/aluno/${this.id}`])
+      } catch (error) {
+        this.dbAuth.openSnackbar('Aluno não encontrado')
+      }
     })  
   }
 
   findId(nome:any) {
-    this.db.readAlunos(this.pathId).subscribe(infos => {
+    this.db.readAlunos(this.pathId).subscribe((res:any) => {
 
-      const ids = infos.docs
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const ids = res.docs
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
-      const index = names.indexOf(nome)
-      this.id = ids[index].id
+      try {
+        const index = names.indexOf(nome)
+        this.id = ids[index].id
+        this.getAluno()
+        
+      } catch (error) {
+        this.db.handleError(error)
+      }
     })  
   }
  
   //Vai abrir o Dialog 
   openAddAluno() {
-    const ref = this.dialog.open(AddAlunoComponent, {
-      width: '500px',
-    })
-
-    ref.afterClosed().subscribe((infos:any) => {
-      if(infos === undefined) {
-        return
-      } else {
-        this.addAluno(infos)
-      }
-    })
+      const ref = this.dialog.open(AddAlunoComponent, {
+        width: '500px',
+      })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
+          return
+        } else {
+          this.addAluno(res)
+        }
+      })
   }
 
   addAluno(aluno:any) {
-    this.db.addAluno(aluno, this.pathId).then(() => {
-      window.location.reload()
-    })
+    this.db.addAluno(aluno, this.pathId)
   }
 
   openUpdateAluno() {
-    const ref = this.dialog.open(UpdateAlunoComponent, {
-      width: '500px'
-    })
-
-    ref.afterClosed().subscribe((infos:any) => {
-      this.db.updateAluno(this.pathId, this.id, infos).then(() => {
-        window.location.reload()
+    setTimeout(() => {
+      const ref = this.dialog.open(UpdateAlunoComponent, {
+        width: '500px', 
+        data: this.aluno
       })
-    })
+      
+      ref.afterClosed().subscribe((res:any) => {
+        if(res === undefined) {
+          return
+        } else {
+          this.db.updateAluno(this.pathId, this.id, res)
+        }
+      })
+    }, 500);
   }
-
+    
   deleteAluno() {
-    this.db.removeAlunos(this.pathId, this.id).then(() => {
-      window.location.reload()
+    const ref = this.dialog.open(DeleteComponent, {
+      width: '500px',
+      data: 'Você deseja remover esse aluno ?'
+    })
+
+    ref.afterClosed().subscribe((res:any) => {
+      if(res == true) {
+        this.db.removeAlunos(this.pathId, this.id)
+      }
     })
   }
 }

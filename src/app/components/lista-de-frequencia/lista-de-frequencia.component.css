@@ -1,11 +1,11 @@
   @media (max-width:576px) {
-    .teste {
+    .tables {
       width: 100%;
     }
   }
   
   @media (min-width: 577px) and (max-width:991px) {
-    .teste {
+    .tables {
       height: 23rem;
     }
   }

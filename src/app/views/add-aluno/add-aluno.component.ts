@@ -1,7 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-add-aluno',
@@ -12,7 +11,7 @@ export class AddAlunoComponent implements OnInit {
 
   form:any
 
-  constructor(private ref:MatDialogRef<AddAlunoComponent>, private db:FirebaseService) { }
+  constructor(private ref:MatDialogRef<AddAlunoComponent>) { }
 
   ngOnInit(): void {
     this.createForm()
@@ -21,14 +20,8 @@ export class AddAlunoComponent implements OnInit {
   createForm() {
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required]),
-      numeroDoResponsavel: new FormControl('', [Validators.required])
+      numeroDoResponsavel: new FormControl('', [Validators.required, Validators.minLength(11)])
     })
-  }
-
-  formError() {
-    if(this.form.controls['nome'].invalid) {
-      return this.form.controls['nome'].hasError('required')? 'Você tem que digitar algo' : ''
-    } else { return }
   }
 
   close() {

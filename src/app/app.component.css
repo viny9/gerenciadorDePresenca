@@ -1,3 +1,7 @@
 .height {
     height: 817px;
 }
+
+mat-drawer-content  {
+    background-color: #fff;
+}

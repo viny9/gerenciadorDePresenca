@@ -3,11 +3,11 @@
 }
 
 @media (max-width:576px) {
-    .teste {
+    .table {
         width: 100%;
     }
     
-    .teste2 button{
+    .buttons button{
         margin-bottom: 15px ;
     }
   }

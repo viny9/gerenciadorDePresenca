@@ -1,4 +1,5 @@
-  <button class="btn w-100 text-start">
+<div class="p-4">
+  <button class="btn w-100 text-start ps-0">
     <h2 class="mb-1 fs-5 pointer" routerLink="">Turmas</h2>
   </button>
   <div class="d-flex justify-content-between">
@@ -7,14 +8,25 @@
       <input type="text" matInput formControlName="search" (keyup)="searchs()">
     </mat-form-field>
   </div>
-<ul class="navbar-nav mb-3">
-  <li class="nav-item" *ngFor="let turma of newTurmas" (click)="selectedTurma(turma.nome)">
-    <button class="btn btn-outline-primary border-0 w-100 text-start rounded-0">
-      <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
-    </button>
-  </li>
-</ul>
-<div class="d-flex flex-column">
-  <button class="btn btn-primary mb-3" (click)="openAddTurma()">Adicionar turma</button>
-  <button class="btn btn-primary" routerLink="signup">Adicionar Usuarios</button>
+  <ul class="navbar-nav mb-2 px-0">
+    <li class="nav-item" *ngFor="let turma of newTurmas" (click)="selectedTurma(turma.nome)">
+      <button class="navBtn border-0 w-100 text-start rounded-0 p-2">
+        <a class="nav-link link-dark fs-6 pointer">{{turma.nome}}</a>
+      </button>
+    </li>
+  </ul>
+</div>
+<mat-divider *ngIf="!notAdmin"></mat-divider>
+<div class="d-flex flex-column" *ngIf="!notAdmin">
+  <button class="navBtn border-0 px-4 py-3 text-start" (click)="openAddTurma()">Adicionar turma</button>
+  <mat-divider></mat-divider>
+  <button class="navBtn border-0 px-4 py-3 text-start" routerLink="signup">Adicionar Usuarios</button>
+  <mat-divider></mat-divider>
+  <button class="navBtn border-0 px-4 py-3 text-start" routerLink="perfis">Perfis</button>
+</div>
+
+<div>
+  <mat-divider></mat-divider>
+  <button (click)="logout()" class="navBtn border-0 px-4 py-3 w-100 text-start" routerLink="">Sair</button>
+  <mat-divider></mat-divider>
 </div>

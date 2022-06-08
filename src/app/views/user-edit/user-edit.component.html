@@ -1,0 +1,51 @@
+<div>
+  <form class="d-flex flex-column mb-3" [formGroup]="form">
+    <h1 class="text-center">Editar Usuário</h1>
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="nome">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input type="text" matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="userType == 'professor'">
+      <mat-label>Turmas</mat-label>
+      <mat-chip-list #chiplist>
+        <mat-chip *ngFor="let turma of addTurmas" (removed)="removedTurmas(turma)">
+          {{turma}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input type="text" placeholder="Adicionar turma" matInput 
+          formControlName="turma"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chiplist"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let turma of autoComplete " [value]="turma">
+          {{turma.nome}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Senha</mat-label>
+      <input type="text" placeholder="Adicionar turma" matInput formControlName="password">   
+    </mat-form-field>
+
+    <mat-radio-group (change)="typeOfUser($event)" [value]="userType" color="primary">
+      <mat-radio-button value="admin" class="me-3">Admin</mat-radio-button>
+      <mat-radio-button value="professor">Professor</mat-radio-button>
+    </mat-radio-group>
+  </form>
+
+  <button class="btn btn-danger me-3" (click)="close()">Fechar</button>
+  <button class="btn btn-success" (click)="edit()">Salvar</button>
+</div>

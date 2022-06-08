@@ -15,7 +15,12 @@ import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lis
 import { JustificarFaltasComponent } from './views/justificar-faltas/justificar-faltas.component';
 import { environment } from '../environments/environment';
 import { AddAlunoComponent } from './views/add-aluno/add-aluno.component'
-import { LoginLogoutComponent } from './components/login-logout/login-logout.component';
+import { GerenciadorDePerfisComponent } from './components/gerenciador-de-perfis/gerenciador-de-perfis.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
+import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
+import { DeleteComponent } from './views/delete/delete.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -29,13 +34,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode'
 
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
-import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
+import { EditarFaltaComponent } from './views/editar-falta/editar-falta.component';
+import { UserEditComponent } from './views/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -49,9 +62,14 @@ import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.componen
     ListaDeFrequenciaComponent,
     JustificarFaltasComponent,
     AddAlunoComponent,
-    LoginLogoutComponent,
     UpdateTurmaComponent,
     UpdateAlunoComponent,
+    LoginComponent,
+    SignupComponent,
+    GerenciadorDePerfisComponent,
+    EditarFaltaComponent,
+    DeleteComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,12 +88,19 @@ import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.componen
     MatRadioModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    NgxQRCodeModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

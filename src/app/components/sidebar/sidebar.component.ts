@@ -1,3 +1,4 @@
+import { UserEditComponent } from 'src/app/views/user-edit/user-edit.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,43 +17,96 @@ export class SidebarComponent implements OnInit {
   turmas:any [] = []
   newTurmas:any [] = []
   search:any
+  notAdmin:any
+  professor:any
 
-  constructor( public dialog: MatDialog, private db: FirebaseService, private router:Router) { }
+  constructor( public dialog: MatDialog, private db: FirebaseService, private dbAuth:AuthService , private router:Router) { }
 
   ngOnInit(): void {
+    this.notAdmin = this.dbAuth.notAdmin
+    this.professor = sessionStorage['tipo']
     this.createForm()
+    
+    if(sessionStorage['tipo'] == 'admin') {
+      this.getTurmas()
+    } else if(sessionStorage['tipo'] == 'professor') {
+      this.getProfTurmas()
+    }
+  }
 
-    this.db.getTurmas().subscribe((infos:any) => {
-      infos.docs.forEach((element:any) => {
+  //Vai pegar todas as turmas
+  getTurmas() {
+    this.db.getTurmas().subscribe((res:any) => {
+      res.docs.forEach((element:any) => {
         this.turmas.push(element.data())
-        this.newTurmas = this.turmas
       });
 
       this.turmas = this.turmas.sort((a:any, b:any) => {
         return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
       })
+
+      //Para pesquisar depois
+      this.newTurmas = this.turmas
+    })
+  }
+
+  //Vai pegar as turmas do Professor
+  getProfTurmas() {
+    const professores:any = []
+      this.db.getUsers().subscribe((res: any) => {
+        res.docs.forEach((element: any) => {
+        professores.push(element.data())
+      }); 
+
+      try {
+        const user = professores.filter((professor: any) => {
+          if (professor.id == sessionStorage['id']) {
+          return professor
+        }
+      })
+
+      const turmas:any = []
+      for (let i = 0; i < user[0]?.turma.length; i++) {
+        turmas.push({nome: user[0]?.turma[i]})
+      }
+
+      this.turmas = turmas
+      
+      this.turmas = this.turmas.sort((a:any, b:any) => {
+        return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0;    
+      })
+      
+      //Para pesquisar depois
+      this.newTurmas = this.turmas
+    } catch (error) {
+     this.db.handleError(error) 
+    }
     })
   }
 
   //Vai criar um form para o FormGroup
   createForm() {
     this.search = new FormGroup({
-      search: new FormControl()
+      search: new FormControl(),
     })
   }
 
   searchs() {
+    try {
       const filtrado = this.turmas.filter((turma:any) =>{
-        if(turma.nome.includes(this.search.value.search)) {
+        if(turma.nome.toLowerCase().includes(this.search.value.search) || turma.nome.toUpperCase().includes(this.search.value.search) || turma.nome.includes(this.search.value.search)) {
           return turma
         } else {}
       })
-
+      
       if(filtrado.length === 0) {
         this.newTurmas = this.turmas
       } else {
         this.newTurmas = filtrado
       }
+    } catch (error) {
+      this.db.handleError(error)      
+    }
   }
 
   openAddTurma() {
@@ -69,25 +123,41 @@ export class SidebarComponent implements OnInit {
     })
   }
 
-  addTurma(turma:any) {
-    this.db.addTurma(turma).then(() => {
-      window.location.reload()
+  addTurma(newTurma:any) {
+   const turma = this.turmas.filter((turma:any) => {
+      if(turma.nome == newTurma.nome) {
+        return newTurma
+      }
     })
+
+    if(turma[0]?.nome == newTurma.nome) {
+      this.db.openSnackbar('Ja existe uma turma com esse nome')
+    } else {
+      this.db.addTurma(newTurma)
+    }
   }
 
   selectedTurma(nome:any) {
-    this.db.getTurmas().subscribe(infos => {
-      const ids = infos.docs
+    this.db.getTurmas().subscribe((res:any) => {
+      const ids = res.docs
 
-      const names = infos.docs.map((infos:any) => {
-        return infos.data().nome
+      const names = res.docs.map((res:any) => {
+        return res.data().nome
       })
 
-      const index = names.indexOf(nome)
-      const id = ids[index].id
-
-      this.router.navigate([`turma/${id}`])
+      try {
+        const index = names.indexOf(nome)
+        const id = ids[index].id
+        
+        this.router.navigate([`turma/${id}`])
+      } catch (error) {
+        this.dbAuth.openSnackbar('Turma não encontrada')        
+      }
 
     })  
+  }
+
+  logout() {
+    this.dbAuth.logOut()
   }
 }
