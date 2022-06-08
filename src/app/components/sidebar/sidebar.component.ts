@@ -1,3 +1,4 @@
+import { UserEditComponent } from 'src/app/views/user-edit/user-edit.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,11 +18,13 @@ export class SidebarComponent implements OnInit {
   newTurmas:any [] = []
   search:any
   notAdmin:any
+  professor:any
 
   constructor( public dialog: MatDialog, private db: FirebaseService, private dbAuth:AuthService , private router:Router) { }
 
   ngOnInit(): void {
     this.notAdmin = this.dbAuth.notAdmin
+    this.professor = sessionStorage['tipo']
     this.createForm()
     
     if(sessionStorage['tipo'] == 'admin') {
@@ -80,7 +83,7 @@ export class SidebarComponent implements OnInit {
     }
     })
   }
-  
+
   //Vai criar um form para o FormGroup
   createForm() {
     this.search = new FormGroup({
@@ -120,8 +123,18 @@ export class SidebarComponent implements OnInit {
     })
   }
 
-  addTurma(turma:any) {
-    this.db.addTurma(turma)
+  addTurma(newTurma:any) {
+   const turma = this.turmas.filter((turma:any) => {
+      if(turma.nome == newTurma.nome) {
+        return newTurma
+      }
+    })
+
+    if(turma[0]?.nome == newTurma.nome) {
+      this.db.openSnackbar('Ja existe uma turma com esse nome')
+    } else {
+      this.db.addTurma(newTurma)
+    }
   }
 
   selectedTurma(nome:any) {

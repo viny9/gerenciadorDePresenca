@@ -58,10 +58,8 @@ export class LoginComponent implements OnInit {
     this.dbAuth.signin(this.formSignin.value.email, this.formSignin.value.password)
   }
 
-  enter() {
-    console.log(this.notAdmin)
-    this.dbAuth.alunoInfos(this.notAdmin.controls['turmas'].value, this.notAdmin.value.nome)
-      this.dbAuth.isLogged 
+  alunoLogin() {
+    this.dbAuth.alunoSignin(this.notAdmin.controls['turmas'].value, this.notAdmin.value.nome)
   }
 
   private _filter(value:any): string[] {

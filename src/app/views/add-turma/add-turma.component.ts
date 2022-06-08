@@ -11,9 +11,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddTurmaComponent implements OnInit {
 
   form:any
-  public turno:any
+  turno:any = 'Matutino'
 
-  constructor( private ref:MatDialogRef<AddTurmaComponent>, private db: FirebaseService) { }
+  constructor( private ref:MatDialogRef<AddTurmaComponent>) { }
 
   ngOnInit(): void {
     this.createForm()
@@ -22,12 +22,12 @@ export class AddTurmaComponent implements OnInit {
   createForm() {
     this.form = new FormGroup({
       nome: new FormControl('', [Validators.required]),
-      teste: new FormControl('', [Validators.required])
+      turno: new FormControl('', [Validators.required])
     })
   }
 
   turnos(value:any) {
-    this.turno = value
+    this.turno = value.value
   }
   
   close () {
@@ -37,7 +37,7 @@ export class AddTurmaComponent implements OnInit {
   addTurma() { 
     const turma = {
       nome: this.form.value.nome,
-      turno: this.turno.value
+      turno: this.turno
     }
 
     this.ref.close(turma)

@@ -6,7 +6,12 @@
       <input type="text" matInput formControlName="nome">
     </mat-form-field>
 
-    <mat-form-field class="mt-3" *ngIf="userType == 'professor'">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input type="text" matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="userType == 'professor'">
       <mat-label>Turmas</mat-label>
       <mat-chip-list #chiplist>
         <mat-chip *ngFor="let turma of addTurmas" (removed)="removedTurmas(turma)">
@@ -28,6 +33,11 @@
           {{turma.nome}}
         </mat-option>
       </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Senha</mat-label>
+      <input type="text" placeholder="Adicionar turma" matInput formControlName="password">   
     </mat-form-field>
 
     <mat-radio-group (change)="typeOfUser($event)" [value]="userType" color="primary">

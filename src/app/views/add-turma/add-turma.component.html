@@ -6,7 +6,7 @@
             <input type="text" matInput formControlName="nome">
         </mat-form-field>
 
-        <mat-radio-group (change)="turnos($event)" color="primary">
+        <mat-radio-group (change)="turnos($event)" color="primary" value="Matutino">
             <mat-radio-button class="me-2" value="Matutino">Matutino</mat-radio-button>
             <mat-radio-button class="me-2" value="Verspetino">Verspetino</mat-radio-button>
             <mat-radio-button value="Noturno">Noturno</mat-radio-button>
@@ -14,6 +14,6 @@
     </form>
     <div mat-dialog-actions class="mt-2">
         <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
-        <button [disabled]="form.controls['nome'].invalid" (click)="addTurma()" class="btn btn-success">Adicionar</button>
+        <button [disabled]="form.controls['nome'].invalid"  (click)="addTurma()" class="btn btn-success">Adicionar</button>
     </div>
 </div>

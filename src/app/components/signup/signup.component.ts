@@ -50,14 +50,31 @@ export class SignupComponent implements OnInit {
   createForm() {
     this.formSignup = new FormGroup({
       nome: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.email, Validators.required]) ,
       password: new FormControl('', [Validators.required]),
       turma: new FormControl(),
     })
   }
 
   onSignup () {
-    this.dbAuth.signup(this.formSignup.value.nome, this.formSignup.value.email, this.formSignup.value.password, this.addTurmas, this.userType)
+    this.db.getUsers().subscribe((res:any) => {
+      const users:any = []
+      res.docs.forEach((element:any) => {
+        users.push(element.data())
+      });
+
+      const user = users.filter((user:any) => {
+        if(user.email == this.formSignup.controls['email'].value) {
+          return user
+        }
+      })
+
+      if(user[0]?.email == this.formSignup.controls['email'].value) {
+        this.db.openSnackbar('Email já está em uso')
+      }else {
+        this.dbAuth.signup(this.formSignup.value.nome, this.formSignup.value.email, this.formSignup.value.password, this.addTurmas, this.userType)
+      }
+    })
   }
 
   type(tipo:any) {

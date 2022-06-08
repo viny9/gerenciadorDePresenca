@@ -1,15 +1,19 @@
-  @media (max-width:576px) {
-    .teste {
+.pointer {
+  cursor: pointer;
+    }
+
+@media (max-width:576px) {
+    .turmas {
         flex-direction: column;
     }
 
-    .teste2 {
+    .turma {
         width: 100%;
     }
   }
   
   @media (min-width: 577px) and (max-width:991px) {
-    .teste2 {
+    .turma {
         width: 100%;
     }
   }

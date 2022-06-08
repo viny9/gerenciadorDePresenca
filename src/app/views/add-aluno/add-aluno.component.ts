@@ -24,16 +24,6 @@ export class AddAlunoComponent implements OnInit {
     })
   }
 
-  teste(e:any) {
-    if(e.required == true) {
-      return 'Você tem que digitar algo'
-    } else if (e.minlength) {
-      return 'Você tem que digitar 11 digitos'
-    } else {
-      return 
-    }
-  }
-
   close() {
     this.ref.close()
   }

@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-lista-de-frequencia',
@@ -144,40 +143,47 @@ export class ListaDeFrequenciaComponent implements OnInit {
   }
 
   horarios() {
-    const date = new Date()
-    const hour = date.getHours()
-    const minutes = date.getMinutes()
-
+    this.db.getTurma(this.pathId).subscribe((res:any) => {
+      const turno = res.data().turno
+      const date = new Date()
+      const hour = date.getHours()
+      const minutes = date.getMinutes()
+      
     //Horarios que a chamada vai estar aberta
     //Matutino
-    if(hour == 12 && minutes >= 0 && minutes <= 59) {
-      this.horario = 1
-    } else if(hour == 23 && minutes >= 0 && minutes < 59) {
-      this.horario = 2
-    } else if(hour == 3 && minutes >= 0 && minutes < 59) {
-      this.horario = 3
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 4
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 5
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 6
-    }
+   if(turno == 'matutino') {
+      if(hour == 12 && minutes >= 0 && minutes <= 59) {
+        this.horario = 1
+      } else if(hour == 23 && minutes >= 0 && minutes < 59) {
+        this.horario = 2
+      } else if(hour == 3 && minutes >= 0 && minutes < 59) {
+        this.horario = 3
+      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+        this.horario = 4
+      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+        this.horario = 5
+      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+        this.horario = 6
+      }
+
+    } else if(turno == 'verspetino') {
 
     //Verspetino
-    // if(hour == 8 && minutes >= 20 && minutes <= 45) {
-    //   this.horario = 1
-    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-    //   this.horario = 2
-    // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
-    //   this.horario = 3
-    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-    //   this.horario = 4
-    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-    //   this.horario = 5
-    // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-    //   this.horario = 6
-    // }
+      // if(hour == 8 && minutes >= 20 && minutes <= 45) {
+      //   this.horario = 1
+      // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+      //   this.horario = 2
+      // } else if(hour == 16 && minutes >= 0 && minutes < 59) {
+      //   this.horario = 3
+      // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+      //   this.horario = 4
+      // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+      //   this.horario = 5
+      // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
+      //   this.horario = 6
+      // }
+      
+    } else if(turno == 'noturno') {
 
     //Noturno
     // if(hour == 8 && minutes >= 20 && minutes <= 45) {
@@ -193,8 +199,10 @@ export class ListaDeFrequenciaComponent implements OnInit {
     // } else if(hour == 4 && minutes >= 0 && minutes < 10) {
     //   this.horario = 6
     // }
-  }
-
+    }
+  })
+}
+  
   private _filter(value:any): string[] {
     const filterValue = value.toLowerCase()
 

@@ -1,17 +1,17 @@
 @media (max-width: 280px) {
-    .teste {
+    .form {
         width: 15rem;
     }
   }
 
 @media (min-width: 281px) and (max-width:576px) {
-    .teste {
+    .form {
         width: 20rem;
     }
   }
   
   @media (min-width: 577px) and (max-width:991px) {
-    .teste {
+    .form {
         width: 22rem;
     }
   }

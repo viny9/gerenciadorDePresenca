@@ -1,7 +1,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject, OnInit } from '@angular/core';
 import { startWith, map, Observable } from 'rxjs';
@@ -41,7 +41,9 @@ export class UserEditComponent implements OnInit {
   createForm() {
     this.form = new FormGroup({
       nome: new FormControl(),
-      turma: new FormControl()
+      email: new FormControl('', [Validators.email, Validators.required]) ,
+      turma: new FormControl(),
+      password: new FormControl('', [Validators.required])
     })
     
     this.setFormValues()
@@ -49,6 +51,8 @@ export class UserEditComponent implements OnInit {
 
   setFormValues() {
     this.form.controls['nome'].setValue(this.data.nome)
+    this.form.controls['email'].setValue(this.data.email)
+    this.form.controls['password'].setValue(this.data.password)
 
     if(this.data.type == 'professor') {
       for (let i = 0; i < this.data.turma.length; i++) {

@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-center h-100 w-100">
-    <form *ngIf="!login" class="border rounded col-3 d-flex flex-column p-4 shadow form teste" [formGroup]="formSignin">
+    <form *ngIf="!login" class="border rounded col-3 d-flex flex-column p-4 shadow form" [formGroup]="formSignin">
         <h1 class="text-center">Login</h1>
         <mat-form-field>
             <mat-label>Email</mat-label>
@@ -14,7 +14,7 @@
         <a class="mt-3" (click)="login = true">Não sou funcionario</a>
     </form>
 
-    <form *ngIf="login" class="border rounded col-3 d-flex flex-column p-4 shadow form teste" [formGroup]="notAdmin">
+    <form *ngIf="login" class="border rounded col-3 d-flex flex-column p-4 shadow form" [formGroup]="notAdmin">
         <h1 class="text-center">Login do Aluno</h1>
         <mat-form-field>
             <mat-label>Nome completo do aluno</mat-label>
@@ -36,7 +36,7 @@
             </mat-autocomplete>
           </mat-form-field>
 
-        <button [disabled]="notAdmin.invalid" class="btn btn-primary" (click)="enter()">Entrar</button>
+        <button [disabled]="notAdmin.invalid" class="btn btn-primary" (click)="alunoLogin()">Entrar</button>
         <a class="mt-3" (click)="login = false">Sou um funcionario</a>
     </form>
 </div>
