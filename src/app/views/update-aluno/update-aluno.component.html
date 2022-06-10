@@ -3,12 +3,12 @@
   <form [formGroup]="form">
     <mat-form-field class="w-100">
       <mat-label>Nome do Aluno</mat-label>
-      <input type="text" matInput formControlName="nome">
+      <input type="text" matInput formControlName="nome" autocomplete="off">
     </mat-form-field>
 
     <mat-form-field class="w-100">
       <mat-label>Número dos responsáveis</mat-label>
-      <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11">
+      <input type="text" matInput formControlName="numeroDoResponsavel" maxlength="11" autocomplete="off">
     </mat-form-field>
   </form>
   <div mat-dialog-actions>

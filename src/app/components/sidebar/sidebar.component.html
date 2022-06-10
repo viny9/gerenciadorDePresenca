@@ -5,7 +5,7 @@
   <div class="d-flex justify-content-between">
     <mat-form-field [formGroup]="search">
       <mat-label>Pesquisar turma</mat-label>
-      <input type="text" matInput formControlName="search" (keyup)="searchs()">
+      <input type="text" matInput formControlName="search" (keyup)="searchs()" autocomplete="off">
     </mat-form-field>
   </div>
   <ul class="navbar-nav mb-2 px-0">

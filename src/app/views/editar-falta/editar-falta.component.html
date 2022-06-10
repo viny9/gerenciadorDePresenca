@@ -2,22 +2,22 @@
   <form [formGroup]="form">
     <mat-form-field class="w-75">
       <mat-label>Horário</mat-label>
-      <input formControlName="horario" matInput>
+      <input formControlName="horario" matInput autocomplete="off">
     </mat-form-field>
 
     <mat-form-field class="w-75">
       <mat-label>Disciplina</mat-label>
-      <input formControlName="materia" matInput>
+      <input formControlName="materia" matInput autocomplete="off">
     </mat-form-field>
 
     <mat-form-field class="w-75" *ngIf="justificativa">
       <mat-label>Justificativa</mat-label>
-      <input formControlName="justi" matInput>
+      <input formControlName="justi" matInput autocomplete="off">
     </mat-form-field>
 
     <mat-form-field class="w-75">
       <mat-label>Professor</mat-label>
-      <input formControlName="professor" matInput>
+      <input formControlName="professor" matInput autocomplete="off">
     </mat-form-field>
   </form>
 

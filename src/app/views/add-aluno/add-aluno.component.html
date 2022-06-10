@@ -3,12 +3,12 @@
   <form [formGroup]="form" class="d-flex flex-column">
     <mat-form-field>
       <mat-label>Nome do Aluno</mat-label>
-      <input type="text" matInput formControlName="nome">
+      <input type="text" matInput formControlName="nome" autocomplete="off">
     </mat-form-field>
     
     <mat-form-field>
       <mat-label>Número dos responsáveis</mat-label>
-      <input type="text" matInput formControlName="numeroDoResponsavel" minlength="11" maxlength="11">
+      <input type="text" matInput formControlName="numeroDoResponsavel" minlength="11" maxlength="11" autocomplete="off">
     </mat-form-field>
   </form>
   <div>

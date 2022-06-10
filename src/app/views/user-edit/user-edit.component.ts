@@ -40,7 +40,7 @@ export class UserEditComponent implements OnInit {
 
   createForm() {
     this.form = new FormGroup({
-      nome: new FormControl(),
+      nome: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.email, Validators.required]) ,
       turma: new FormControl(),
       password: new FormControl('', [Validators.required])

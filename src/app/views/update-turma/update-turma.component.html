@@ -2,7 +2,7 @@
   <h1 class="text-center">Editar Turma</h1>
   <mat-form-field class="w-100">
     <mat-label>Nome da turma</mat-label>
-    <input type="text" matInput [formControl]="name">
+    <input type="text" matInput [formControl]="name" autocomplete="off">
   </mat-form-field>
   <div mat-dialog-actions>
     <button (click)="close()" class="btn btn-danger me-3">Fechar</button>

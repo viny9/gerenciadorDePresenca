@@ -3,12 +3,12 @@
     <h1 class="text-center">Editar Usuário</h1>
     <mat-form-field>
       <mat-label>Nome</mat-label>
-      <input type="text" matInput formControlName="nome">
+      <input type="text" matInput formControlName="nome" autocomplete="off">
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input type="text" matInput formControlName="email">
+      <input type="text" matInput formControlName="email" autocomplete="off">
     </mat-form-field>
 
     <mat-form-field *ngIf="userType == 'professor'">
@@ -37,7 +37,7 @@
 
     <mat-form-field>
       <mat-label>Senha</mat-label>
-      <input type="text" placeholder="Adicionar turma" matInput formControlName="password">   
+      <input type="text" placeholder="Adicionar turma" matInput formControlName="password" autocomplete="off">   
     </mat-form-field>
 
     <mat-radio-group (change)="typeOfUser($event)" [value]="userType" color="primary">

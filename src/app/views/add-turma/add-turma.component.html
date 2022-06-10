@@ -3,7 +3,7 @@
     <form [formGroup]="form">
         <mat-form-field class="w-100 mb-3">
             <mat-label>Nome da turma</mat-label>
-            <input type="text" matInput formControlName="nome">
+            <input type="text" matInput formControlName="nome" autocomplete="off">
         </mat-form-field>
 
         <mat-radio-group (change)="turnos($event)" color="primary" value="Matutino">
