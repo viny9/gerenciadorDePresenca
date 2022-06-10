@@ -130,7 +130,7 @@ export class FirebaseService {
 
   //Erros
   handleError(e: any) {
-    this.openSnackbar('ocorre um error')
+    this.openSnackbar('Ocorreu um erro')
     return EMPTY
   }
 
