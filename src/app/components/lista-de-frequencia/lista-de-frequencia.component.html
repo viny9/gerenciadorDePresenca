@@ -7,12 +7,7 @@
 
     <mat-form-field class="w-50">
       <mat-label>Materia</mat-label>
-      <input type="text" placeholder="Adicionar materia" matInput [formControl]="input" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let materia of materias " [value]="materia">
-          {{materia}}
-        </mat-option>
-      </mat-autocomplete>
+      <input type="text" placeholder="Adicionar materia" matInput formControlName="materia" autocomplete="off">
     </mat-form-field>
   </form>
 </div>
