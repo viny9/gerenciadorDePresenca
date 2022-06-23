@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AlunoComponent } from './components/aluno/aluno.component';
 import { GerenciadorDePerfisComponent } from './components/gerenciador-de-perfis/gerenciador-de-perfis.component';
 import { HomeComponent } from './components/home/home.component';
+import { HorariosComponent } from './components/horarios/horarios.component';
 import { ListaDeFrequenciaComponent } from './components/lista-de-frequencia/lista-de-frequencia.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { TurmaComponent } from './components/turma/turma.component';
@@ -31,6 +32,10 @@ const routes: Routes = [
   { path: 'perfis',
     canActivate: [AuthService],
     component: GerenciadorDePerfisComponent },
+
+  { path: 'horarios',
+    canActivate: [AuthService],
+    component: HorariosComponent },
 
   ];
 

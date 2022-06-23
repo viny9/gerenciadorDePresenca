@@ -1,0 +1,20 @@
+<div>
+  <h1 class="text-center">Horário: {{horario.horario}}</h1>
+  <form class="d-flex flex-column align-items-center mb-4" [formGroup]="form">
+      <div class="d-flex align-items-end justify-content-start">
+        <p class="me-2">De</p>
+        <mat-form-field class="me-2">
+          <input type="text" matInput [value]="horario.inicio" formControlName="inicio" minlength="5" maxlength="5" autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex align-items-end justify-content-start">
+        <p class="me-2">Até</p>
+        <mat-form-field>
+          <input type="text" matInput [value]="horario.fim" formControlName='fim' minlength="5" maxlength="5" autocomplete="off">
+        </mat-form-field>
+      </div>
+  </form>
+    <button class="btn btn-danger me-3" (click)="close()">Fechar</button>
+    <button class="btn btn-success" (click)="update()" [disabled]="form.invalid">Salvar</button>
+</div>

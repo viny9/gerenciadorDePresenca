@@ -17,6 +17,8 @@ export class ListaDeFrequenciaComponent implements OnInit {
   horario:any
   form:any
   frequencias:any = []
+  hour:any = []
+  date = new Date()
 
   constructor(private db:FirebaseService, private turmaId:ActivatedRoute) { }
 
@@ -29,7 +31,7 @@ export class ListaDeFrequenciaComponent implements OnInit {
       this.getTurmaName(this.pathId)
     })
 
-  //  this.horarios()
+    this.turno()
   }
 
   createForm() {
@@ -84,14 +86,15 @@ export class ListaDeFrequenciaComponent implements OnInit {
       })   
   } 
 
-  // Vai pegar os valores do radio button
   presenca(nome:any, value:any) {
-    const date = new Date()
-    const day = date.getDate()
-    const month = date.getMonth() + 1
-    const year = date.getFullYear()
+    const day = this.date.getDate()
+    const month = this.date.getMonth() + 1
+    const year = this.date.getFullYear()
+
+    const id = Math.random()
 
     const frequencia = {
+      id:id,
       nome: nome,
       date: `${day}/${month}/${year}`,
       horario: this.horario,
@@ -116,65 +119,41 @@ export class ListaDeFrequenciaComponent implements OnInit {
     }
   }
 
-  horarios() {
-    
+  turno() {
     this.db.getTurma(this.pathId).subscribe((res:any) => {
+      let id
+
       const turno = res.data().turno
-      const date = new Date()
-      const hour = date.getHours()
-      const minutes = date.getMinutes()
-      
-    // Matutino
-   if(turno == 'matutino') {
-      if(hour == 12 && minutes >= 0 && minutes <= 59) {
-        this.horario = 1
-      } else if(hour == 23 && minutes >= 0 && minutes < 59) {
-        this.horario = 2
-      } else if(hour == 3 && minutes >= 0 && minutes < 59) {
-        this.horario = 3
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 4
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 5
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 6
+      if(turno == 'Matutino') {
+        id = '1LfL4eBlssJaqX4e3Rth'
+      } else if (turno == 'Vespertino') {
+        id = 'yDh0TfJCS6Xd2T8EwZ5A'
+      } else if(turno == 'Noturno') {
+        id = 'oFE3a24OoUSlvCqqjCsq'
       }
 
-    } else if(turno == 'verspetino') {
+      this.db.getHorarios(id).subscribe((res:any) => {
+        res.forEach((element:any) => {
+          this.hour.push(element.data()) 
+        });
 
-    // Verspetino
-      if(hour == 8 && minutes >= 20 && minutes <= 45) {
-        this.horario = 1
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 2
-      } else if(hour == 16 && minutes >= 0 && minutes < 59) {
-        this.horario = 3
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 4
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 5
-      } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-        this.horario = 6
-      }
-      
-    } else if(turno == 'noturno') {
-
-    // Noturno
-    if(hour == 8 && minutes >= 20 && minutes <= 45) {
-      this.horario = 1
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 2
-    } else if(hour == 16 && minutes >= 0 && minutes < 59) {
-      this.horario = 3
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 4
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 5
-    } else if(hour == 4 && minutes >= 0 && minutes < 10) {
-      this.horario = 6
-    }
-    }
-  })
+        this.horarios(this.hour)
+      })
+    })
   }
-  
+
+  horarios(time: any[]) {
+      for (let i = 0; i < time.length; i++) {
+
+      const inicio = time[i].inicio.split(":");
+      const fim = time[i].fim.split(":");
+
+      var date1 = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), inicio[0], inicio[1]);
+      var date2 = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), fim[0], fim[1]);
+
+      if(this.date >= date1 && this.date < date2) {
+        this.horario = i + 1
+      }
+    }
+  }
 }

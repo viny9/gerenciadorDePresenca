@@ -4,6 +4,11 @@
     <mat-label>Nome da turma</mat-label>
     <input type="text" matInput [formControl]="name" autocomplete="off">
   </mat-form-field>
+  <mat-radio-group [value]="data.turno" (change)="turnos($event)">
+    <mat-radio-button color="primary" value="Matutino">Matutino</mat-radio-button>
+    <mat-radio-button class="mx-3" color="primary" value="Vespertino">Vespertino</mat-radio-button>
+    <mat-radio-button color="primary" value="Noturno">Noturno</mat-radio-button>
+  </mat-radio-group>
   <div mat-dialog-actions>
     <button (click)="close()" class="btn btn-danger me-3">Fechar</button>
     <button [disabled]="name.invalid" (click)="updateTurma()" class="btn btn-success">Salvar</button>

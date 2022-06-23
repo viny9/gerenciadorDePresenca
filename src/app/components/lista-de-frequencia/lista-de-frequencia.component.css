@@ -3,9 +3,3 @@
       width: 100%;
     }
   }
-  
-  @media (min-width: 577px) and (max-width:991px) {
-    .tables {
-      height: 23rem;
-    }
-  }

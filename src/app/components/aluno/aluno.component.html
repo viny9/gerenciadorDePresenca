@@ -1,5 +1,6 @@
 <div>
   <h1>{{alunoInfos[0]?.nome}}</h1>
+  <h2 *ngIf="!normal">Número dos responsáveis: {{alunoInfos[0]?.numeroDoResponsavel}}</h2>
 
   <div>
     <table mat-table [dataSource]="falta" class="mat-elevation-z8 w-100">

@@ -2,8 +2,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +10,7 @@ export class FirebaseService {
   private headInfos = new BehaviorSubject < Object > ({
     title: ''
   })
+
   load: any = true
 
   constructor(public db: AngularFirestore, private snackBar: MatSnackBar) {}
@@ -37,13 +36,13 @@ export class FirebaseService {
 
   async addTurma(turma: any) {
     return await this.db.collection('turmas').add(turma)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
   async updateTurma(id: any, newTurma: any) {
     return await this.db.collection('turmas').doc(id).update(newTurma)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
@@ -66,19 +65,19 @@ export class FirebaseService {
 
   async updateAluno(pathId: any, id: any, newAluno: any) {
     return await this.db.collection('turmas').doc(pathId).collection('alunos').doc(id).update(newAluno)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
   async addAluno(aluno: any, id: any) {
     return await this.db.collection(`/turmas/${id}/alunos`).add(aluno)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
   async removeAlunos(pathId: any, id: any) {
     return await this.db.collection(`/turmas/${pathId}/alunos`).doc(id).delete()
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
@@ -95,7 +94,7 @@ export class FirebaseService {
 
   async justificarFalta(pathId: any, alunoId: any, falta: any, presenca: any) {
     return await this.db.collection('turmas').doc(pathId).collection('alunos').doc(alunoId).collection('presenca').doc(falta).set(presenca)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch(e => this.handleError(e))
   }
 
@@ -112,7 +111,7 @@ export class FirebaseService {
 
   deleteProfTurma(id: any, turma: any) {
     this.db.collection('users').doc(id).update(turma)
-      .then(() => {window.location.reload()})
+      .then(() => { window.location.reload() })
       .catch((e) => this.handleError(e))
   }
 
@@ -126,6 +125,23 @@ export class FirebaseService {
     return await this.db.collection('users').doc(id).delete()
       .then(() => window.location.reload())
       .catch((e) => this.handleError(e))
+  }
+
+  //Horários
+  getHorarios(id: any) {
+    return this.db.collection('horarios').doc(id).collection('horarios').get()
+      .pipe(catchError(e => this.handleError(e)))
+  }
+
+  async updateHorarios(id: any, horarioId: any, newHorario: any) {
+    return await this.db.collection('horarios').doc(id).collection('horarios').doc(horarioId).update(newHorario)
+      .then(() => { window.location.reload() })
+      .catch((e) => this.handleError(e))
+  }
+
+  getHorario(turnoId: any, id: any) {
+    return this.db.collection('horarios').doc(turnoId).collection('horarios').doc(id).get()
+      .pipe(catchError(e => this.handleError(e)))
   }
 
   //Erros

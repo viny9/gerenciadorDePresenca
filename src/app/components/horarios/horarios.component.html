@@ -1,0 +1,46 @@
+<div class="mb-5">
+  <h1>Turno</h1>
+  <mat-radio-group (change)="horarios($event.value)" value="1LfL4eBlssJaqX4e3Rth" class="radioGroup">
+    <mat-radio-button color="primary" value="1LfL4eBlssJaqX4e3Rth">Matutino</mat-radio-button>
+    <mat-radio-button color="primary" value="yDh0TfJCS6Xd2T8EwZ5A" >Verspetino</mat-radio-button>
+    <mat-radio-button color="primary" value="oFE3a24OoUSlvCqqjCsq" >Noturno</mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<div class="d-flex align-items-center flex-column">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tableEdit">
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="inicio"> No </th>
+      <td mat-cell *matCellDef="let user"> {{user.horario}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inicio">
+      <th mat-header-cell *matHeaderCellDef> início </th>
+      <td mat-cell *matCellDef="let user">De {{user.inicio}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fim">
+      <th mat-header-cell *matHeaderCellDef class="fim"> fim </th>
+      <td mat-cell *matCellDef="let user">
+        <p class="fim"> Até {{user.fim}} </p>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>
+        <p class="ms-3 mb-0"> Editar </p>
+      </th>
+      <td mat-cell *matCellDef="let user">
+        <div>
+          <button class="btn ms-1" (click)="openHorarios(user.id)">
+            <mat-icon>more_horizontal</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

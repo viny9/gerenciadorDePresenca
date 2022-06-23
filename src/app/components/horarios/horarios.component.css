@@ -1,0 +1,56 @@
+@media (max-width: 280px) {
+    .radioGroup {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .fim {
+        padding: 0 10px !important;
+        margin: 0;
+    }
+
+    .inicio {
+        padding: 0 10px;
+    }
+
+}
+
+@media (min-width: 281px) and (max-width:576px) {
+    .radioGroup {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fim {
+        padding: 0 10px !important;
+        margin: 0;
+    }
+
+    .inicio {
+        padding: 0 10px;
+    }
+  }
+  
+  @media (min-width: 577px) and (max-width:991px) {
+    .radioGroup {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .fim {
+        padding: 0 10px;
+        margin: 0;
+    }
+}
+
+    @media (min-width: 991px) {
+     mat-radio-button  {
+        margin-left: 16px;
+    }
+
+    .tableEdit {
+        width: 75%;
+    }
+  
+}

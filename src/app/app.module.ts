@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms'
 
+//All components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeadComponent } from './components/head/head.component'
@@ -21,7 +22,12 @@ import { SignupComponent } from './components/signup/signup.component';
 import { UpdateTurmaComponent } from './views/update-turma/update-turma.component';
 import { UpdateAlunoComponent } from './views/update-aluno/update-aluno.component';
 import { DeleteComponent } from './views/delete/delete.component';
+import { HorariosComponent } from './components/horarios/horarios.component';
+import { HorariosConfigComponent } from './views/horarios-config/horarios-config.component';
+import { UserEditComponent } from './views/user-edit/user-edit.component';
+import { EditarFaltaComponent } from './views/editar-falta/editar-falta.component';
 
+//Angular Material imports
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,14 +47,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+//Qr Code import
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode'
 
+//Firebase imports
 import { AngularFireModule } from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { EditarFaltaComponent } from './views/editar-falta/editar-falta.component';
-import { UserEditComponent } from './views/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +76,8 @@ import { UserEditComponent } from './views/user-edit/user-edit.component';
     EditarFaltaComponent,
     DeleteComponent,
     UserEditComponent,
+    HorariosComponent,
+    HorariosConfigComponent,
   ],
   imports: [
     BrowserModule,
