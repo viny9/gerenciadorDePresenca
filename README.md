@@ -4,5 +4,5 @@ Link:  <a>https://viny9.github.io/hosting-GerenciadorDePresenca/</a>
 
 Para ter acesso, use as informações abaixo.
 
-email: viniolicar2004@gmail.com
+email: viniolicar2004@gmail.com <br>
 senha: 1234
