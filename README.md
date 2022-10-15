@@ -1,4 +1,4 @@
-Um sistema desenvolvido para que os responsáveis possam acompanhar a presença de seus filhos durante o ano escolar.
+<h2>Um sistema desenvolvido para que os responsáveis possam acompanhar a presença de seus filhos durante o ano escolar. </h2>
 
 Link:  <a>https://viny9.github.io/hosting-GerenciadorDePresenca/</a>
 
